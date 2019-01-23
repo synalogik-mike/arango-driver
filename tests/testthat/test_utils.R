@@ -2,7 +2,7 @@ context("Utils Directory Test Suite")
 
 test_that("Enumeration works correctly with existing values", {
   # given
-  request_methods <- Enum(GET, POST, PATCH)
+  request_methods <- enum(GET, POST, PATCH)
 
   # when
 
@@ -20,7 +20,7 @@ test_that("Enumeration works correctly with existing values", {
 
 test_that("Enum of not listed value returns NULL", {
   # given
-  request_methods <- Enum(GET, POST, PATCH)
+  request_methods <- enum(GET, POST, PATCH)
 
   # when
   null_value <- request_methods$NOT_ENUM
