@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "connect <- function(server, port, user, password){\n  return(aRango_connection$new(host, port))\n}\n",
+    "created" : 1547465454247.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2427461816",
+    "id" : "9A46F16C",
+    "lastKnownWriteTime" : 1547465693,
+    "last_content_update" : 1547465693805,
+    "path" : "~/R/aRangodb/R/connection/arango_connection.R",
+    "project_path" : "R/connection/arango_connection.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

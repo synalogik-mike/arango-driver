@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "context(\"Utils Directory Test Suite\")\n\ntest_that(\"Enumeration works correctly with existing values\", {\n  # given\n  request_methods <- Enum(GET, POST, PATCH)\n\n  # when\n\n  post_value <- request_methods$POST\n  get_value <- request_methods$GET\n  patch_value <- request_methods$PATCH\n  null_value <- request_methods$NOT_ENUM\n\n  # then\n  expect_equal(get_value, 1)\n  expect_equal(post_value, 2)\n  expect_equal(patch_value, 3)\n\n})\n\ntest_that(\"Enum of not listed value returns NULL\", {\n  # given\n  request_methods <- Enum(GET, POST, PATCH)\n\n  # when\n  null_value <- request_methods$NOT_ENUM\n\n  # then\n  expect_equal(null_value, NULL)\n})\n",
+    "created" : 1547201016641.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3890196880",
+    "id" : "8125113E",
+    "lastKnownWriteTime" : 1547462518,
+    "last_content_update" : 1547462518612,
+    "path" : "~/R/aRangodb/tests/testthat/test_utils.R",
+    "project_path" : "tests/testthat/test_utils.R",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
