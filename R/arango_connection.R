@@ -2,13 +2,30 @@ library(jsonlite)
 library(httr)
 library(R6)
 
-
-connect <- function(server, port, user, password){
-  return(aRango_connection$new(host, port))
+#' Creates a connection object to be used for subsequent requests to the given server.
+#'
+#' @param host the server address where the ArangoDB server is up and running
+#' @param port the server port where the ArangoDB server is up and running
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+connect <- function(host, port){
+  
+  if(is.null(host)){
+    stop("to setup a connection you must indicate a 'host'")
+  }
+  
+  if(is.null(port)){
+    stop("to setup a connection you must indicate a 'port'")
+  }
+  
+  return(.aRango_connection$new(host, port))
 }
 
-
-aRango_connection <- R6Class (
+#' An ArangoConnection is a class that contains and manages the connection with one specific 
+#' instance of ArangoDB. Basically this object must be used to get databases collections, graphs
+#' or to interact in other ways with an existing instance of the db.
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+.aRango_connection <- R6Class (
   "ArangoConnection",
   
   public = list(
@@ -18,7 +35,7 @@ aRango_connection <- R6Class (
     #' @param port the port on the server on which the Arango instance is running
     #' @param database OPTIONAL, the name of the database to which connect
     #'
-    initialize = function(host, port, database = NULL, .test_response=NULL) {
+    initialize = function(host, port) {
       private$host = host
       private$port = port
       

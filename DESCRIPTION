@@ -9,4 +9,4 @@ Description: The **aRangodb** package is the R driver for connect and use databa
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
-Suggests: testthat
+Suggests: httptest, testthat
