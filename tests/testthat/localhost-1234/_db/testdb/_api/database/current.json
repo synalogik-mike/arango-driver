@@ -1,0 +1,10 @@
+{
+ "code": "200",
+"error": false,
+"result": {
+ "name": "testdb",
+"id": "1121552",
+"path": "/some/path",
+"isSystem": false 
+} 
+}
