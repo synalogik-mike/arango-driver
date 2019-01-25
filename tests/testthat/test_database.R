@@ -8,7 +8,7 @@ with_mock_api({
     # given
     serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
     write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code="200", error=FALSE, result=c("db1", "db2")))
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, result=c("db1", "db2")))
     write(serverResponse, file="./localhost-1234/_api/database.json")
     connection <- aRangodb::connect("localhost", "1234")
     
@@ -20,6 +20,7 @@ with_mock_api({
     expect_true("db2" %in% available_dbs)
   })
 })
+
 
 with_mock_api({
   test_that("Only ArangoConnection objects are accepted for connection with databases() function", {
@@ -37,6 +38,7 @@ with_mock_api({
   })
 })
 
+
 with_mock_api({
   test_that("Connection parameter NULL led to execution fail with custom message", {
     # given
@@ -53,12 +55,13 @@ with_mock_api({
   })
 })
 
+
 with_mock_api({
   test_that("Requests for _system database works correctly", {
     # given
     serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
     write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code="200", error=FALSE, 
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
                                            result=list(name="_system", id="1", path="/some/path", isSystem=TRUE)))
     write(serverResponse, file="./localhost-1234/_db/_system/_api/database/current.json")
     connection <- aRangodb::connect("localhost", "1234")
@@ -73,12 +76,13 @@ with_mock_api({
   })
 })
 
+
 with_mock_api({
   test_that("Requests for existing database works correctly", {
     # given
     serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
     write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code="200", error=FALSE, 
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
                                            result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
     connection <- aRangodb::connect("localhost", "1234")
@@ -93,14 +97,15 @@ with_mock_api({
   })
 })
 
+
 with_mock_api({
   test_that("Requests for not existing database works correctly", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(code="201", error=FALSE, result=TRUE))
+    serverResponse <- RJSONIO::toJSON(list(code=201, error=FALSE, result=TRUE))
     write(serverResponse, file="./localhost-1234/_api/database-d782cf-POST.json")
     serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
     write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code="200", error=FALSE, 
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
                                            result=list(name="example", id="1121552", path="/some/path", isSystem=FALSE)))
     write(serverResponse, file="./localhost-1234/_db/example/_api/database/current.json")
     connection <- aRangodb::connect("localhost", "1234")
@@ -112,5 +117,27 @@ with_mock_api({
     expect_equal(defaultDb$getName(), "example")
     expect_equal(defaultDb$getId(), "1121552")
     expect_false(defaultDb$isSystemDatabase())
+  })
+})
+
+
+with_mock_api({
+  test_that("Requests for not existing database works correctly", {
+    # given
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, result=TRUE))
+    write(serverResponse, file="./localhost-1234/_api/database/testdb-DELETE.json")
+    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+    write(serverResponse, file="./localhost-1234/_api/version.json")
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
+                                           result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
+    connection <- aRangodb::connect("localhost", "1234")
+    db <- connection %>% aRangodb::database(name = "testdb")
+    
+    # when
+    dropResult <- db %>% aRangodb::drop()
+    
+    # then
+    expect_true(dropResult)
   })
 })
