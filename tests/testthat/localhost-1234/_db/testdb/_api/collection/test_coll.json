@@ -1,0 +1,9 @@
+{
+ "code":      200,
+"error": false,
+"id": "12345",
+"name": "test_coll",
+"isSystem": true,
+"type": 3,
+"status": 6 
+}

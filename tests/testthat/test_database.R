@@ -131,9 +131,9 @@ with_mock_api({
     serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
                                            result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
-    connection <- aRangodb::connect("localhost", "1234")
-    db <- connection %>% aRangodb::database(name = "testdb")
     
+    db <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb")
+   
     # when
     dropResult <- db %>% aRangodb::drop()
     

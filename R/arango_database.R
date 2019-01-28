@@ -131,7 +131,7 @@ drop <- function(.database){
       }
       
       if(is.null(dbname)){
-        stop("dbname is null, please provide a valid database name")
+        stop("dbname is NULL, please provide a valid database name")
       }
       
       private$originalConnection <- connection$getConnectionString()
@@ -184,7 +184,7 @@ drop <- function(.database){
     dbname = NULL,
     connectionStringRequest = NULL,
     originalConnection = NULL,
-    isSystem = TRUE,
+    isSystem = FALSE,
     id = NULL
   )
 )
