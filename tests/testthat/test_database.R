@@ -122,7 +122,7 @@ with_mock_api({
 
 
 with_mock_api({
-  test_that("Requests for not existing database works correctly", {
+  test_that("Requests for drop of an existing database works correctly", {
     # given
     serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, result=TRUE))
     write(serverResponse, file="./localhost-1234/_api/database/testdb-DELETE.json")

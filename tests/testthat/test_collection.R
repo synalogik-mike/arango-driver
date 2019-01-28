@@ -83,3 +83,26 @@ with_mock_api({
     expect_true(collection$isSystemCollection())
   })
 })
+
+with_mock_api({
+  test_that("Request for a collection that not exist with creation on fail, the call works", {
+    # given
+    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+    write(serverResponse, file="./localhost-1234/_api/version.json")
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/collection-d8850d-POST.json")
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, status=3, type=2, isSystem=FALSE, id="9862319", name="example_coll"))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/collection/example_coll.json")
+    db <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb")
+    
+    # when
+    coll <- db %>% aRangodb::collection(name = "example_coll", createOnFail = TRUE)
+    
+    # then
+    expect_equal(coll$getName(), "example_coll")
+    expect_equal(coll$getId(), "9862319")
+    expect_equal(coll$getStatus(), aRangodb::collection_status$LOADED)
+    expect_equal(coll$getType(), aRangodb::collection_type$DOCUMENT)
+    expect_false(coll$isSystemCollection())
+  })
+})

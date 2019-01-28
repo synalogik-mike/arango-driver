@@ -54,6 +54,15 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
     stop("Only 'ArangoDatabase' objects can be processed by aRango::databases")
   }
   
+  # If createOnFail first trying to create the collection: if a collection with same name
+  # exists the server returns the code 409 'duplicate name'
+  if(createOnFail){
+    collectionInfoRequest <- paste0(.database$.__enclos_env__$private$connectionStringRequest, "/_api/collection/")
+    
+    # Waiting for version response
+    response <- httr::POST(collectionInfoRequest, body = list(name=name))
+  }
+  
   db <- .aRango_collection$new(.database, name)
   
   return(db)
