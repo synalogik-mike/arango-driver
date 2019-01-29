@@ -18,7 +18,7 @@ drop <- function(.element){
     return(.drop_collection(.element))
   }
   else{
-    stop("Only 'ArangoDatabase' objects can be processed by aRango::drop")
+    stop("Only 'ArangoDatabase' or 'ArangoCollection' objects can be processed by aRango::drop")
   }
   
   return(FALSE)
