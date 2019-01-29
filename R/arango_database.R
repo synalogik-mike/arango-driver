@@ -75,38 +75,6 @@ database <- function(.connection, name="_system", createOnFail=FALSE){
 
 
 
-#' Drop an existing database
-#'
-#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-drop <- function(.database){
-  if(is.null(.database)){
-    stop("Database is NULL, please provide a valid 'ArangoDatabase'")
-  }
-  
-  if(class(.database)[1] != "ArangoDatabase"){
-    stop("Only 'ArangoDatabase' objects can be processed by aRango::databases")
-  }
-  
-  dbPrefixReq <- .database$.__enclos_env__$private$originalConnection
-  response <- httr::DELETE(paste0(dbPrefixReq,"/_api/database/", .database$getName()))
-  
-  if(status_code(response) == 400){
-    stop("Request is invalid")
-  }
-  
-  if(status_code(response) == 403){
-    stop(paste0("Request has not been executed in the '_system' database"))
-  }
-  
-  if(status_code(response) == 404){
-    stop(paste0("Database cannot be found in the server"))
-  }
-  
-  return(TRUE)
-}
-
-
-
 #' An ArangoDatabase is a class that wraps all the operations and interaction methods with
 #' a database existing within the specific ArangoConnection.
 #'
