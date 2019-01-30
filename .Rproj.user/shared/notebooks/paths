@@ -1,4 +1,5 @@
 /home/gabriele/arango-driver/NAMESPACE="CE31D031"
+/home/gabriele/arango-driver/R/arango_collection.R="6E02D7FC"
 /home/gabriele/arango-driver/R/arango_common_functions.R="CD5E12AA"
 /home/gabriele/arango-driver/R/arango_connection.R="816CE678"
 /home/gabriele/arango-driver/R/arango_database.R="EAFC540D"
@@ -19,6 +20,7 @@
 /home/gabriele/arango-driver/tests/testthat/localhost-1234/_db/testdb/_api/cursor-1e503a-POST.json="29348F25"
 /home/gabriele/arango-driver/tests/testthat/localhost-1234/_db/testdb/_api/cursor-PUT.json="E84AEF3D"
 /home/gabriele/arango-driver/tests/testthat/localhost-1234/_db/testdb/_api/database/current.json="3902E25B"
+/home/gabriele/arango-driver/tests/testthat/test_collection.R="93AFC359"
 /home/gabriele/arango-driver/tests/testthat/test_connection.R="29E61478"
 /home/gabriele/arango-driver/tests/testthat/test_database.R="90CC245F"
 /home/gabriele/arango-driver/tests/testthat/test_utils.R="F5366349"

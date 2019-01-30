@@ -59,7 +59,7 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
     collectionInfoRequest <- paste0(.database$.__enclos_env__$private$connectionStringRequest, "/_api/collection/")
     
     # Waiting for version response
-    response <- httr::POST(collectionInfoRequest, body = list(name=name))
+    response <- httr::POST(collectionInfoRequest, encode="json", body = list(name=name))
   }
   
   db <- .aRango_collection$new(.database, name)

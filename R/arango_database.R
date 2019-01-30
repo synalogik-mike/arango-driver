@@ -63,9 +63,9 @@ database <- function(.connection, name="_system", createOnFail=FALSE){
   # otherwise it is a prerequisite to return the requested db
   if(createOnFail){
     databaseInfoRequest <- paste0(.connection$getConnectionString(), "/_api/database")
-  
+    
     # Waiting for version response
-    response <- httr::POST(databaseInfoRequest, body = list(name=name))
+    response <- httr::POST(databaseInfoRequest, encode = "json", body = list(name=name))
   }
   
   db <- .aRango_database$new(.connection, name, forceCreate = createOnFail)

@@ -102,7 +102,7 @@ with_mock_api({
   test_that("Requests for not existing database works correctly", {
     # given
     serverResponse <- RJSONIO::toJSON(list(code=201, error=FALSE, result=TRUE))
-    write(serverResponse, file="./localhost-1234/_api/database-d782cf-POST.json")
+    write(serverResponse, file="./localhost-1234/_api/database-ab18f8-POST.json")
     serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
     write(serverResponse, file="./localhost-1234/_api/version.json")
     serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
