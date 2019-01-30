@@ -1,0 +1,21 @@
+{
+ "code":      201,
+"error": false,
+"hasMore": false,
+"result": [
+ {
+ "_key": "key3",
+"_id": "example_coll/key3",
+"_rev": "1",
+"type": "key",
+"name": "name3" 
+},
+{
+ "_key": "key4",
+"_id": "example_coll/key4",
+"_rev": "2",
+"type": "key",
+"name": "name4" 
+} 
+] 
+}

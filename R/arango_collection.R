@@ -3,7 +3,6 @@ library(httr)
 library(R6)
 
 
-
 #' Returns all the collections belonging to the giving database
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
@@ -102,6 +101,7 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
         stop("name is NULL, please provide a valid collection name")
       }
       
+      private$connectionStringDatabase <- database$.__enclos_env__$private$connectionStringRequest
       private$connectionStringRequest <- paste0(database$.__enclos_env__$private$connectionStringRequest, "/_api/collection/", name)
       collectionInfoRequest <- paste0(private$connectionStringRequest)
       
@@ -184,6 +184,7 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
   private = list(
     collname = NULL,
     connectionStringRequest = NULL,
+    connectionStringDatabase = NULL,
     isSystem = FALSE,
     id = NULL,
     type = NULL,

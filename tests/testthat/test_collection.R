@@ -121,3 +121,127 @@ with_mock_api({
     expect_equal(count, 20)
   })
 })
+
+with_mock_api({
+  test_that("Request for all the elements of a collection works correctly (all in the first call)", {
+    # given
+    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+    write(serverResponse, file="./localhost-1234/_api/version.json")
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, status=3, type=2, isSystem=FALSE, id="9862319", name="example_coll"))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/collection/example_coll.json")
+    serverResponse <- RJSONIO::toJSON(list(code=201, error=FALSE, hasMore=FALSE, 
+                                           result=list(
+                                             list(`_key`="key1", `_id`="example_coll/key1", `_rev`="1", type="key", name="name1"),
+                                             list(`_key`="key2", `_id`="example_coll/key2", `_rev`="2", type="key", name="name2")
+                                           )
+                                      ))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/cursor-1e503a-POST.json")
+    coll <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb") %>% aRangodb::collection(name = "example_coll")
+    
+    # when
+    documents <- coll %>% aRangodb::documents()
+    
+    # then
+    expect_equal(documents$"key1"$getId(), "key1")
+    expect_equal(documents$"key1"$getRevision(), "1")
+    expect_equal(documents$"key1"$getCollection(), "example_coll")
+    expect_equal(documents$"key1"$getValues()$"type", "key")
+    expect_equal(documents$"key1"$getValues()$"name", "name1")
+    expect_true("type" %in% documents$"key1"$getAvailableValues())
+    expect_true("name" %in% documents$"key1"$getAvailableValues())
+    expect_false("_id" %in% documents$"key1"$getAvailableValues())
+    expect_false("_key" %in% documents$"key1"$getAvailableValues())
+    expect_false("_rev" %in% documents$"key1"$getAvailableValues())
+    expect_false("not_exist" %in% documents$"key1"$getAvailableValues())
+    
+    expect_equal(documents$"key2"$getId(), "key2")
+    expect_equal(documents$"key2"$getRevision(), "2")
+    expect_equal(documents$"key2"$getCollection(), "example_coll")
+    expect_equal(documents$"key2"$getValues()$"type", "key")
+    expect_equal(documents$"key2"$getValues()$"name", "name2")
+    expect_true("type" %in% documents$"key2"$getAvailableValues())
+    expect_true("name" %in% documents$"key2"$getAvailableValues())
+    expect_false("_id" %in% documents$"key2"$getAvailableValues())
+    expect_false("_key" %in% documents$"key2"$getAvailableValues())
+    expect_false("_rev" %in% documents$"key2"$getAvailableValues())
+    expect_false("not_exist" %in% documents$"key2"$getAvailableValues())
+  })
+})
+
+
+with_mock_api({
+  test_that("Request for all the elements of a collection works correctly (using cursor for consecutive calls)", {
+    # given
+    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+    write(serverResponse, file="./localhost-1234/_api/version.json")
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, status=3, type=2, isSystem=FALSE, id="9862319", name="example_coll"))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/collection/example_coll.json")
+    serverResponse <- RJSONIO::toJSON(list(code=201, error=FALSE, hasMore=TRUE, 
+                                           result=list(
+                                             list(`_key`="key1", `_id`="example_coll/key1", `_rev`="1", type="key", name="name1"),
+                                             list(`_key`="key2", `_id`="example_coll/key2", `_rev`="2", type="key", name="name2")
+                                           )
+    ))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/cursor-1e503a-POST.json")
+    serverResponse <- RJSONIO::toJSON(list(code=201, error=FALSE, hasMore=FALSE, 
+                                           result=list(
+                                             list(`_key`="key3", `_id`="example_coll/key3", `_rev`="1", type="key", name="name3"),
+                                             list(`_key`="key4", `_id`="example_coll/key4", `_rev`="2", type="key", name="name4")
+                                           )
+    ))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/cursor-PUT.json")
+    coll <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb") %>% aRangodb::collection(name = "example_coll")
+    
+    # when
+    documents <- coll %>% aRangodb::documents()
+  
+    # then
+    expect_equal(documents$"key1"$getId(), "key1")
+    expect_equal(documents$"key1"$getRevision(), "1")
+    expect_equal(documents$"key1"$getCollection(), "example_coll")
+    expect_equal(documents$"key1"$getValues()$"type", "key")
+    expect_equal(documents$"key1"$getValues()$"name", "name1")
+    expect_true("type" %in% documents$"key1"$getAvailableValues())
+    expect_true("name" %in% documents$"key1"$getAvailableValues())
+    expect_false("_id" %in% documents$"key1"$getAvailableValues())
+    expect_false("_key" %in% documents$"key1"$getAvailableValues())
+    expect_false("_rev" %in% documents$"key1"$getAvailableValues())
+    expect_false("not_exist" %in% documents$"key1"$getAvailableValues())
+    
+    expect_equal(documents$"key2"$getId(), "key2")
+    expect_equal(documents$"key2"$getRevision(), "2")
+    expect_equal(documents$"key2"$getCollection(), "example_coll")
+    expect_equal(documents$"key2"$getValues()$"type", "key")
+    expect_equal(documents$"key2"$getValues()$"name", "name2")
+    expect_true("type" %in% documents$"key2"$getAvailableValues())
+    expect_true("name" %in% documents$"key2"$getAvailableValues())
+    expect_false("_id" %in% documents$"key2"$getAvailableValues())
+    expect_false("_key" %in% documents$"key2"$getAvailableValues())
+    expect_false("_rev" %in% documents$"key2"$getAvailableValues())
+    expect_false("not_exist" %in% documents$"key2"$getAvailableValues())
+    
+    expect_equal(documents$"key3"$getId(), "key3")
+    expect_equal(documents$"key3"$getRevision(), "1")
+    expect_equal(documents$"key3"$getCollection(), "example_coll")
+    expect_equal(documents$"key3"$getValues()$"type", "key")
+    expect_equal(documents$"key3"$getValues()$"name", "name3")
+    expect_true("type" %in% documents$"key3"$getAvailableValues())
+    expect_true("name" %in% documents$"key3"$getAvailableValues())
+    expect_false("_id" %in% documents$"key3"$getAvailableValues())
+    expect_false("_key" %in% documents$"key3"$getAvailableValues())
+    expect_false("_rev" %in% documents$"key3"$getAvailableValues())
+    expect_false("not_exist" %in% documents$"key3"$getAvailableValues())
+    
+    expect_equal(documents$"key4"$getId(), "key4")
+    expect_equal(documents$"key4"$getRevision(), "2")
+    expect_equal(documents$"key4"$getCollection(), "example_coll")
+    expect_equal(documents$"key4"$getValues()$"type", "key")
+    expect_equal(documents$"key4"$getValues()$"name", "name4")
+    expect_true("type" %in% documents$"key4"$getAvailableValues())
+    expect_true("name" %in% documents$"key4"$getAvailableValues())
+    expect_false("_id" %in% documents$"key4"$getAvailableValues())
+    expect_false("_key" %in% documents$"key4"$getAvailableValues())
+    expect_false("_rev" %in% documents$"key4"$getAvailableValues())
+    expect_false("not_exist" %in% documents$"key4"$getAvailableValues())
+  })
+})
