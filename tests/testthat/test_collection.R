@@ -102,3 +102,22 @@ with_mock_api({
     expect_true(deleted)
   })
 })
+
+with_mock_api({
+  test_that("Request for the count of the elements for a collection works correctly", {
+    # given
+    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+    write(serverResponse, file="./localhost-1234/_api/version.json")
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, status=3, type=2, isSystem=FALSE, id="9862319", name="example_coll"))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/collection/example_coll.json")
+    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, count=20))
+    write(serverResponse, file="./localhost-1234/_db/testdb/_api/collection/example_coll/count.json")
+    coll <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb") %>% aRangodb::collection(name = "example_coll")
+    
+    # when
+    count <- coll$getCount()
+    
+    # then
+    expect_equal(count, 20)
+  })
+})

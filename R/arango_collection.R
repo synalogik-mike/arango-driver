@@ -152,6 +152,26 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
       return(private$status)
     },
     
+    #' Returns the number of the element of the collection
+    #' 
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+    getCount = function(){
+      count <- 0
+      
+      countRequest <- paste0(private$connectionStringRequest, "/count")
+      countResponse <- httr::GET(countRequest)
+      
+      # Check response status
+      if(status_code(countResponse) == 404){
+        stop(paste0("Collection ", name, " not found. The collection has been deleted?"))
+      }
+      
+      # Response is ok, fill the internal state
+      countInfo <- content(countResponse)
+      
+      return(countInfo$count)
+    },
+    
     #' Returns the type of the collection
     #' 
     #' @seealso collection_type enumeration
