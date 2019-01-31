@@ -88,6 +88,85 @@ insert <- function(.collection, key){
 }
 
 
+
+#' Updates a document with the given parameters
+#'
+#'
+set <- function(.data, ..., .updateOnly = FALSE){
+  
+  if(class(.data)[1] != "ArangoDocument"){
+    stop("Only 'ArangoDocument' objects can be processed by aRango::update function")
+  }
+  
+  arguments <- list(...)
+  
+  for(key in names(arguments)){
+    value <- arguments[[key]]
+    
+    .data$.__enclos_env__$private$documentValues[[key]] <- value
+  }
+  
+  return(.data)
+}
+
+
+
+#' Deletes some values from the given data
+#'
+#'
+unset <- function(.data, ...){
+  
+  if(class(.data)[1] != "ArangoDocument"){
+    stop("Only 'ArangoDocument' objects can be processed by aRango::update function")
+  }
+  
+  variableToRemove <- c(...)
+  
+  for(key in variableToRemove){
+    .data$.__enclos_env__$private$documentValues[[key]] <- NULL
+  }
+  
+  return(.data)
+}
+
+
+
+#' Excecute the update of a function.
+#'
+#'
+execute <- function(.data){
+  
+  if(class(.data)[1] != "ArangoDocument"){
+    stop("Only 'ArangoDocument' objects can be processed by aRango::update function")
+  }
+  
+  # Executing the update of the object
+  connectionString <- .data$.__enclos_env__$private$connectionString
+  
+  updateResult <- httr::PATCH(paste0(connectionString,"/_api/document/",.data$getCollection(), "/", .data$getId()),
+                            body = .data$.__enclos_env__$private$documentValues,
+                            encode = "json")
+  
+  if(updateResult$status_code != "200" && updateResult$status_code != "201" 
+        && updateResult$status_code != "202" ){
+    
+    # TODO: in case of reject, here the object updates must be somehow reverted
+    stop("Something were wrong during the update of the document")
+  }
+  
+  if(updateResult$status_code == 200){
+    warning("this is allowed for test purposes, the server should never return 200 on update execution")
+  }
+  
+  # Updating revision
+  updatedObjectInfo <- content(updateResult)
+  .data$.__enclos_env__$private$currentRevision <- updatedObjectInfo$`_rev`
+  
+  return(.data)
+}
+
+
+
 #' Deletes the given document
 #'
 #'
