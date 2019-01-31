@@ -1,0 +1,10 @@
+{
+ "_key": "newDoc",
+"_id": "test_coll/newDoc",
+"_rev": "1",
+"new": {
+ "_key": "newDoc",
+"_id": "test_coll/newDoc",
+"_rev": "1" 
+} 
+}
