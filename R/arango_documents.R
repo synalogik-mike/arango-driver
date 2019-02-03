@@ -2,11 +2,38 @@ library(jsonlite)
 library(httr)
 library(R6)
 
+.check_numeric_value <- function(value){
+  if(!is.numeric(value)){
+    stop("the value must be numeric")
+  }
+  return(value)
+}
+
+`%lt%` <- function(expr, value) {
+  return(paste0(substitute(expr)," < ",toString(.check_numeric_value(value))))
+}
+
+`%leq%` <- function(expr, value) {
+  return(paste0(substitute(expr)," <= ",toString(.check_numeric_value(value))))
+}
+
+`%gt%` <- function(expr, value) {
+  return(paste0(substitute(expr)," > ",toString(.check_numeric_value(value))))
+}
+
+`%geq%` <- function(expr, value) {
+  return(paste0(substitute(expr)," >= ",toString(.check_numeric_value(value))))
+}
 
 #' Returns all the documents belonging to the giving collections
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 documents <- function(.collection){
+  
+  if(class(.collection)[1] != "ArangoCollection"){
+    stop("Only 'ArangoDocument' objects can be processed by aRango::documents function")
+  }
+  
   documents <- list()
   
   # Creates the cursor and iterate over it to retrieve the entire collection
@@ -95,7 +122,7 @@ insert <- function(.collection, key){
 set <- function(.data, ..., .updateOnly = FALSE){
   
   if(class(.data)[1] != "ArangoDocument"){
-    stop("Only 'ArangoDocument' objects can be processed by aRango::update function")
+    stop("Only 'ArangoDocument' objects can be processed by aRango::set function")
   }
   
   arguments <- list(...)
@@ -117,7 +144,7 @@ set <- function(.data, ..., .updateOnly = FALSE){
 unset <- function(.data, ...){
   
   if(class(.data)[1] != "ArangoDocument"){
-    stop("Only 'ArangoDocument' objects can be processed by aRango::update function")
+    stop("Only 'ArangoDocument' objects can be processed by aRango::unset function")
   }
   
   variableToRemove <- c(...)
@@ -137,7 +164,7 @@ unset <- function(.data, ...){
 execute <- function(.data){
   
   if(class(.data)[1] != "ArangoDocument"){
-    stop("Only 'ArangoDocument' objects can be processed by aRango::update function")
+    stop("Only 'ArangoDocument' objects can be processed by aRango::execute function")
   }
   
   # Executing the update of the object
@@ -163,6 +190,101 @@ execute <- function(.data){
   .data$.__enclos_env__$private$currentRevision <- updatedObjectInfo$`_rev`
   
   return(.data)
+}
+
+#' Filter the documents from a collection
+#'
+#'
+filter <- function(.collection, ...){
+  
+  documents <- list()
+  
+  if(class(.collection)[1] != "ArangoCollection"){
+    stop("Only 'ArangoCollection' objects can be processed by aRango::filter function")
+  }
+
+  # Retrieve list and creating the filter to be added to the AQL query
+  filterString <- ""
+  first <- TRUE
+  arguments <- list(...)
+  
+  for(index in 1:length(arguments)){
+    key <- names(arguments[index])
+    value <- arguments[[index]]
+    
+    if(first){
+      if(is.numeric(value) || is.logical(value)){
+        filterString <- paste0("element.", key, " == ", value)
+      }
+      else{
+        if(grepl(">", value) || grepl("<", value)){
+          filterString <- paste0("element.", value)
+        }
+        else{
+          filterString <- paste0("element.", key, " == '", value,"'")
+        }
+      }
+      
+      first <- FALSE
+    }
+    else{
+      if(is.numeric(value) || is.logical(value)){
+        filterString <- paste0(filterString, " && element.", key, " == ", value)
+      }
+      else{
+        if(grepl(">", value) || grepl("<", value)){
+          filterString <- paste0(filterString, " && element.", value)
+        }
+        else{
+          filterString <- paste0(filterString, " && element.", key, " == '", value,"'")
+        }
+      }
+    }
+  }
+  
+  # Execution of the filter
+  # Creates the cursor and iterate over it to retrieve the entire collection
+  connectionString <- .collection$.__enclos_env__$private$connectionStringDatabase
+  collectionBatch <- httr::POST(paste0(connectionString,"/_api/cursor"),
+                                body = list(
+                                  query=paste0("FOR element IN ", .collection$getName(), 
+                                               " FILTER ", filterString,  
+                                               " RETURN element"),
+                                  count = FALSE,
+                                  batchSize = 50
+                                ),
+                                encode = "json")
+  
+  cursorResponse <- content(collectionBatch)
+  
+  if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
+    stop("Something were wrong during the retrieval of the documents of this collection (arango cursor not created)")
+  }
+  
+  # Save the cursor id, it is needed for all the subsequent access to the cursor
+  cursor <- cursorResponse$id
+  
+  for(document in cursorResponse$result){
+    documents[[document$`_key`]] <- .aRango_document$new(document, connectionString)
+  }
+  
+  # Iterating the entire cursor
+  while(cursorResponse$hasMore){
+    
+    # Requesting next data batch
+    collectionBatch <- httr::PUT(paste0(connectionString,"/_api/cursor/",cursor))
+    cursorResponse <- content(collectionBatch)
+    
+    if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
+      stop("Something were wrong during the retrieval of the documents of this collection (arango cursor not created)")
+    }
+    
+    for(document in cursorResponse$result){
+      documents[[document$`_key`]] <- .aRango_document$new(document, connectionString)
+    }
+  }
+  
+  return(documents)
 }
 
 
@@ -217,13 +339,6 @@ delete <- function(.document){
       private$documentValues$`_id` <- NULL
       private$documentValues$`_rev` <- NULL
       private$documentValues$`_key` <- NULL
-    },
-    
-    #' Update the document
-    #'
-    #'
-    update = function(...){
-      
     },
     
     getCollection = function(){
