@@ -14,7 +14,6 @@ library(magrittr)
 }
 
 
-
 #' Returns all the databases available on the server identified by the current connection 
 #'
 #' @param .connection the server connection to the ArangoDB instance
