@@ -3,6 +3,24 @@ library(magrittr)
 
 context("Document Management Test Suite")
 
+# ======================================================================
+#     SETUP: next calls are made to create proper mocked response
+# ======================================================================
+connectionResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+write(connectionResponse, file="./localhost-1234/_api/version.json")
+
+databaseServerResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
+                                       result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
+write(databaseServerResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
+
+documentDeletionResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1"))
+write(documentDeletionResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll/newDoc-DELETE.json")
+
+
+
+# ======================================================================
+#                             TEST CASES 
+# ======================================================================
 test_that("Custom %lt% parse the given expression correctly", {
   # given
   
@@ -47,16 +65,23 @@ with_mock_api({
   test_that("Adds a new document into an existing collection works correctly", {
     
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
-    write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
-    serverResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1", 
-                                           new=list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1"))
-                                     )
+    newDocument <- list(
+      `_key`="newDoc", 
+      `_id`="test_coll/newDoc", 
+      `_rev`="1", 
+       new=list(
+         `_key`="newDoc", 
+         `_id`="test_coll/newDoc", 
+         `_rev`="1"
+      )
+    )
+    
+    serverResponse <- RJSONIO::toJSON(newDocument)
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll-064bce-462629-POST.json")
-    coll <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb") %>% aRangodb::collection(name = "test_coll")
+    
+    coll <- aRangodb::connect("localhost", "1234") %>% 
+            aRangodb::database(name = "testdb") %>% 
+            aRangodb::collection(name = "test_coll")
     
     # when
     doc <- coll %>% aRangodb::insert(key = "newDoc") 
@@ -73,18 +98,23 @@ with_mock_api({
   test_that("Delete an existing document from an existing collection works correctly", {
     
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
-    write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
-    serverResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1", 
-                                           new=list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1"))
+    existingDocument <- list(
+      `_key`="newDoc", 
+      `_id`="test_coll/newDoc", 
+      `_rev`="1", 
+      new = list(
+        `_key`="newDoc", 
+        `_id`="test_coll/newDoc", 
+        `_rev`="1"
+      )
     )
+    
+    serverResponse <- RJSONIO::toJSON(existingDocument)
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll-064bce-462629-POST.json")
-    serverResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1"))
-    write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll/newDoc-DELETE.json")
-    coll <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb") %>% aRangodb::collection(name = "test_coll")
+    
+    coll <- aRangodb::connect("localhost", "1234") %>% 
+            aRangodb::database(name = "testdb") %>% 
+            aRangodb::collection(name = "test_coll")
     
     # when
     removed <- coll %>% aRangodb::insert(key = "newDoc") %>% aRangodb::delete()
@@ -98,20 +128,33 @@ with_mock_api({
   test_that("Updates an existing document works correctly and causes a revision change", {
     
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
-    write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
-    serverResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1", 
-                                           new=list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1"))
+    originalDocumentFromServer <- list(
+      `_key`="newDoc", 
+      `_id`="test_coll/newDoc", 
+      `_rev`="1", 
+      new = list(
+        `_key`="newDoc", 
+        `_id`="test_coll/newDoc", 
+        `_rev`="1"
+      )
     )
+    
+    updatedDocumentFromServer <- list(
+      `_key`="newDoc", 
+      `_id`="test_coll/newDoc", 
+      `_rev`="2", 
+      `_oldRev`="1"
+    )
+    
+    serverResponse <- RJSONIO::toJSON(originalDocumentFromServer)
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll-064bce-462629-POST.json")
-    serverResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="2", `_oldRev`="1"))
+    serverResponse <- RJSONIO::toJSON(updatedDocumentFromServer)
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll/newDoc-b62a70-PATCH.json")
     
-    doc <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb") %>% 
-      aRangodb::collection(name = "test_coll") %>% aRangodb::insert(key = "newDoc")
+    doc <- aRangodb::connect("localhost", "1234") %>% 
+           aRangodb::database(name = "testdb") %>% 
+           aRangodb::collection(name = "test_coll") %>% 
+           aRangodb::insert(key = "newDoc")
     
     # when
     previousUpdateRevision <- doc$getRevision()
@@ -132,15 +175,20 @@ with_mock_api({
   test_that("Remove a key from a document works correctly", {
     
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
-    write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
-    serverResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1", 
-                                           new=list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="1"))
+    originalDocumentFromServer <- list(
+      `_key`="newDoc", 
+      `_id`="test_coll/newDoc", 
+      `_rev`="1", 
+      new = list(
+        `_key`="newDoc", 
+        `_id`="test_coll/newDoc", 
+        `_rev`="1"
+      )
     )
+    
+    serverResponse <- RJSONIO::toJSON(originalDocumentFromServer)
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll-064bce-462629-POST.json")
+    
     serverResponse <- RJSONIO::toJSON(list(`_key`="newDoc", `_id`="test_coll/newDoc", `_rev`="2", `_oldRev`="1"))
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll/newDoc-7dde6e-PATCH.json")
     

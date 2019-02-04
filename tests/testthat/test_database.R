@@ -3,17 +3,42 @@ library(magrittr)
 
 context("Database Management Test Suite")
 
+# ======================================================================
+#     SETUP: next calls are made to create proper mocked response
+# ======================================================================
+connectionResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+write(connectionResponse, file="./localhost-1234/_api/version.json")
+
+databasesResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, result=c("db1", "db2")))
+write(databasesResponse, file="./localhost-1234/_api/database.json")
+
+systemDatabaseResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
+                                       result=list(name="_system", id="1", path="/some/path", isSystem=TRUE)))
+write(systemDatabaseResponse, file="./localhost-1234/_db/_system/_api/database/current.json")
+
+existingServerResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
+                                       result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
+write(existingServerResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
+
+notExistingDatabaseResponse <- RJSONIO::toJSON(list(code=201, error=FALSE, result=TRUE))
+write(notExistingDatabaseResponse, file="./localhost-1234/_api/database-ab18f8-POST.json")
+
+dropDatabaseResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, result=TRUE))
+write(dropDatabaseResponse, file="./localhost-1234/_api/database/testdb-DELETE.json")
+
+
+
+# ======================================================================
+#                             TEST CASES 
+# ======================================================================
 with_mock_api({
   test_that("Requests for all available databases goes fine", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, result=c("db1", "db2")))
-    write(serverResponse, file="./localhost-1234/_api/database.json")
     connection <- aRangodb::connect("localhost", "1234")
     
     # when
-    available_dbs <- connection %>% aRangodb::databases()
+    available_dbs <- connection %>% 
+                     aRangodb::databases()
     
     # then
     expect_true("db1" %in% available_dbs)
@@ -59,15 +84,11 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for _system database works correctly", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="_system", id="1", path="/some/path", isSystem=TRUE)))
-    write(serverResponse, file="./localhost-1234/_db/_system/_api/database/current.json")
     connection <- aRangodb::connect("localhost", "1234")
     
     # when
-    defaultDb <- connection %>% aRangodb::database()
+    defaultDb <- connection %>% 
+                 aRangodb::database()
     
     # then
     expect_equal(defaultDb$getName(), "_system")
@@ -80,15 +101,11 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for existing database works correctly", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
-    write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
     connection <- aRangodb::connect("localhost", "1234")
     
     # when
-    defaultDb <- connection %>% aRangodb::database(name = "testdb")
+    defaultDb <- connection %>% 
+                 aRangodb::database(name = "testdb")
     
     # then
     expect_equal(defaultDb$getName(), "testdb")
@@ -101,17 +118,11 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for not existing database works correctly", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(code=201, error=FALSE, result=TRUE))
-    write(serverResponse, file="./localhost-1234/_api/database-ab18f8-POST.json")
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="example", id="1121552", path="/some/path", isSystem=FALSE)))
-    write(serverResponse, file="./localhost-1234/_db/example/_api/database/current.json")
     connection <- aRangodb::connect("localhost", "1234")
     
     # when
-    defaultDb <- connection %>% aRangodb::database(name = "example", createOnFail = TRUE)
+    defaultDb <- connection %>% 
+                 aRangodb::database(name = "example", createOnFail = TRUE)
     
     # then
     expect_equal(defaultDb$getName(), "example")
@@ -124,15 +135,8 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for drop of an existing database works correctly", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, result=TRUE))
-    write(serverResponse, file="./localhost-1234/_api/database/testdb-DELETE.json")
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
-    serverResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
-                                           result=list(name="testdb", id="1121552", path="/some/path", isSystem=FALSE)))
-    write(serverResponse, file="./localhost-1234/_db/testdb/_api/database/current.json")
-    
-    db <- aRangodb::connect("localhost", "1234") %>% aRangodb::database(name = "testdb")
+    db <- aRangodb::connect("localhost", "1234") %>% 
+          aRangodb::database(name = "testdb")
    
     # when
     dropResult <- db %>% aRangodb::drop()

@@ -2,11 +2,22 @@ library(RJSONIO)
 
 context("Connection Management Test Suite")
 
+
+
+# ======================================================================
+#     SETUP: next calls are made to create proper mocked response
+# ======================================================================
+serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
+write(serverResponse, file="./localhost-1234/_api/version.json")
+
+
+
+# ======================================================================
+#                             TEST CASES 
+# ======================================================================
 with_mock_api({
   test_that("Connection to valid server returns the expected information", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
     
     # when
     connection <- aRangodb::connect("localhost", "1234")
@@ -24,8 +35,6 @@ with_mock_api({
 with_mock_api({
   test_that("No matter if the port is an integer instead of string, new connection is created", {
     # given
-    serverResponse <- RJSONIO::toJSON(list(server="arango", version="3.3.19", license="community"))
-    write(serverResponse, file="./localhost-1234/_api/version.json")
     
     # when
     connection <- aRangodb::connect("localhost", 1234)
