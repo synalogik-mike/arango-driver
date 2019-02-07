@@ -1,0 +1,30 @@
+{
+ "code":      200,
+"error": false,
+"graph": {
+ "name": "testgraph",
+"_id": "_graphs/testgraph",
+"_rev": "1",
+"edgeDefinitions": [
+ {
+ "collection": "edge1",
+"from": [
+ "collection1" 
+],
+"to": [
+ "collection2" 
+] 
+},
+{
+ "collection": "edge2",
+"from": [
+ "collection1b" 
+],
+"to": [
+ "collection2b" 
+] 
+} 
+],
+"orphanCollections": [] 
+} 
+}

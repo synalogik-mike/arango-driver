@@ -77,6 +77,7 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
   "ArangoCollection",
   
   public = list(
+    
     #' Creates a new collection belonging to an existing database in the server
     #'
     #' @param name the name of the collection
