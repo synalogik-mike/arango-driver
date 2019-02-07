@@ -68,6 +68,11 @@ testGraphResponse <- RJSONIO::toJSON(list(
 
 write(testGraphResponse, file="./localhost-1234/_db/testdb/_api/gharial/testgraph.json")
 
+deletionResponse <- RJSONIO::toJSON(list(code=202, error=FALSE))
+write(deletionResponse, file="./localhost-1234/_db/testdb/_api/gharial/testgraph-DELETE.json")
+
+
+
 # ======================================================================
 #                             TEST CASES 
 # ======================================================================
@@ -104,7 +109,7 @@ with_mock_api({
     expect_equal(foundGraph$getId(), "_graphs/testgraph")
     expect_equal(foundGraph$getRevision(), "1")
   })
-})    
+})
 
 
 
@@ -121,5 +126,20 @@ with_mock_api({
     expect_equal(foundGraph$getName(), "testgraph")
     expect_equal(foundGraph$getId(), "_graphs/testgraph")
     expect_equal(foundGraph$getRevision(), "1")
+  })
+})
+
+
+with_mock_api({
+  test_that("Deletion of an existing graph works correctly", {
+    # given
+    existingGraph <- aRangodb::connect("localhost", "1234") %>% 
+      aRangodb::database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
+    
+    # when
+    deleted <- existingGraph %>% aRangodb::drop()
+    
+    # then
+    expect_true(deleted)
   })
 })
