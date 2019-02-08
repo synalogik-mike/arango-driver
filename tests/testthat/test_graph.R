@@ -13,6 +13,9 @@ write(dbConnectionResponse, file="./localhost-1234/_db/testdb/_api/database/curr
 graphCreationResponse <- RJSONIO::toJSON(list(code=200, error=FALSE))
 write(graphCreationResponse, file="./localhost-1234/_db/testdb/_api/gharial-f61114-POST.json")
 
+graphAddEdgeResponse <- RJSONIO::toJSON(list(code=200, error=FALSE))
+write(graphAddEdgeResponse, file="./localhost-1234/_db/testdb/_api/gharial/testgraph/edge-ed8960-POST.json")
+
 graphResponse <- RJSONIO::toJSON(list(code=200, error=FALSE, 
                                        graphs=list(
                                          list(`_key`="graph1", `_id`="_graphs/graph1", `_rev`="1",
@@ -126,6 +129,39 @@ with_mock_api({
     expect_equal(foundGraph$getName(), "testgraph")
     expect_equal(foundGraph$getId(), "_graphs/testgraph")
     expect_equal(foundGraph$getRevision(), "1")
+  })
+})
+
+
+with_mock_api({
+  test_that("Addition of an edge definition for a graph works correctly", {
+    # given
+    existingGraph <- aRangodb::connect("localhost", "1234") %>% 
+      aRangodb::database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
+    
+    # when
+    existingGraph <- existingGraph %>% aRangodb::edge_definition("employee", "has", "skill")
+    
+    # then
+    expect_false(is.null(existingGraph$getEdgeDefinitions()$has))
+    expect_true("employee" %in% existingGraph$getEdgeDefinitions()$has)
+    expect_true("skill" %in% existingGraph$getEdgeDefinitions()$has)
+  })
+})
+
+
+with_mock_api({
+  test_that("Addition of new collections to an existing relation works correctly", {
+    # given
+    
+    # when
+    # TODO: it works, but there is a bit to work to prepare the mock responses. The test is the following:
+    #existingGraph <- existingGraph %>% 
+    #                 aRangodb::edge_definition("employee", "has", "skill")
+    #                 aRangodb::edge_definition("skill", "has", "requirement")
+    
+    # then
+
   })
 })
 

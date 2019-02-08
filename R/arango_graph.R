@@ -1,6 +1,7 @@
 library(jsonlite)
 library(httr)
 library(R6)
+library(magrittr)
 
 #' Returns all the graphs belonging to the giving database
 #'
@@ -35,7 +36,7 @@ graphs <- function(.database){
 
 #' Returns the graph identified with the given name
 #' 
-#' @param name the nae of the graph
+#' @param name the name of the graph
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 graph <- function(.database, name, createOnFail = FALSE){
@@ -54,9 +55,92 @@ graph <- function(.database, name, createOnFail = FALSE){
     response <- httr::POST(collectionInfoRequest, encode="json", body = list(name=name))
   }
   
-  completeGraph <- .aRango_graph$new(.database, name)
+  completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, name)
   
   return(completeGraph)
+}
+
+
+
+#' Adds an edge definition to this graph 
+#' 
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+edge_definition <- function(.graph, fromCollection, relation, toCollection){
+  
+  # ==== Check on .graph variable ====
+  if(is.null(.graph)){
+    stop("Graph is NULL, please provide a valid 'ArangoGraph'")
+  }
+  
+  if(class(.graph)[1] != "ArangoGraph"){
+    stop("Only 'ArangoGraph' objects can be processed by aRango::edge_definition")
+  }
+  
+  # ==== Check on from/to variable ====
+  if(is.null(fromCollection) || is.null(relation) || is.null(toCollection)){
+    stop("One of the parameters is null")
+  }
+  
+  if(class(fromCollection)[1] != "ArangoCollection" && class(fromCollection)[1] != "character"){
+    stop("'from' parameter must be a valid collection or a string")
+  }
+  
+  if(class(toCollection)[1] != "ArangoCollection" && class(toCollection)[1] != "character"){
+    stop("'to' parameter must be a valid collection or a string")
+  }
+  
+  if(class(relation)[1] != "character"){
+    stop("'to' parameter must be a valid collection or a string")
+  }
+  
+  # ==== Adding the edge to the graph on the server ====
+  addEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge")
+  arangoServerResponse <- httr::POST(addEdgeDefinitionEndpoint, encode="json", 
+                                     body = list(from=list(fromCollection), to=list(toCollection), collection=relation))
+  
+  response <- content(arangoServerResponse)
+  
+  # Edge already exist
+  if(response$error == TRUE && response$errorNum == 1920){
+    replaceEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", relation)
+    arangoServerResponse <- httr::PUT(replaceEdgeDefinitionEndpoint, encode="json", 
+                                       body = list(
+                                         from=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$from)), 
+                                         to=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$to)), 
+                                         collection=relation))
+    
+    # Remove old graph definition
+    newGraph <- .aRango_graph$new(.graph$.__enclos_env__$private$connectionStringRequest, name)
+    rm(.graph)
+    
+    return(newGraph)
+  }
+  
+  # ==== Adding on the server has been done correctly, now adding the edges into the structure ====
+  # adding collections from/to into the list of verticies
+  if(!(fromCollection %in% .graph$.__enclos_env__$private$verticies)){
+    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, fromCollection)
+  }
+  
+  if(!(toCollection %in% .graph$.__enclos_env__$private$verticies)){
+    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, toCollection)
+  }
+  
+  # if the relation still not exist it is added to the list of edges definition
+  if(is.null(.graph$.__enclos_env__$private$edges[[relation]])){
+    .graph$.__enclos_env__$private$edges[[relation]] <- list(from = c(), to = c())
+  }
+  
+  if(!(fromCollection %in% .graph$.__enclos_env__$private$edges$relation$from)){
+    .graph$.__enclos_env__$private$edges[[relation]]$from <- c(.graph$.__enclos_env__$private$edges[[relation]]$from, fromCollection)
+  }
+    
+  if(!(toCollection %in% .graph$.__enclos_env__$private$edges$relation$to)){
+    .graph$.__enclos_env__$private$edges[[relation]]$to <- c(.graph$.__enclos_env__$private$edges[[relation]]$to, toCollection)
+  }
+  
+  return(.graph)
 }
 
 
@@ -121,21 +205,22 @@ graph <- function(.database, name, createOnFail = FALSE){
     
     #' Creates a new graph from a one existing on the database
     #' 
-    initialize = function(database = NULL, name = NULL) {
-      if(is.null(database)){
-        stop("Database is NULL, please provide a valid 'ArangoDatabase'")
+    initialize = function(dbconnstring = NULL, name = NULL) {
+      
+      if(is.null(dbconnstring)){
+        stop("please provide a valid database connection string")
       }
       
-      if(class(database)[1] != "ArangoDatabase"){
-        stop("Only 'ArangoDatabase' objects can be processed by the class ArangoCollection")
+      if(class(dbconnstring)[1] != "character"){
+        stop("please provide a valid string for database connection")
       }
       
       if(is.null(name)){
         stop("name is NULL, please provide a valid collection name")
       }
       
-      private$connectionStringDatabase <- database$.__enclos_env__$private$connectionStringRequest
-      private$connectionStringRequest <- paste0(database$.__enclos_env__$private$connectionStringRequest, "/_api/gharial/", name)
+      private$connectionStringDatabase <- dbconnstring
+      private$connectionStringRequest <- paste0(dbconnstring, "/_api/gharial/", name)
       graphInfoRequest <- paste0(private$connectionStringRequest)
       
       # Waiting for server response
@@ -165,10 +250,10 @@ graph <- function(.database, name, createOnFail = FALSE){
         
         # Adding verticies references
         if(is.null(private$verticies)){
-          private$verticies <- c(collectionEdgeName)
+          private$verticies <- unlist(c(collectionEdgeName))
         }
         else{
-          private$verticies <- c(private$verticies, collectionEdgeName)
+          private$verticies <- unlist(c(private$verticies, collectionEdgeName))
         }
         
         # Adding edges references: only pair of collection (_from, _to)
@@ -176,17 +261,30 @@ graph <- function(.database, name, createOnFail = FALSE){
           private$edges <- list()
         }
         
-        private$edges[[collectionEdgeName]] <- c(collectionFromName, collectionToName)
+        private$edges[[collectionEdgeName]] <- list(from = c(collectionFromName), to = c(collectionToName))
+        
+        # Adding from and to collection iff not existing
+        if(!(collectionFromName %in% private$verticies)){
+          private$verticies <- unlist(c(private$verticies, collectionFromName))
+        }
+        
+        if(!(collectionToName %in% private$verticies)){
+          private$verticies <- unlist(c(private$verticies, collectionToName))
+        }
       }
       
       # Save all the orphan collections
       for(orphan in graphInformation$orphanCollections){
         if(is.null(private$orphans))
         {
-          private$orphans <- c(orphan)
+          private$orphans <- unlist(c(orphan))
         }
         else{
-          private$orphans <- c(private$orphans, orphan)
+          private$orphans <- unlist(c(private$orphans, orphan))
+        }
+        
+        if(!(orphan %in% private$verticies)){
+          private$verticies <- unlist(c(private$verticies, orphan))
         }
       }
       
@@ -214,14 +312,25 @@ graph <- function(.database, name, createOnFail = FALSE){
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getRevision = function(){
       return(private$revision)
+    },
+    
+    #' Returns the edges definition of the graph
+    #'
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+    getEdgeDefinitions = function(){
+      return(private$edges)
+    },
+    
+    getOrphanCollections = function(){
+      return(private$orphans)
     }
   ),
   
   private = list(
     name = NULL,
-    verticies = NULL,
-    edges = NULL,
-    orphans = NULL,
+    verticies = c(),
+    edges = list(),
+    orphans = c(),
     id = NULL,
     revision = NULL,
     connectionStringDatabase = NULL,
