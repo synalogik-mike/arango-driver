@@ -1,5 +1,11 @@
 library(R6)
 
+.check_numeric_value <- function(value){
+  if(!is.numeric(value)){
+    stop("the value must be numeric")
+  }
+  return(value)
+}
 
 #' Creates a string expression representing a filter clause for AQL
 #'
@@ -96,9 +102,11 @@ edge <- function(definition, ...) {
   edgeValues <- list(...)
   properties <- list(`_from` = definition$`_from`, `_to` = definition$`_to`)
   
-  for(i in 1:length(edgeValues)){
-    if(names(edgeValues[i]) != ""){
-      properties[[names(edgeValues[i])]] <- edgeValues[[i]]
+  if(length(edgeValues) > 0){
+    for(i in 1:length(edgeValues)){
+      if(names(edgeValues[i]) != ""){
+        properties[[names(edgeValues[i])]] <- edgeValues[[i]]
+      }
     }
   }
 
@@ -112,11 +120,14 @@ edge <- function(definition, ...) {
 #' @param edges a list of empty edges, the result of the e() function
 #'
 #' @seealso aRangodb::e
-#' @example "requires" %:% e(data_science %->% math) 
+#' @example "requires" %:% e(data_science %->% math) returns a list(collection=..., edge=...) where 
+#' edge contains a _from and a _to valid verticies
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-`%:%` <- function(relation, edgeDefinition) {
-  return(list(collection = relation, edge = edgeDefinition))
+#' @export
+`%owns%` <- function(relation, edgeDefinition) {
+  # edge definition must become variadic for multiple edges ...
+  return(list(list(collection = relation, edge = edgeDefinition)))
 }
 
 

@@ -61,15 +61,34 @@ graph <- function(.database, name, createOnFail = FALSE){
 }
 
 
-
 #' Adds a set of verticies to the given graph
 #' 
 #' @param ... an undefined number of verticies belonging to some of the existing collection for this
 #'            database
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-verticies <- function(...){
-  newVerticies <- list(...)
+add_to_graph <- function(.graph, listOfEdges){
+  
+  # ==== Check on .graph variable ====
+  if(is.null(.graph)){
+    stop("Graph is NULL, please provide a valid 'ArangoGraph'")
+  }
+  
+  if(class(.graph)[1] != "ArangoGraph"){
+    stop("Only 'ArangoGraph' objects can be processed by aRango::add_elements")
+  }
+  
+  # ==== TEMPORARY SOLUTION: which will be the final signature of this method? ====
+  for(current in listOfEdges){
+    addEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", current$collection)
+    arangoServerResponse <- httr::POST(addEdgeEndpoint, encode="json", 
+                                       body = current$edge)
+    
+    # TODO, how to manage?
+    stop_for_status(arangoServerResponse)
+  }
+  
+  return(.graph)
 }
 
 
@@ -105,10 +124,22 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
     stop("'to' parameter must be a valid collection or a string")
   }
   
+  if(class(fromCollection)[1] == "ArangoCollection"){
+    fromCollectionName <- fromCollection$getName()
+  } else {
+    fromCollectionName <- fromCollection
+  }
+  
+  if(class(toCollection)[1] == "ArangoCollection"){
+    toCollectionName <- toCollection$getName()
+  } else {
+    toCollectionName <- toCollection
+  }
+  
   # ==== Adding the edge to the graph on the server ====
   addEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge")
   arangoServerResponse <- httr::POST(addEdgeDefinitionEndpoint, encode="json", 
-                                     body = list(from=list(fromCollection), to=list(toCollection), collection=relation))
+                                     body = list(from=list(fromCollectionName), to=list(toCollectionName), collection=relation))
   
   response <- content(arangoServerResponse)
   
@@ -130,12 +161,12 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
   
   # ==== Adding on the server has been done correctly, now adding the edges into the structure ====
   # adding collections from/to into the list of verticies
-  if(!(fromCollection %in% .graph$.__enclos_env__$private$verticies)){
-    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, fromCollection)
+  if(!(fromCollectionName %in% .graph$.__enclos_env__$private$verticies)){
+    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, fromCollectionName)
   }
   
-  if(!(toCollection %in% .graph$.__enclos_env__$private$verticies)){
-    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, toCollection)
+  if(!(toCollectionName %in% .graph$.__enclos_env__$private$verticies)){
+    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, toCollectionName)
   }
   
   # if the relation still not exist it is added to the list of edges definition
@@ -143,12 +174,12 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
     .graph$.__enclos_env__$private$edges[[relation]] <- list(from = c(), to = c())
   }
   
-  if(!(fromCollection %in% .graph$.__enclos_env__$private$edges$relation$from)){
-    .graph$.__enclos_env__$private$edges[[relation]]$from <- c(.graph$.__enclos_env__$private$edges[[relation]]$from, fromCollection)
+  if(!(fromCollectionName %in% .graph$.__enclos_env__$private$edges$relation$from)){
+    .graph$.__enclos_env__$private$edges[[relation]]$from <- c(.graph$.__enclos_env__$private$edges[[relation]]$from, fromCollectionName)
   }
     
   if(!(toCollection %in% .graph$.__enclos_env__$private$edges$relation$to)){
-    .graph$.__enclos_env__$private$edges[[relation]]$to <- c(.graph$.__enclos_env__$private$edges[[relation]]$to, toCollection)
+    .graph$.__enclos_env__$private$edges[[relation]]$to <- c(.graph$.__enclos_env__$private$edges[[relation]]$to, toCollectionName)
   }
   
   return(.graph)
