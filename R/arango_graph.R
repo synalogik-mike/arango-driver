@@ -62,6 +62,17 @@ graph <- function(.database, name, createOnFail = FALSE){
 
 
 
+#' Adds a set of verticies to the given graph
+#' 
+#' @param ... an undefined number of verticies belonging to some of the existing collection for this
+#'            database
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+verticies <- function(...){
+  newVerticies <- list(...)
+}
+
+
 #' Adds an edge definition to this graph 
 #' 
 #'

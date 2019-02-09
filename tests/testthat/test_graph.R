@@ -166,6 +166,39 @@ with_mock_api({
 })
 
 
+
+with_mock_api({
+  test_that("Addition of new collections to an existing relation works correctly", {
+    # given
+    
+    # when
+    # TODO: it works, but there is a bit to work to prepare the mock responses. The test is the following:
+    #existingGraph <- existingGraph %>% 
+    #                 aRangodb::edge_definition("employee", "has", "skill")
+    #                 aRangodb::edge_definition("skill", "has", "requirement")
+    
+    # then
+    
+  })
+})
+
+
+with_mock_api({
+  test_that("Addition of new collections to an existing relation works correctly", {
+    # given
+    
+    # when
+    # TODO: tests on relational operators %->% and %<-%, same work of the previous test
+    #existingGraph <- existingGraph %>% 
+    #                 aRangodb::edge_definition("employee", "has", "skill")
+    #                 aRangodb::edge_definition("skill", "has", "requirement")
+    
+    # then
+    
+  })
+})
+
+
 with_mock_api({
   test_that("Deletion of an existing graph works correctly", {
     # given

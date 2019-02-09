@@ -9,22 +9,6 @@ library(R6)
   return(value)
 }
 
-`%lt%` <- function(expr, value) {
-  return(paste0(substitute(expr)," < ",toString(.check_numeric_value(value))))
-}
-
-`%leq%` <- function(expr, value) {
-  return(paste0(substitute(expr)," <= ",toString(.check_numeric_value(value))))
-}
-
-`%gt%` <- function(expr, value) {
-  return(paste0(substitute(expr)," > ",toString(.check_numeric_value(value))))
-}
-
-`%geq%` <- function(expr, value) {
-  return(paste0(substitute(expr)," >= ",toString(.check_numeric_value(value))))
-}
-
 #' Returns all the documents belonging to the giving collections
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
@@ -343,6 +327,10 @@ delete <- function(.document){
     
     getCollection = function(){
       return(private$originalCollection)
+    },
+    
+    getKey = function(){
+      return(paste0(private$originalCollection,"/",private$documentId))
     },
     
     getId = function(){
