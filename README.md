@@ -201,3 +201,54 @@ print(paste0("'I'm Alice Foo, isn't it?' ", filtered.persons$queryResult_0$getKe
 ```
 
 ### Creating a graph
+Last but not least, you can define a graph structure in the same way you can define a collection.
+
+```R
+residenceGraph <- 
+  sandboxArangoDb %>% 
+  graph("residence", createOnFail = TRUE)
+```
+
+If you created the graph from scratch, as in this case, you can add the definitions of possible edges
+that the graph can store. Adding an edge will automatically adds the collections to the graph as possible sources of edges, and it will creates a collection for the edge relation
+
+```R
+residenceGraph <- 
+  residenceGraph %>% 
+  edge_definition("person", "lives_in", "city")
+
+livesInCollection <- 
+  sandboxArangoDb %>% 
+  collection("lives_in")
+
+if(!(is.null(livesInCollection))){
+  print(paste0("'Voilà, I'm an edge collection, isn't it?' ", 
+               "'",livesInCollection$getType() == collection_type$EDGE,"'"))
+}
+```
+
+Also collections will be automatically created if not in the collection set:
+
+```R
+residenceGraph <- 
+  residenceGraph %>% 
+  edge_definition(cities, "had_weather", "weather")
+  
+weatherCollection <- 
+  sandboxArangoDb %>% 
+  collection("weather")
+
+if(!(is.null(weatherCollection))){
+  print(paste0("'Voilà, I'm a document collection, isn't it?' ", 
+               "'",weatherCollection$getType() == collection_type$DOCUMENT,"'"))
+}
+```
+
+But a graph isn't useful if you cannot populate with relations. Just use the aRangodb::add_to_graph() method and the relational operators!
+
+```R
+residenceGraph <- 
+  residenceGraph %>%
+  add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
+  add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
+```
