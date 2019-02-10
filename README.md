@@ -120,7 +120,7 @@ print(paste("Persons registered:", persons$getCount(), sep = " "))
 
 ### Working with documents
 
-You can use collections to retrieve and access documents within the collection itself. For example you can get ALL the document of a collection (**BE CAREFUL**, collections could contains hundred of results) and access specific document using its key:
+You can use collections to retrieve and access documents within the collection itself. For example you can get ALL the document of a collection (**BE CAREFUL**, collections could contains hundred of results) and access specific document using its key. The aRango::documents() return a list with all the documents found for the given collection.
 
 ```R
 all.cities <- cities %>% documents()
@@ -132,6 +132,12 @@ if(all.cities$London$getValues()$capital){
   print("What's happening there???")
 }
 ```
+
+Each document is an object belonging to the ArangoDocument class: every instance expose the following methods:
+
+* getAvailableValues(), returns a vector of properties for which the document has a valid value (not null)
+* getValues(), returns the list of pairs key-value for which exist a not-null mapping
+
 
 Using a collection object you can filter out documents that match some conditions. To express values
 greater or less than some condition to be matched use operators %lt%, %gt%, %leq%, %geq%. Next lines will be translated as _"ehy, give me all cities of UK over latitude 52.0"_
@@ -164,3 +170,34 @@ Lyon %>%
   unset(capital) %>%                        # no more important
   execute()
 ```
+
+### Custom AQL queries
+If you are interested in custom queries you can use the native Arango Query Language (AQL). To do that
+you need to specify the string containing the query using the \@variable_name to indicate some binding
+variables: the query will be parsed to check the syntax and then converted to an R function where binding variables are the formal parameters of the function.
+Do you want to get all the persons with age more than come threshold?
+
+```R
+searchByAgeGreaterThen <- 
+  sandboxArangoDb %>% 
+  aql("FOR p IN person FILTER p.age > @age RETURN p")
+```
+
+The previous commands affect the current environment by adding a new function, named _searchByAgeGreaterThan_, where formal parameters are the ones corresponding to the variables left unbind in the AQL query, in this case _age_. Before returning a function, the aRango::aql() command execute the parsing of the query, so that syntax error will be highlighted as error. 
+In conclusion from now on you can now execute the query as normal R function:
+
+```R
+filtered.persons <- searchByAgeGreaterThen(age = 30)
+```
+
+The results of those functions calls are returned as list, where each result has an automatically generated id within the list (up to now queryResult_<n>, but it can change before the first stable release)
+
+```R
+if(length(filtered.persons) != 3){
+  print("Did you change something?")
+}
+
+print(paste0("'I'm Alice Foo, isn't it?' ", filtered.persons$queryResult_0$getKey() == "alice.foo"))
+```
+
+### Creating a graph
