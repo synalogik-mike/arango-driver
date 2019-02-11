@@ -125,3 +125,16 @@ residenceGraph <- residenceGraph %>%
   add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
   add_to_graph("loves" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
   add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
+
+# Now I want to remove some edge in a similar way I did for adding
+residenceGraph <- residenceGraph %>%
+  remove_from_graph("loves" %owns% edge(all.persons$john.doe %->% all.cities$London))
+
+# The edge is not more present in the graph
+lovesCollection <- sandboxArangoDb %>% collection("loves")
+
+if(is.null(lovesCollection %>% find_edge(all.persons$john.doe, all.cities$London))){
+  print("Ok, the edge has been removed!")
+} else {
+  print("Very very bad!")
+}

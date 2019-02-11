@@ -186,13 +186,24 @@ find_edge <- function(.collection, from, to){
     stop("Only 'ArangoCollection' objects can be processed by aRango::find_edge function")
   }
   
-  foundEdge <- .collection %>% filter(`_from`=from$getId(), `_to`=to$getId())
-  
-  if(length(foundEdge) > 0){
-    return(foundEdge[1])
+  if(class(from)[1] == "ArangoDocument" && class(to)[1] == "ArangoDocument"){
+    foundEdge <- .collection %>% filter(`_from`=from$getId(), `_to`=to$getId())
+    
+    if(length(foundEdge) > 0){
+      return(foundEdge[[1]])
+    }
   }
-  
-  return(NULL)
+  else if(class(from)[1] == "character" && class(to)[1] == "character"){
+    foundEdge <- .collection %>% 
+      filter(`_from`=from, `_to`=to)
+    
+    if(length(foundEdge) > 0){
+      return(foundEdge[[1]])
+    }
+  }
+  else{
+    return(NULL) 
+  }
 }
 
 #' Filter the documents from a collection

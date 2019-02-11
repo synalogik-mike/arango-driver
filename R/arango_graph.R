@@ -55,7 +55,7 @@ graph <- function(.database, name, createOnFail = FALSE){
     response <- httr::POST(collectionInfoRequest, encode="json", body = list(name=name))
   }
   
-  completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, name)
+  completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, name, .database)
   
   return(completeGraph)
 }
@@ -114,12 +114,25 @@ remove_from_graph <- function(.graph, listOfEdges){
   
   # ==== TEMPORARY SOLUTION: which will be the final signature of this method? ====
   for(current in listOfEdges){
-    deleteEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", current$collection)
-    #arangoServerResponse <- httr::POST(addEdgeEndpoint, encode="json", 
-    #                                  body = current$edge)
+    currentCollection <- current$collection
+    fromId <- current$edge$`_from`
+    toId <- current$edge$`_to`
     
-    # TODO, how to manage?
-    #stop_for_status(arangoServerResponse)
+    edgeToRemove <- .graph$.__enclos_env__$private$currentDatabase %>%
+      collection(currentCollection) %>% 
+      find_edge(fromId, toId)
+    
+    if(is.null(edgeToRemove)){
+      # Fail?
+      warning("edge not found")
+    }
+    else{
+      deleteEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", edgeToRemove$getId())
+      arangoServerResponse <- httr::DELETE(deleteEdgeEndpoint)
+      
+      # TODO, how to manage?
+      stop_for_status(arangoServerResponse)
+    }
   }
   
   return(.graph)
@@ -188,7 +201,8 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
                                          collection=relation))
     
     # Remove old graph definition
-    newGraph <- .aRango_graph$new(.graph$.__enclos_env__$private$connectionStringRequest, name)
+    newGraph <- .aRango_graph$new(.graph$.__enclos_env__$private$connectionStringRequest, name,
+                                  .graph$.__enclos_env__$private$currentDatabase)
     rm(.graph)
     
     return(newGraph)
@@ -282,7 +296,7 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
     
     #' Creates a new graph from a one existing on the database
     #' 
-    initialize = function(dbconnstring = NULL, name = NULL) {
+    initialize = function(dbconnstring = NULL, name = NULL, db=NULL) {
       
       if(is.null(dbconnstring)){
         stop("please provide a valid database connection string")
@@ -297,6 +311,7 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
       }
       
       private$connectionStringDatabase <- dbconnstring
+      private$currentDatabase <- db 
       private$connectionStringRequest <- paste0(dbconnstring, "/_api/gharial/", name)
       graphInfoRequest <- paste0(private$connectionStringRequest)
       
@@ -411,6 +426,7 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
     id = NULL,
     revision = NULL,
     connectionStringDatabase = NULL,
-    connectionStringRequest = NULL
+    connectionStringRequest = NULL,
+    currentDatabase = NULL
   )
 )
