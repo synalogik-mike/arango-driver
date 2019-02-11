@@ -1,31 +1,56 @@
 # aRangodb - R driver for ArangoDB
 
-## Introduction
+## Table of Contents
+1. [ Introduction. ](#introduction)
+2. [ Prerequisite. ](#prerequisite)
+    a. [ Setup with Docker. ](#docker)
+    b. [ Setup with installer. ](#installer)
+3. [ ArangoDB basic concepts. ](#arangoconcepts)
+4. [ Install the package. ](#installation)
+5. [ Usage examples. ](#usage)
+    a. [ Connection to ArangoDB server. ](#connectarango)
+    b. [ Create or connect to a database. ](#connectdatabase)
+    c. [ Create or load a collection. ](#createcollection)
+    d. [ Insertion of documents into a collection. ](#insertcollection)
+    e. [ Working with documents. ](#workingdocuments)
+    f. [ Custom AQL queries. ](#aqlcustom)
+    g. [ Working with graphs. ](#workinggrapphs)
+6. [ Bugs and known limitations. ](#bugslimitations)
+7. [ Functions and classes summary. ](#summary)
+8. [ Roadmap. ](#roadmap)
+
+
+## Introduction <a name="introduction"></a>
 Relational databases are one of the most known technology developed and studied in the computer science field. Every application, or at least the majority of them, have one relational database to support the storage and the retrieval of data.
 Most of those technologies are also freely available as open-source projects, e.g. MySQL and PostgreSQL, and this made this techonolgy one of the most reliable in the data management task.
 Nonetheless those kind of databases have some drawback that for actual applications represent limitations and/or significant bottleneck for scalability or refactor of the applications themselves. For example the base elements are represented by the **relations**, i.e. tables containing set of records with fixed schema and types.
 The explosion of Big Data era and the quick availability of highly scalable techonologies, architectures and infrastructure made the management of data complex to manage.
-The contemporary interest of the scientific community to find alternatives way to manage data had left... TO BE COMPLETED...
+...
+In this context has been developed lots of NoSQL data managment systems: notable examples are MongoDB, for document oriented databases, or Neo4J, OrientDB and ArangoDB for graph databases.
 
-## Prerequisite
+Link to other projects:
 
+* **neo4r** Active project (too complex): https://cran.r-project.org/web/packages/neo4r/index.html
+* **orientR** project (simple connector): https://github.com/retrography/OrientR
+
+## Prerequisite <a name="prerequisite"></a>
 It is possible install ArangoDB both downloading the usual installer and have a stand-alone instance, or installing it by creating a Docker container using the official ArangoDB Docker image.
 
 **IMPORTANT NOTE:** since this is still a prototype it is not yet supported the management of the user. This means that each installation you choose must disable security. This is a knonw limitation that will be removed as the first stable version will be released.
 
-### Setup with Docker
-Explain setup with Docker
+#### Setup with Docker <a name="docker"></a>
+To setup an ArangoDB instance using Docker you can [follow those instructions](https://docs.arangodb.com/3.4/Manual/Deployment/SingleInstance/ManualStart.html#manual-start-in-docker).
 
-### Setup from installer
-Explain setup with classical installer
+#### Setup from installer <a name="installer"></a>
+To setup an ArangoDB instance using the stand-alone version you can [follow those instructions](https://docs.arangodb.com/3.4/Manual/GettingStarted/Installation.html).
 
-## ArangoDB basic concepts
+## ArangoDB basic concepts <a name="arangoconcepts"></a>
 In order to understand the examples in the next sections it is desirable understand some basic concepts of the behaving and logic of ArangoDB. Each instance of an ArangoDB server can store multiple databases: even if you don't create any database, there is the default one named **\_system**. Every operation you invoke that is invoked with no database specified affects the **\_system** one. It is suggested to not use this database for applications.
 
-## Install the package
+## Install the package <a name="installation"></a>
 Explain how to install the package from GitHub
 
-## Usage
+## Usage examples <a name="usage"></a>
 In the following sections are shown usage's examples of this driver. The conmplete example, as R script, is located into the repository at the path "examples/arango_full_example.R".
 Once installed you have to load the library:
 
@@ -33,15 +58,15 @@ Once installed you have to load the library:
 library(aRangodb)
 ```
 
-### Connection to ArangoDB server
-
+### Connection to ArangoDB server <a name="connectarango"></a>
+ 
 Connect to an ArangoDB server up and running
 
 ```R
 arangoConnection <- connect(<instance_ip>, <instance_port>)
 ```
 
-### Create or connect to one database
+### Create or connect to a database <a name="connectdatabase"></a>
 
 Create a sandbox database: to force creation of a database, if it is not found, use the 
 _createOnFail_ option (default is FALSE):
@@ -62,7 +87,7 @@ defaultArangoDb <-
 
 The object that those methods return is an instance of ArangoDatabase class and it will be used for all the operations affecting the database.
 
-### Create or load a collection
+### Create or load a collection <a name="createcollection"></a>
 
 From now on all the collections, documents and graphs will be manipulated within "sandbox"
 (or the db you had choosen): this means that collections, documents, and graphs will be visible
@@ -76,7 +101,7 @@ cities <- sandboxArangoDb %>% collection("city", createOnFail = TRUE)
 
 Again it has been used the option _createOnFail_ to create the collections if they were not found into the database. The call otherwise would launch an error (collection not found).
 
-### Insertion of documents within a collection
+### Insertion of documents into a collection <a name="insertcollection"></a>
 
 Now we have two different collections: we can populate with some fake data for subsequent examples using the aRangodb::insert(key) to create a new document with the given key as identifier, and setting its values using the aRangodb::set() function. The insertion, and the values' updates, are effective once invoked the aRangodb::execute() function. It could be a limitation, but for synchronous (and immediate) call there will be a dedicated release of the driver.
 
@@ -118,7 +143,7 @@ You can use the collection to access some useful information about the collectio
 print(paste("Persons registered:", persons$getCount(), sep = " "))
 ```
 
-### Working with documents
+### Working with documents <a name="workingdocuments"></a>
 
 You can use collections to retrieve and access documents within the collection itself. For example you can get ALL the document of a collection (**BE CAREFUL**, collections could contains hundred of results) and access specific document using its key. The aRango::documents() return a list with all the documents found for the given collection.
 
@@ -171,7 +196,7 @@ Lyon %>%
   execute()
 ```
 
-### Custom AQL queries
+### Custom AQL queries <a name="aqlcustom"></a>
 If you are interested in custom queries you can use the native Arango Query Language (AQL). To do that
 you need to specify the string containing the query using the \@variable_name to indicate some binding
 variables: the query will be parsed to check the syntax and then converted to an R function where binding variables are the formal parameters of the function.
@@ -200,7 +225,7 @@ if(length(filtered.persons) != 3){
 print(paste0("'I'm Alice Foo, isn't it?' ", filtered.persons$queryResult_0$getKey() == "alice.foo"))
 ```
 
-### Creating a graph
+### Working with graphs <a name="workinggrapphs"></a>
 Last but not least, you can define a graph structure in the same way you can define a collection.
 
 ```R
@@ -253,10 +278,10 @@ residenceGraph <-
   add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```
 
-### Bugs and Knonw Limitations
+### Bugs and Knonw Limitations <a name="bugslimitations"></a>
 TODO
 
-### Functions and Class Summary
+### Functions and Class Summary <a name="summary"></a>
 
 Create a connection with an ArangoDB instance.
 
@@ -324,7 +349,7 @@ ArangoDocument <- ArangoDocument %>% aRango::delete()
 ArangoDocument <- ArangoDocument %>% aRango::execute()
 ```
 
-Returns the documents that matches the given filters. A filter can be 
+Returns the documents that matches the given filters. The filters passed as parameters are converted in strings that will be added in the query. So assigments are converted into equality filter, a=1 in "a==1", for **comparison operators you MUST USE** the following operators:  
 
 * id %lt% expr: "id < value"
 * id %leq% expr: "id <= value"
@@ -358,15 +383,33 @@ Adds a definition of a new edge for the given graph
 ArangoGraph <- ArangoGraph %>% aRangodb::edge_definition(fromCollection, relation, toCollection)
 ```
 
-Adds a new edge
+Adds and removes of edge. Input of the folloqing functions are list of list, where each inner list contains the information
+representing the edge: e.g. list(list(collection="friends", edge=list(`_from`="person/bob", `_to`="person/alice", ...))...)
 
 ```R
-list <- ArangoDocument %->% ArangoDocument           # returns a list(`_from`=..., `_to`=...) 
-list <- relation %:% edge(list, ...)	               # returns a list containing the from/to information, the collection and the values (if any) for this edge
-
-ArangoGraph <- ArangoGraph %>% add_to_graph(...)       # takes a list of list representing edges definitions
-ArangoGraph <- ArangoGraph %>% remove_from_graph(...)  # takes a list of list representing edges definitions
+ArangoGraph <- ArangoGraph %>% add_to_graph(...)      # takes a list of list representing edges definitions
+ArangoGraph <- ArangoGraph %>% remove_from_graph(...) # takes a list of list representing edges definitions
 ```
 
-### Roadmap
+To simplify the process of addition/removal of edges you can use the relationa operators for inbound edges %<-% or outbound edges %->%, aRangodb::edge() function and the %owns% relation.
+
+```R
+list <- ArangoDocument %->% ArangoDocument            # returns a list(`_from`=..., `_to`=...) 
+list <- character %owns% edge(list, ...)              # returns a list containing the from/to information, the collection name representing the edge and the values (if any) for this edge
+```
+
+The previous functions work as:
+
+```R
+doc1 %->% doc2  # returns a list(`_from`=doc1$getId(), `_to`=doc1$getId())
+```
+
+```R
+edge(doc1 %->% doc2, ...)   # where the variadic part can be assignments representing values of the edge. This call returns list(`_from`=doc1$getId(), `_to`=doc1$getId(), aKey=1)
+```
+
+```R
+character %owns% edge(doc1 %->% doc2)   # returns list(list(collection=character, edge=list(`_from`=doc1$getId(), `_to`=doc1$getId())))
+```
+### Roadmap <a name="roadmap"></a>
 TODO
