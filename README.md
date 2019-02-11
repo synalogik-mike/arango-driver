@@ -267,7 +267,7 @@ ArangoConnection <- aRango::connect(server, port)
 Returns a list with the name of all the available databases for this ArangoDB instance
 
 ```R
-_character_vector_ <- ArangoConnection %>% aRango::databases()
+character_vector <- ArangoConnection %>% aRango::databases()
 ```
 
 Return an object representing the database with the given name, create a database with the given name (if not exist), or the default database.
@@ -281,13 +281,13 @@ ArangoDatabase <- ArangoConnection %>% aRango::database()
 The given database is deleted from the server.
 
 ```R
-_bool_ <- ArangoDatabase %>% aRango::drop()
+bool <- ArangoDatabase %>% aRango::drop()
 ```
 
 Returns a list with all the available collections for the given database
 
 ```R
-_character_vector_ <- ArangoDatabase %>% aRango::collections()
+character_vector <- ArangoDatabase %>% aRango::collections()
 ```
 
 Return an object representing the collection with the given name or create a collection with the given name (if not exist).
@@ -300,19 +300,19 @@ ArangoCollection <- ArangoDatabase %>% aRango::collection(name)
 The given collection is deleted from the server.
 
 ```R
-_bool_ <- collection %>% aRango::drop()
+bool <- collection %>% aRango::drop()
 ```
 
 Returns a list with all the documents belonging to the given collection
 
 ```R
-_list_<ArangoDocument> <- ArangoCollection %>% aRango::documents()
+list<ArangoDocument> <- ArangoCollection %>% aRango::documents()
 ```
 
 Returns a list with all the documents belonging to the given collection
 
 ```R
-_list_<ArangoDocument> <- ArangoCollection %>% aRango::documents()
+list<ArangoDocument> <- ArangoCollection %>% aRango::documents()
 ```
 Methods for document management: insert a new document, with custom key, set the attributes of the document, remove the mapping for the given keys, delete a document and execute the pending modifies to a document.
 
@@ -332,17 +332,17 @@ Returns the documents that matches the given filters. A filter can be
 * id %geq% expr : "id >= value"
 
 ```R
-_character_ <- id %lt% expr
-_character_ <- id %leq% expr
-_character_ <- id %gt% expr
-_character_ <- id %geq% expr
-_list_<ArangoDocument> <- ArangoCollection %>% aRango::filter(...)
+character <- id %lt% expr
+character <- id %leq% expr
+character <- id %gt% expr
+character <- id %geq% expr
+list<ArangoDocument> <- ArangoCollection %>% aRango::filter(...)
 ```
 
 Returns a list with all the available graphs for the given database
 
 ```R
-_character_vector_ <- ArangoDatabase %>% aRango::graphs()
+character_vector <- ArangoDatabase %>% aRango::graphs()
 ```
 
 Returns a list with all the available graphs for the given database
@@ -361,8 +361,8 @@ ArangoGraph <- ArangoGraph %>% aRangodb::edge_definition(fromCollection, relatio
 Adds a new edge
 
 ```R
-_list_ <- ArangoDocument %->% ArangoDocument           # returns a list(`_from`=..., `_to`=...) 
-_list_ <- relation %:% edge(list, ...)	               # returns a list containing the from/to information, the collection and the values (if any) for this edge
+list <- ArangoDocument %->% ArangoDocument           # returns a list(`_from`=..., `_to`=...) 
+list <- relation %:% edge(list, ...)	               # returns a list containing the from/to information, the collection and the values (if any) for this edge
 
 ArangoGraph <- ArangoGraph %>% add_to_graph(...)       # takes a list of list representing edges definitions
 ArangoGraph <- ArangoGraph %>% remove_from_graph(...)  # takes a list of list representing edges definitions
