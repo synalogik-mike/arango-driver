@@ -100,7 +100,8 @@ residenceGraph <- sandboxArangoDb %>% graph("residence", createOnFail = TRUE)
 # sources of edges, and it will creates a collection for the edge relation
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition("person", "lives_in", "city")
+  edge_definition("person", "lives_in", "city") %>%
+  edge_definition("person", "loves", "city")
 
 livesInCollection <- sandboxArangoDb %>% collection("lives_in")
 
@@ -122,4 +123,5 @@ if(!(is.null(weatherCollection))){
 # the relational operators!
 residenceGraph <- residenceGraph %>%
   add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
+  add_to_graph("loves" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
   add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))

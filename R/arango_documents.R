@@ -154,7 +154,7 @@ execute <- function(.data){
   # Executing the update of the object
   connectionString <- .data$.__enclos_env__$private$connectionString
   
-  updateResult <- httr::PATCH(paste0(connectionString,"/_api/document/",.data$getCollection(), "/", .data$getId()),
+  updateResult <- httr::PATCH(paste0(connectionString,"/_api/document/", .data$getId()),
                             body = .data$.__enclos_env__$private$documentValues,
                             encode = "json")
   
@@ -174,6 +174,25 @@ execute <- function(.data){
   .data$.__enclos_env__$private$currentRevision <- updatedObjectInfo$`_rev`
   
   return(.data)
+}
+
+#' Returns the edge in this collection connecting the document passed as argument, if any.
+#' 
+#' 
+#'
+find_edge <- function(.collection, from, to){
+  
+  if(class(.collection)[1] != "ArangoCollection"){
+    stop("Only 'ArangoCollection' objects can be processed by aRango::find_edge function")
+  }
+  
+  foundEdge <- .collection %>% filter(`_from`=from$getId(), `_to`=to$getId())
+  
+  if(length(foundEdge) > 0){
+    return(foundEdge[1])
+  }
+  
+  return(NULL)
 }
 
 #' Filter the documents from a collection
@@ -284,7 +303,7 @@ delete <- function(.document){
   
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .document$.__enclos_env__$private$connectionString
-  deletionResult <- httr::DELETE(paste0(connectionString,"/_api/document/", .document$getCollection(), "/", .document$getId()))
+  deletionResult <- httr::DELETE(paste0(connectionString,"/_api/document/", .document$getId()))
   
   if(deletionResult$status_code != 200 && deletionResult$status_code != 202){
     stop("an error occurred during the deletion of the document")
@@ -329,11 +348,11 @@ delete <- function(.document){
       return(private$originalCollection)
     },
     
-    getKey = function(){
+    getId = function(){
       return(paste0(private$originalCollection,"/",private$documentId))
     },
     
-    getId = function(){
+    getKey = function(){
       return(private$documentId)
     },
     

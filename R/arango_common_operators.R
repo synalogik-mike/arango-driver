@@ -70,7 +70,7 @@ library(R6)
 `%->%` <- function(v1, v2) {
   .check_document(v1, v2)
   
-  return(list(`_from`=v1$getKey(), `_to`=v2$getKey()))
+  return(list(`_from`=v1$getId(), `_to`=v2$getId()))
 }
 
 
@@ -85,7 +85,7 @@ library(R6)
 `%<-%` <- function(v1, v2) {
   .check_document(v1, v2)
   
-  return(list(`_from`=v2$getKey(), `_to`=v1$getKey()))
+  return(list(`_from`=v2$getId(), `_to`=v1$getId()))
 }
 
 

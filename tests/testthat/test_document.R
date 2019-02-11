@@ -88,7 +88,8 @@ with_mock_api({
     
     # then
     expect_equal(doc$getCollection(), "test_coll")
-    expect_equal(doc$getId(), "newDoc")
+    expect_equal(doc$getId(), "test_coll/newDoc")
+    expect_equal(doc$getKey(), "newDoc")
     expect_equal(doc$getRevision(), "1")
     expect_equal(length(doc$getAvailableValues()), 0)
   })
@@ -163,7 +164,8 @@ with_mock_api({
     # then
     expect_false(doc$getRevision() == previousUpdateRevision)
     expect_equal(doc$getCollection(), "test_coll")
-    expect_equal(doc$getId(), "newDoc")
+    expect_equal(doc$getId(), "test_coll/newDoc")
+    expect_equal(doc$getKey(), "newDoc")
     expect_equal(doc$getRevision(), "2")
     expect_equal(length(doc$getAvailableValues()), 2)
     expect_equal(doc$getValues()$prop1, "value1")
@@ -203,7 +205,8 @@ with_mock_api({
     # then
     expect_false(doc$getRevision() == previousUpdateRevision)
     expect_equal(doc$getCollection(), "test_coll")
-    expect_equal(doc$getId(), "newDoc")
+    expect_equal(doc$getId(), "test_coll/newDoc")
+    expect_equal(doc$getKey(), "newDoc")
     expect_equal(doc$getRevision(), "2")
     expect_equal(length(doc$getAvailableValues()), 1)
     expect_equal(doc$getValues()$prop2, "value2")
@@ -248,7 +251,7 @@ with_mock_api({
     docs <- coll %>% aRangodb::filter(type="key", subtype="subtype1")
     
     # then
-    expect_equal(docs$"key1"$getId(), "key1")
+    expect_equal(docs$"key1"$getKey(), "key1")
     expect_equal(docs$"key1"$getRevision(), "1")
     expect_equal(docs$"key1"$getCollection(), "example_coll")
     expect_equal(docs$"key1"$getValues()$"type", "key")
@@ -261,7 +264,7 @@ with_mock_api({
     expect_false("_rev" %in% docs$"key1"$getAvailableValues())
     expect_false("not_exist" %in% docs$"key1"$getAvailableValues())
     
-    expect_equal(docs$"key2"$getId(), "key2")
+    expect_equal(docs$"key2"$getKey(), "key2")
     expect_equal(docs$"key2"$getRevision(), "2")
     expect_equal(docs$"key2"$getCollection(), "example_coll")
     expect_equal(docs$"key2"$getValues()$"type", "key")
@@ -314,7 +317,7 @@ with_mock_api({
     docs <- coll %>% aRangodb::filter(type = "key", isSystem = TRUE, qty %gt% 0, qty %lt% 3.3)
     
     # then
-    expect_equal(docs$"key1"$getId(), "key1")
+    expect_equal(docs$"key1"$getKey(), "key1")
     expect_equal(docs$"key1"$getRevision(), "1")
     expect_equal(docs$"key1"$getCollection(), "example_coll")
     expect_equal(docs$"key1"$getValues()$"type", "key")
@@ -326,7 +329,7 @@ with_mock_api({
     expect_false("_rev" %in% docs$"key1"$getAvailableValues())
     expect_false("not_exist" %in% docs$"key1"$getAvailableValues())
     
-    expect_equal(docs$"key2"$getId(), "key2")
+    expect_equal(docs$"key2"$getKey(), "key2")
     expect_equal(docs$"key2"$getRevision(), "2")
     expect_equal(docs$"key2"$getCollection(), "example_coll")
     expect_equal(docs$"key2"$getValues()$"type", "key")

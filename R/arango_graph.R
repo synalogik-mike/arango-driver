@@ -92,6 +92,41 @@ add_to_graph <- function(.graph, listOfEdges){
 }
 
 
+
+#' Removes a collection of elements from the given graph.
+#' 
+#' @param .graph the graph affected by the deletion
+#' @param listOfEdges a list of lists containing edges information
+#'
+#' @return the ArangoGraph object of the structure affected by the change
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+remove_from_graph <- function(.graph, listOfEdges){
+  
+  # ==== Check on .graph variable ====
+  if(is.null(.graph)){
+    stop("Graph is NULL, please provide a valid 'ArangoGraph'")
+  }
+  
+  if(class(.graph)[1] != "ArangoGraph"){
+    stop("Only 'ArangoGraph' objects can be processed by aRango::add_elements")
+  }
+  
+  # ==== TEMPORARY SOLUTION: which will be the final signature of this method? ====
+  for(current in listOfEdges){
+    deleteEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", current$collection)
+    #arangoServerResponse <- httr::POST(addEdgeEndpoint, encode="json", 
+    #                                  body = current$edge)
+    
+    # TODO, how to manage?
+    #stop_for_status(arangoServerResponse)
+  }
+  
+  return(.graph)
+}
+
+
+
 #' Adds an edge definition to this graph 
 #' 
 #'

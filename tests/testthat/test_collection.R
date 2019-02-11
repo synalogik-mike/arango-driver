@@ -155,7 +155,8 @@ with_mock_api({
     documents <- coll %>% aRangodb::documents()
     
     # then
-    expect_equal(documents$"key1"$getId(), "key1")
+    expect_equal(documents$"key1"$getId(), "example_coll/key1")
+    expect_equal(documents$"key1"$getKey(), "key1")
     expect_equal(documents$"key1"$getRevision(), "1")
     expect_equal(documents$"key1"$getCollection(), "example_coll")
     expect_equal(documents$"key1"$getValues()$"type", "key")
@@ -167,7 +168,8 @@ with_mock_api({
     expect_false("_rev" %in% documents$"key1"$getAvailableValues())
     expect_false("not_exist" %in% documents$"key1"$getAvailableValues())
     
-    expect_equal(documents$"key2"$getId(), "key2")
+    expect_equal(documents$"key2"$getId(), "example_coll/key2")
+    expect_equal(documents$"key2"$getKey(), "key2")
     expect_equal(documents$"key2"$getRevision(), "2")
     expect_equal(documents$"key2"$getCollection(), "example_coll")
     expect_equal(documents$"key2"$getValues()$"type", "key")
@@ -228,7 +230,8 @@ with_mock_api({
     documents <- coll %>% aRangodb::documents()
   
     # then
-    expect_equal(documents$"key1"$getId(), "key1")
+    expect_equal(documents$"key1"$getId(), "example_coll/key1")
+    expect_equal(documents$"key1"$getKey(), "key1")
     expect_equal(documents$"key1"$getRevision(), "1")
     expect_equal(documents$"key1"$getCollection(), "example_coll")
     expect_equal(documents$"key1"$getValues()$"type", "key")
@@ -240,7 +243,8 @@ with_mock_api({
     expect_false("_rev" %in% documents$"key1"$getAvailableValues())
     expect_false("not_exist" %in% documents$"key1"$getAvailableValues())
     
-    expect_equal(documents$"key2"$getId(), "key2")
+    expect_equal(documents$"key2"$getId(), "example_coll/key2")
+    expect_equal(documents$"key2"$getKey(), "key2")
     expect_equal(documents$"key2"$getRevision(), "2")
     expect_equal(documents$"key2"$getCollection(), "example_coll")
     expect_equal(documents$"key2"$getValues()$"type", "key")
@@ -252,7 +256,8 @@ with_mock_api({
     expect_false("_rev" %in% documents$"key2"$getAvailableValues())
     expect_false("not_exist" %in% documents$"key2"$getAvailableValues())
     
-    expect_equal(documents$"key3"$getId(), "key3")
+    expect_equal(documents$"key3"$getId(), "example_coll/key3")
+    expect_equal(documents$"key3"$getKey(), "key3")
     expect_equal(documents$"key3"$getRevision(), "1")
     expect_equal(documents$"key3"$getCollection(), "example_coll")
     expect_equal(documents$"key3"$getValues()$"type", "key")
@@ -264,7 +269,8 @@ with_mock_api({
     expect_false("_rev" %in% documents$"key3"$getAvailableValues())
     expect_false("not_exist" %in% documents$"key3"$getAvailableValues())
     
-    expect_equal(documents$"key4"$getId(), "key4")
+    expect_equal(documents$"key4"$getId(), "example_coll/key4")
+    expect_equal(documents$"key4"$getKey(), "key4")
     expect_equal(documents$"key4"$getRevision(), "2")
     expect_equal(documents$"key4"$getCollection(), "example_coll")
     expect_equal(documents$"key4"$getValues()$"type", "key")
