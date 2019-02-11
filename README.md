@@ -252,3 +252,121 @@ residenceGraph <-
   add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
   add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```
+
+### Bugs and Knonw Limitations
+TODO
+
+### Functions and Class Summary
+
+Create a connection with an ArangoDB instance.
+
+```R
+ArangoConnection <- aRango::connect(server, port)
+```
+
+Returns a list with the name of all the available databases for this ArangoDB instance
+
+```R
+_character_vector_ <- ArangoConnection %>% aRango::databases()
+```
+
+Return an object representing the database with the given name, create a database with the given name (if not exist), or the default database.
+
+```R
+ArangoDatabase <- ArangoConnection %>% aRango::database(name)
+ArangoDatabase <- ArangoConnection %>% aRango::database(name, createOnFail=TRUE)
+ArangoDatabase <- ArangoConnection %>% aRango::database()
+```
+
+The given database is deleted from the server.
+
+```R
+_bool_ <- ArangoDatabase %>% aRango::drop()
+```
+
+Returns a list with all the available collections for the given database
+
+```R
+_character_vector_ <- ArangoDatabase %>% aRango::collections()
+```
+
+Return an object representing the collection with the given name or create a collection with the given name (if not exist).
+
+```R
+ArangoCollection <- ArangoDatabase %>% aRango::collection(name, createOnFail=FALSE)
+ArangoCollection <- ArangoDatabase %>% aRango::collection(name)
+```
+
+The given collection is deleted from the server.
+
+```R
+_bool_ <- collection %>% aRango::drop()
+```
+
+Returns a list with all the documents belonging to the given collection
+
+```R
+_list_<ArangoDocument> <- ArangoCollection %>% aRango::documents()
+```
+
+Returns a list with all the documents belonging to the given collection
+
+```R
+_list_<ArangoDocument> <- ArangoCollection %>% aRango::documents()
+```
+Methods for document management: insert a new document, with custom key, set the attributes of the document, remove the mapping for the given keys, delete a document and execute the pending modifies to a document.
+
+```R
+ArangoDocument <- ArangoCollection %>% aRango::insert(key)
+ArangoDocument <- ArangoDocument %>% aRango::set(...)
+ArangoDocument <- ArangoDocument %>% aRango::unset(...)
+ArangoDocument <- ArangoDocument %>% aRango::delete()
+ArangoDocument <- ArangoDocument %>% aRango::execute()
+```
+
+Returns the documents that matches the given filters. A filter can be 
+
+* id %lt% expr: "id < value"
+* id %leq% expr: "id <= value"
+* id %gt% expr : "id > value"
+* id %geq% expr : "id >= value"
+
+```R
+_character_ <- id %lt% expr
+_character_ <- id %leq% expr
+_character_ <- id %gt% expr
+_character_ <- id %geq% expr
+_list_<ArangoDocument> <- ArangoCollection %>% aRango::filter(...)
+```
+
+Returns a list with all the available graphs for the given database
+
+```R
+_character_vector_ <- ArangoDatabase %>% aRango::graphs()
+```
+
+Returns a list with all the available graphs for the given database
+
+```R
+ArangoGraph <- ArangoDatabase %>% aRango::graph(name, createOnFail=FALSE)
+ArangoGraph <- ArangoDatabase %>% aRango::graph(name)
+```
+
+Adds a definition of a new edge for the given graph
+
+```R
+ArangoGraph <- ArangoGraph %>% aRangodb::edge_definition(fromCollection, relation, toCollection)
+```
+
+Adds a new edge
+
+```R
+_list_ <- ArangoDocument %->% ArangoDocument           # returns a list(`_from`=..., `_to`=...) 
+_list_ <- relation %:% edge(list, ...)	               # returns a list containing the from/to information, the collection and the values (if any) for this edge
+
+ArangoGraph <- ArangoGraph %>% add_to_graph(...)       # takes a list of list representing edges definitions
+ArangoGraph <- ArangoGraph %>% remove_from_graph(...)  # takes a list of list representing edges definitions
+```
+
+### Roadmap
+TODO
