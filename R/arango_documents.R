@@ -11,8 +11,9 @@ library(R6)
   return(value)
 }
 
-#' Returns all the documents belonging to the giving collections
+#' Returns all the documents belonging to the given collection
 #'
+#' @return all the documents belonging to the given collection
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 documents <- function(.collection){
   
@@ -67,9 +68,11 @@ documents <- function(.collection){
 
 #' Creates a new document of this collection and returns it
 #'
-#' @param .collection the collection where add the new document
+#' @param .collection the ArangoCollection that handles the collection to be updated
 #' @param key the key that will be used as unique identifier within the collection for the new document
-#'              
+#' 
+#' @return an ArangoDocument representing the new document data         
+#'     
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 insert <- function(.collection, key){
   
@@ -102,10 +105,15 @@ insert <- function(.collection, key){
 
 
 
-#' Updates a document with the given parameters
+#' Updates the attributes of the given document. When it is needed to made effective
+#' the updates must be call the execute() function.
 #'
-#'
-set <- function(.data, ..., .updateOnly = FALSE){
+#' @param .data the document to be updated
+#' @param ... new or updated assignment to be added to the given document
+#' 
+#' @return the ArangoDocument updated but not yet consistent with the server image
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+set <- function(.data, ...){
   
   if(class(.data)[1] != "ArangoDocument"){
     stop("Only 'ArangoDocument' objects can be processed by aRango::set function")
@@ -124,9 +132,14 @@ set <- function(.data, ..., .updateOnly = FALSE){
 
 
 
-#' Deletes some values from the given data
+#' Remove the assigments for the key passed as argument from the given document. 
+#' When it is needed to made effective the updates must be call the execute() function.
 #'
-#'
+#' @param .data the document to be updated
+#' @param ... keys to be removed from the given document
+#' 
+#' @return the ArangoDocument updated but not yet consistent with the server image
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 unset <- function(.data, ...){
   
   if(class(.data)[1] != "ArangoDocument"){
@@ -144,9 +157,12 @@ unset <- function(.data, ...){
 
 
 
-#' Excecute the update of a function.
+#' Excecute the update of a document on the server
 #'
+#' @param the ArangoDocument to be updated on the server
 #'
+#' @return the ArangoDocument updated but not yet consistent with the server image
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 execute <- function(.data){
   
   if(class(.data)[1] != "ArangoDocument"){
@@ -178,16 +194,24 @@ execute <- function(.data){
   return(.data)
 }
 
-#' Returns the edge in this collection connecting the document passed as argument, if any.
+#' Returns the edge in this collection connecting the documents passed as argument, if any.
 #' 
-#' 
+#' @param .collection the ArangoCollection that handles the collection
+#' @param from the document id ("collection/key") that represents the _from vertex
+#' @param to the document id ("collection/key") that represents the _to vertex 
 #'
+#' @return the document representing the edge between the given documents
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 find_edge <- function(.collection, from, to){
   
   if(class(.collection)[1] != "ArangoCollection"){
     stop("Only 'ArangoCollection' objects can be processed by aRango::find_edge function")
   }
-  
+
+  if(.collection$getType() != collection_type$EDGE){
+    stop("Edges can be searched only within EDGES collection, the given one is a DOCUMENT collection")
+  }
+    
   if(class(from)[1] == "ArangoDocument" && class(to)[1] == "ArangoDocument"){
     foundEdge <- .collection %>% filter(`_from`=from$getId(), `_to`=to$getId())
     
@@ -210,7 +234,12 @@ find_edge <- function(.collection, from, to){
 
 #' Filter the documents from a collection
 #'
-#'
+#' @param .collection the ArangoCollection that handles the collection
+#' @param ... a list of assigment, will be translated as "id==value", or comparison
+#' filters given using the %gt%, %lt%, %geq%, %leq% operators.
+#' 
+#' @return the documents that matches the given filters
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 filter <- function(.collection, ...){
   
   documents <- list()
@@ -307,7 +336,10 @@ filter <- function(.collection, ...){
 
 #' Deletes the given document
 #'
+#' @param .document the ArangoDocument to be removed from the collection
 #'
+#' @return TRUE iff the document has been removed from the collection
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 delete <- function(.document){
   
   if(class(.document)[1] != "ArangoDocument"){
@@ -327,11 +359,11 @@ delete <- function(.document){
 
 
 
-#' The ArangoDocument class encapsulate the representation and the methods useful to manage
-#' the retrieval, representation and updates of specific documents belonging to Arango collections.
-#' Each document is strictly related to some collection and within the environment SHOULD exists
-#' only one copy of this object.
+#' An ArangoDocument contains the data regarding a document that belongs to some
+#' collection in the Arango Server instance. The object allows the user to get/set
+#' and find other information regarding the document in the server.
 #'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 .aRango_document <- R6Class (
   "ArangoDocument",
   
@@ -356,26 +388,50 @@ delete <- function(.document){
       private$documentValues$`_key` <- NULL
     },
     
+    #' Returns the name of the collection to which the document belongs
+    #' 
+    #' @return the name of the collection to which the document belongs
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getCollection = function(){
       return(private$originalCollection)
     },
     
+    #' Returns the id of the document ("collection/key")
+    #' 
+    #' @return the id of the document ("collection/key")
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getId = function(){
       return(paste0(private$originalCollection,"/",private$documentId))
     },
     
+    #' Returns the key of the document
+    #' 
+    #' @return the key of the document
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getKey = function(){
       return(private$documentId)
     },
     
+    #' Returns the current revision of the document
+    #' 
+    #' @return the current revision of the document
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getRevision = function(){
       return(private$currentRevision)
     },
     
+    #' Returns a list containing the key-values of the document
+    #' 
+    #' @return a list containing the key-values of the document
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getValues = function(){
       return(private$documentValues)
     },
     
+    #' Returns a character vector containing the available keys for this document
+    #' 
+    #' @return a character vector containing the available keys for this document
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getAvailableValues = function(){
       return(names(private$documentValues))
     }

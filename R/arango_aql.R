@@ -13,10 +13,9 @@ library(R6)
 }
 
 #' Create an R function that interprets the statement as AQL query. Every
-#' bindvar of the statement representing the AQL query will become a mandatory
-#' parameter of the function.
+#' bindvar of the statement will become a mandatory parameter of the function.
 #'
-#' @param .element a valid database for this server
+#' @param .element a valid ArangoDatabase object
 #' @param statement an AQL statement
 #' 
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl

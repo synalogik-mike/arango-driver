@@ -7,9 +7,10 @@ library(R6)
   return(value)
 }
 
-#' Creates a string expression representing a filter clause for AQL
+#' Creates a string expression representing an AQL filter "less than" clause for
+#' numeric values
 #'
-#' @param expr the expression to left as given in the resulting string
+#' @param expr the expression to be left as given in the resulting string
 #' @param value the expression to be evaluated and printed in the resulting string
 #'
 #' @example age %lt% 33 gives "age < 33" 
@@ -21,9 +22,10 @@ library(R6)
 }
 
 
-#' Creates a string expression representing a filter clause for AQL
+#' Creates a string expression representing an AQL filter "less or equal than" clause for
+#' numeric values
 #'
-#' @param expr the expression to left as given in the resulting string
+#' @param expr the expression to be left as given in the resulting string
 #' @param value the expression to be evaluated and printed in the resulting string
 #'
 #' @example age %leq% 33 gives "age <= 33" 
@@ -35,9 +37,10 @@ library(R6)
 }
 
 
-#' Creates a string expression representing a filter clause for AQL
+#' Creates a string expression representing an AQL filter "greater than" clause for
+#' numeric values
 #'
-#' @param expr the expression to left as given in the resulting string
+#' @param expr the expression to be left as given in the resulting string
 #' @param value the expression to be evaluated and printed in the resulting string
 #'
 #' @example age %gt% 33 gives "age > 33" 
@@ -49,9 +52,10 @@ library(R6)
 }
 
 
-#' Creates a string expression representing a filter clause for AQL
+#' Creates a string expression representing an AQL filter "greater or equal than" clause for
+#' numeric values
 #'
-#' @param expr the expression to left as given in the resulting string
+#' @param expr the expression to be left as given in the resulting string
 #' @param value the expression to be evaluated and printed in the resulting string
 #'
 #' @example age %geq% 33 gives "age >= 33" 
@@ -67,6 +71,8 @@ library(R6)
 #'
 #' @param v1 source document of the edge
 #' @param v2 destination document of the edge
+#'
+#' @return a list containing the `_from` and the `_to` attributes needed for an edge
 #'
 #' @example v1 %->% v2 gives list(`_from`=v1, `_to`=v2) 
 #'
@@ -84,6 +90,8 @@ library(R6)
 #' @param v1 destination document of the edge
 #' @param v2 source document of the edge
 #'
+#' @return a list containing the `_from` and the `_to` attributes needed for an edge
+#'
 #' @example v1 %<-% v2 gives list(`_from`=v2, `_to`=v1) 
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
@@ -95,10 +103,11 @@ library(R6)
 }
 
 
-#' 
+#' Creates a list with the _from/_to indication used to define an anonymous edge, i.e. still without
+#' relation for which the edge is defined. If indicated, the attributes (in key-value form) for the resulting anonymous edge
 #'
 #' @param definition a list containing a `_from` and a `_to` key
-#' @param ... source document of the edge
+#' @param ... pairs of key-values representing attributes of this edge
 #'
 #' @example edge(data_science %->% math)
 #'
@@ -120,13 +129,14 @@ edge <- function(definition, ...) {
 }
 
 
-#' 
+#' Assign a relation, i.e. an edge collection, to an anonymous edge, i.e. a list containing at least _from/_to
+#' attributes. 
 #'
-#' @param relation an ArangoCollection or a string that represents an edge collection
-#' @param edges a list of empty edges, the result of the e() function
+#' @param relation a string that represents an edge collection
+#' @param edges a list containing an anonymous edge (TODO, this must be a list of anonymous edges)
 #'
-#' @seealso aRangodb::e
-#' @example "requires" %:% e(data_science %->% math) returns a list(collection=..., edge=...) where 
+#' @seealso edge
+#' @example "requires" %:% edge(data_science %->% math) returns a list(collection=..., edge=...) where 
 #' edge contains a _from and a _to valid verticies
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl

@@ -6,6 +6,9 @@ library(R6)
 #'
 #' @param host the server address where the ArangoDB server is up and running
 #' @param port the server port where the ArangoDB server is up and running
+#' 
+#' @return an ArangoConnection object used to handle requests to the given Arango server
+#' 
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 connect <- function(host, port){
   
@@ -34,8 +37,8 @@ connect <- function(host, port){
     #'
     #' @param host the address on which the Arango instance is running
     #' @param port the port on the server on which the Arango instance is running
-    #' @param database OPTIONAL, the name of the database to which connect
-    #'
+    #' 
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     initialize = function(host, port) {
       private$host = host
       private$port = port
@@ -73,30 +76,36 @@ connect <- function(host, port){
       
     },
     
-    #' Returns the server indicated by the instance running on this connection
+    #' Returns the server address where the Arango instance is running
     #'
-    #'
+    #' @return the server address where the Arango instance is running
+    #' 
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getServer = function() {
       return(private$server)
     },
     
-    #' Returns the version of the server indicated by the instance running on this connection
+    #' Returns the version of the Arango instance
     #'
-    #'
+    #' @return the version of the Arango instance
+    #' 
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getVersion = function() {
       return(private$version)
     },
     
-    #' Returns the license indicated by the instance running on this connection
+    #' Returns the license of the Arango instance
     #'
-    #'
+    #' @return the license of the Arango instance
+    #' 
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getLicense = function() {
       return(private$license)
     },
     
     #' Returns a string in the form of "http://<localhost>:<port>" useful to execute new requests
     #'
-    #'
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getConnectionString = function() {
       return(paste0("http://", private$host, ":", private$port))
     }

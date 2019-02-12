@@ -2,13 +2,15 @@
 # COMMON FUNCTIONS, i.e. set of functions that have the same signature in different context
 # =========================================================================================
 
-#' Drop an existing database or collection
+#' Drop an existing database, graph or collection
 #'
-#' @param .element can be an ArangoDatabase OR ArangoCollection, other objects raise exception
+#' @param .element can be an ArangoDatabase or an ArangoCollection or an ArangoGraph
+#' 
+#' @return TRUE iff the element has been deleted, FALSE otherwise
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 drop <- function(.element){
   if(is.null(.element)){
-    stop("Database or Collection is NULL, please provide a valid 'ArangoDatabase' or an 'ArangoCollection'")
+    stop("Database or Collection is NULL, please provide a valid 'ArangoDatabase'/'ArangoCollection'/'ArangoGraph'")
   }
   
   if(class(.element)[1] == "ArangoDatabase"){

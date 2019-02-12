@@ -14,11 +14,13 @@ library(magrittr)
 }
 
 
-#' Returns all the databases available on the server identified by the current connection 
+#' Returns all the databases available in the server identified by the current connection 
 #'
-#' @param .connection the server connection to the ArangoDB instance
+#' @param .connection the ArangoConnection handler
 #' @param includeSystem TRUE iff the system databases must be included in the results, FALSE
 #'                      otherwise
+#'                      
+#' @return a character vector with all the databases available in the server
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 databases <- function(.connection, includeSystem=FALSE){
   
@@ -43,13 +45,13 @@ databases <- function(.connection, includeSystem=FALSE){
 
 
 
-#' Return a wrapper to the given database, if any for the given connection
-#'
-#' @param .connection the server connection to the ArangoDB instance
-#' @param name the name of the database to which connect to, the default is "_system" that is
-#'             the default of ArangoDB
+#' Return an object representing the database with the given name:
+#' the object must be used to handle requests to the database.
+#' 
+#' @param .connection the ArangoConnection handler
+#' @param name the name of the database, the default is "_system" that is ArangoDB default one
 #' @param createOnFail if the database were not found creates it. If the parameter is set to TRUE
-#'                     and the default database is requested the function fails. Default is FALSE             
+#'                     and the default database is requested the function fails. (default FALSE)             
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 database <- function(.connection, name="_system", createOnFail=FALSE){
   .check_connection(.connection)
@@ -74,8 +76,8 @@ database <- function(.connection, name="_system", createOnFail=FALSE){
 
 
 
-#' An ArangoDatabase is a class that wraps all the operations and interaction methods with
-#' a database existing within the specific ArangoConnection.
+#' An ArangoDatabase is a class where instances are used to handle the interaction with
+#' real databases on the server.
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 .aRango_database <- R6Class (
@@ -87,7 +89,7 @@ database <- function(.connection, name="_system", createOnFail=FALSE){
     #' @param connection an ArangoConnection with an ArangoDB server
     #' @param dbname the database name to which connect to 
     #'
-    initialize = function(connection, dbname, forceCreate=FALSE) {
+    initialize = function(connection, dbname) {
       
       if(is.null(connection)){
         stop("Connection is NULL, please provide a valid 'ArangoConnection'")
@@ -125,8 +127,9 @@ database <- function(.connection, name="_system", createOnFail=FALSE){
       private$id <- dbInformation$result$id
     },
     
-    #' Returns the name of the db wrapped by this object
+    #' Returns the name of the database
     #' 
+    #' @return the name of the database
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getName = function(){
       return(private$dbname)
@@ -134,13 +137,15 @@ database <- function(.connection, name="_system", createOnFail=FALSE){
     
     #' Returns TRUE iff this object is connected to a system database, FALSE otherwise
     #' 
+    #' @return TRUE iff this object is connected to a system database, FALSE otherwise
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     isSystemDatabase = function(){
       return(private$isSystem)
     },
     
-    #' Returns the identifier of the database within the connected server
+    #' Returns the identifier of the database
     #' 
+    #' @return the identifier of the database
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getId = function(){
       return(private$id)

@@ -3,8 +3,13 @@ library(httr)
 library(R6)
 
 
-#' Returns all the collections belonging to the giving database
+#' Returns all the collections contained in the given database
 #'
+#' @param .element a valid ArangoDatabase object
+#' @param includeSystem if TRUE include the system databases (default FALSE)
+#' 
+#' @return a character vector with all the collections contained in the given database
+#' 
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 collections <- function(.database, includeSystem=FALSE){
   collectionResults <- character()
@@ -36,21 +41,23 @@ collections <- function(.database, includeSystem=FALSE){
 
 
 
-#' Return a wrapper to the given database, if any for the given connection
+#' Return an object representing the collection with the given name into the specified the database:
+#' the object must be used to handle requests to the collection.
 #'
-#' @param .connection the server connection to the ArangoDB instance
-#' @param name the name of the collection to which connect to
-#' @param createOnFail if the collection were not found creates it. Default is FALSE
-#' @param createOptions if a list is provided tells which options must be used when creating the new collection.
-#'                      Valid options are 'waitForSync' (BOOLEAN), 'isSystem' (BOOLEAN), 'type' (collection_type).          
+#' @param .element a valid ArangoDatabase object
+#' @param name the name of the collection
+#' @param createOnFail if the collection were not found creates it (default FALSE)
+#' 
+#' @return an object representing the collection with the given name
+#' 
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-collection <- function(.database, name, createOnFail=FALSE, createOption = NULL){
+collection <- function(.database, name, createOnFail=FALSE){
   if(is.null(.database)){
     stop("Database is NULL, please provide a valid 'ArangoDatabase'")
   }
   
   if(class(.database)[1] != "ArangoDatabase"){
-    stop("Only 'ArangoDatabase' objects can be processed by aRango::databases")
+    stop("Only 'ArangoDatabase' objects can be processed by aRango::collection")
   }
   
   # If createOnFail first trying to create the collection: if a collection with same name
@@ -69,8 +76,8 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
 
 
 
-#' An ArangoCollection is a class that contains and manages a collection belonging to a database 
-#' in a server.
+#' An ArangoCollection is a class where instances are used to handle the interaction with
+#' real collections on the server.
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 .aRango_collection <- R6Class (
@@ -124,21 +131,23 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
       private$status <- collectionInformation$status
     },
     
-    #' Returns the name of the collection wrapped by this object
+    #' Returns the name of the collection handled by this object
     #' 
+    #' @return the name of the collection handled by this object
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getName = function(){
       return(private$collname)
     },
     
-    #' Returns TRUE iff this object is connected to a system collection, FALSE otherwise
+    #' Returns TRUE iff this object handles a system collection, FALSE otherwise
     #' 
+    #' @return TRUE iff this object handles a system collection, FALSE otherwise
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     isSystemCollection = function(){
       return(private$isSystem)
     },
     
-    #' Returns the identifier of the collection within the connected server
+    #' Returns the identifier of the collection
     #' 
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getId = function(){
@@ -153,8 +162,9 @@ collection <- function(.database, name, createOnFail=FALSE, createOption = NULL)
       return(private$status)
     },
     
-    #' Returns the number of the element of the collection
+    #' Returns the number of the element of this collection
     #' 
+    #' @return the number of the element of this collection
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getCount = function(){
       count <- 0

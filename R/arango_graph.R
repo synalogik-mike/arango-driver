@@ -64,8 +64,7 @@ graph <- function(.database, name, createOnFail = FALSE){
 
 #' Adds a set of verticies to the given graph
 #' 
-#' @param ... an undefined number of verticies belonging to some of the existing collection for this
-#'            database
+#' @param listOfEdges a list containing the edges to be added in the graph
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 add_to_graph <- function(.graph, listOfEdges){
@@ -143,6 +142,9 @@ remove_from_graph <- function(.graph, listOfEdges){
 
 #' Adds an edge definition to this graph 
 #' 
+#' @param fromCollection an ArangoCollection or a string that indicates the type of "_from" document for the edge
+#' @param relation a string that indicates the name of the edge to which add those collection _from/_to
+#' @param toCollection an ArangoCollection or a string that indicates the type of "_to" document for the edge
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 edge_definition <- function(.graph, fromCollection, relation, toCollection){
@@ -235,7 +237,7 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
   return(.graph)
 }
 
-#' Returns the entire graph passed as first argument
+#' Returns the graph vertices and edges for the given ArangoGraph
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 connections <- function(.graph){
@@ -365,9 +367,10 @@ connections <- function(.graph){
   )
 )
 
-#' The ArangoGraph class encapsulate the representation and the methods useful to manage
-#' the retrieval, representation and updates of specific node and vertices belonging to Arango graph.
+#' An ArangoGraph is a class where instances are used to handle the interaction with
+#' real graphs on the server.
 #'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 .aRango_graph <- R6Class (
   "ArangoGraph",
   
@@ -492,6 +495,9 @@ connections <- function(.graph){
       return(private$edges)
     },
     
+    #' Returns the orphan collections of the graph
+    #'
+    #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
     getOrphanCollections = function(){
       return(private$orphans)
     }
