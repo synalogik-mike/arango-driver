@@ -138,3 +138,6 @@ if(is.null(lovesCollection %>% find_edge(all.persons$john.doe, all.cities$London
 } else {
   print("Very very bad!")
 }
+
+# Retrieve the entire graph
+all.residence <- residenceGraph %>% connections()
