@@ -2,6 +2,8 @@ library(jsonlite)
 library(httr)
 library(R6)
 
+#' 
+#' @export
 .check_numeric_value <- function(value){
   if(!is.numeric(value)){
     stop("the value must be numeric")
@@ -329,7 +331,6 @@ delete <- function(.document){
 #' the retrieval, representation and updates of specific documents belonging to Arango collections.
 #' Each document is strictly related to some collection and within the environment SHOULD exists
 #' only one copy of this object.
-#'
 #'
 .aRango_document <- R6Class (
   "ArangoDocument",

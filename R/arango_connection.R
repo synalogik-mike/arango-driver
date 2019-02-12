@@ -25,6 +25,7 @@ connect <- function(host, port){
 #' or to interact in other ways with an existing instance of the db.
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+#'
 .aRango_connection <- R6Class (
   "ArangoConnection",
   

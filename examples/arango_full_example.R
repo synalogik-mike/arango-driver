@@ -1,7 +1,7 @@
 library(aRangodb)
 
 # Connect to an ArangoDB server up and running
-arangoConnection <- connect("138.201.225.72", "41000")
+arangoConnection <- connect(<ip>, <port>)
 
 # If you want to delete the existing database to have a clear environment
 sandboxArangoDb <- arangoConnection %>% database("sandbox")
@@ -22,7 +22,7 @@ cities <- sandboxArangoDb %>% collection("city", createOnFail = TRUE)
 
 # Now we have two different collections: we can populate with some fake data for subsequent examples
 persons %>% 
-  insert("john.doe") %>% 
+  insert(key = "john.doe") %>% 
   set(age=30, birthday="17/01/1989") %>% 
   execute()
 

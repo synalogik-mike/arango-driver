@@ -35,6 +35,7 @@ or to interact in other ways with an existing instance of the db.
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
+
 Creates a new connection to a server running ArangoDB
 }
 \keyword{datasets}

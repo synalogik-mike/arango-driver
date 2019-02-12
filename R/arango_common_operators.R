@@ -15,6 +15,7 @@ library(R6)
 #' @example age %lt% 33 gives "age < 33" 
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+#' @export
 `%lt%` <- function(expr, value) {
   return(paste0(substitute(expr)," < ",toString(.check_numeric_value(value))))
 }
@@ -28,6 +29,7 @@ library(R6)
 #' @example age %leq% 33 gives "age <= 33" 
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+#' @export
 `%leq%` <- function(expr, value) {
   return(paste0(substitute(expr)," <= ",toString(.check_numeric_value(value))))
 }
@@ -41,6 +43,7 @@ library(R6)
 #' @example age %gt% 33 gives "age > 33" 
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+#' @export
 `%gt%` <- function(expr, value) {
   return(paste0(substitute(expr)," > ",toString(.check_numeric_value(value))))
 }
@@ -54,6 +57,7 @@ library(R6)
 #' @example age %geq% 33 gives "age >= 33" 
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+#' @export
 `%geq%` <- function(expr, value) {
   return(paste0(substitute(expr)," >= ",toString(.check_numeric_value(value))))
 }
@@ -67,6 +71,7 @@ library(R6)
 #' @example v1 %->% v2 gives list(`_from`=v1, `_to`=v2) 
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+#' @export
 `%->%` <- function(v1, v2) {
   .check_document(v1, v2)
   
@@ -82,6 +87,7 @@ library(R6)
 #' @example v1 %<-% v2 gives list(`_from`=v2, `_to`=v1) 
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+#' @export
 `%<-%` <- function(v1, v2) {
   .check_document(v1, v2)
   

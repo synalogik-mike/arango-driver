@@ -1,1 +1,8 @@
+export("%->%")
+export("%<-%")
+export("%geq%")
+export("%gt%")
+export("%leq%")
+export("%lt%")
+export("%owns%")
 exportPattern("^[[:alpha:]]+")
