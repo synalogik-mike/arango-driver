@@ -1,13 +1,29 @@
 Package: aRangodb
 Type: Package
-Title: aRangodb
-Version: 0.0.1
+Version: 0.0.1-alpha
 Author: Gabriele Galatolo <ggalatolo@kode.srl>
 Maintainer: Gabriele Galatolo <ggalatolo@kode.srl>
-Description: The **aRangodb** package is the R driver for connect and use databases, collections and graphs from ArangoDb.
-    The project is still in a prototypal phase.
-License: What license is it under?
+Title: aRangodb
+Description: The aRangodb package is a library that allows the user
+             to connect, interacts and query an Arango database. The
+             Arango Server manages a NoSQL multi-model database. In particular it
+             combines the power of documents and key-value data with
+             the ability to model such data into graphs. Relations are then
+             exploited as edges connecting related data. The package also
+             implement some visualization functions to support the analysis
+             of data structured in this way. See the aRangodb website for more information, 
+             documentation and examples.
+License: AGPL-3 (to be confirmed)
 Encoding: UTF-8
 LazyData: true
-Suggests: httptest, testthat
+Imports:
+  dplyr,
+  httr,
+  jsonlite,
+  R6,
+  magrittr,
+  purrr
+Suggests: 
+  httptest, 
+  testthat
 RoxygenNote: 6.1.1
