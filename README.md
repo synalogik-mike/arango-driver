@@ -25,7 +25,7 @@ Relational databases are one of the most known technology developed and studied 
 Most of those technologies are also freely available as open-source projects, e.g. MySQL and PostgreSQL, and this made this techonolgy one of the most reliable in the data management task.
 Nonetheless those kind of databases have some drawback that for actual applications represent limitations and/or significant bottleneck for scalability or refactor of the applications themselves. For example the base elements are represented by the **relations**, i.e. tables containing set of records with fixed schema and types.
 The explosion of Big Data era and the quick availability of highly scalable techonologies, architectures and infrastructure made the management of data complex to manage.
-...
+TODO: to be completeds here
 In this context has been developed lots of NoSQL data managment systems: notable examples are MongoDB, for document oriented databases, or Neo4J, OrientDB and ArangoDB for graph databases.
 
 Link to other projects:
@@ -411,5 +411,12 @@ edge(doc1 %->% doc2, ...)   # where the variadic part can be assignments represe
 ```R
 character %owns% edge(doc1 %->% doc2)   # returns list(list(collection=character, edge=list(`_from`=doc1$getId(), `_to`=doc1$getId())))
 ```
+
+Find an existing edge, where the ArangoCollection represents a collection_type$EDGE:
+
+```R
+ArangoDocument <- ArangoCollection %>% find_edge(from=<ArangoDocument>, to=<ArangoDocument>)
+```
+
 ### Roadmap <a name="roadmap"></a>
 TODO
