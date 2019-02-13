@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_collection.R
 \name{collection}
 \alias{collection}
-\title{Return an object representing the collection with the given name into the specified the database:
-the object must be used to handle requests to the collection.}
+\title{Get or create a collection}
 \usage{
 collection(.database, name, createOnFail = FALSE)
 }

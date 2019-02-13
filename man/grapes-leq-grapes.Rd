@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%leq\%}
 \alias{\%leq\%}
-\title{Creates a string expression representing an AQL filter "less or equal than" clause for
-numeric values}
+\title{Comparison >= operator for aRangodb::filter()}
 \usage{
 expr \%leq\% value
 }

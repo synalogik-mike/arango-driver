@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_database.R
 \name{databases}
 \alias{databases}
-\title{Returns all the databases available in the server identified by the current connection}
+\title{Get all databases}
 \usage{
 databases(.connection, includeSystem = FALSE)
 }

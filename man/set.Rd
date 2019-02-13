@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{set}
 \alias{set}
-\title{Updates the attributes of the given document. When it is needed to made effective
-the updates must be call the execute() function.}
+\title{Update a document}
 \usage{
 set(.data, ...)
 }

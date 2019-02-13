@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{unset}
 \alias{unset}
-\title{Remove the assigments for the key passed as argument from the given document. 
-When it is needed to made effective the updates must be call the execute() function.}
+\title{Remove documents' properties}
 \usage{
 unset(.data, ...)
 }

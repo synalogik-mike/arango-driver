@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{execute}
 \alias{execute}
-\title{Excecute the update of a document on the server}
+\title{Execute document updates}
 \usage{
 execute(.data)
 }
@@ -13,7 +13,7 @@ execute(.data)
 the ArangoDocument updated but not yet consistent with the server image
 }
 \description{
-Excecute the update of a document on the server
+Excecutes the update of a document on the server
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

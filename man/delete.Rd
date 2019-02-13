@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{delete}
 \alias{delete}
-\title{Deletes the given document}
+\title{Delete document}
 \usage{
 delete(.document)
 }

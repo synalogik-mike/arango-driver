@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%geq\%}
 \alias{\%geq\%}
-\title{Creates a string expression representing an AQL filter "greater or equal than" clause for
-numeric values}
+\title{Comparison >= operator for aRangodb::filter()}
 \usage{
 expr \%geq\% value
 }

@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_aql.R
 \name{aql}
 \alias{aql}
-\title{Create an R function that interprets the statement as AQL query. Every
-bindvar of the statement will become a mandatory parameter of the function.}
+\title{AQL query wrapper}
 \usage{
 aql(.element, statement)
 }

@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%<-\%}
 \alias{\%<-\%}
-\title{Creates a list representing an empty edge with an outbound from v2 to v1.
-v1 %<-% v2 return list(`_from`=v2$getId(), `_to`=v1$getId())}
+\title{Inbound edge operator}
 \usage{
 v1 \%<-\% v2
 }

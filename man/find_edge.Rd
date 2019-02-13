@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{find_edge}
 \alias{find_edge}
-\title{Returns the edge in this collection connecting the documents passed as argument, if any.}
+\title{Find edge document}
 \usage{
 find_edge(.collection, from, to)
 }

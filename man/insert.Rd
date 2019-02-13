@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{insert}
 \alias{insert}
-\title{Creates a new document of this collection and returns it}
+\title{Create new documents}
 \usage{
 insert(.collection, key)
 }

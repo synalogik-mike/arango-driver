@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_collection.R
 \name{collections}
 \alias{collections}
-\title{Returns all the collections contained in the given database}
+\title{Get all collections name}
 \usage{
 collections(.database, includeSystem = FALSE)
 }

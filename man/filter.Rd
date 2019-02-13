@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{filter}
 \alias{filter}
-\title{Filter the documents from a collection}
+\title{Filter documents}
 \usage{
 filter(.collection, ...)
 }
@@ -16,7 +16,7 @@ filters given using the %gt%, %lt%, %geq%, %leq% operators.}
 the documents that matches the given filters
 }
 \description{
-Filter the documents from a collection
+Filters the documents from a collection
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

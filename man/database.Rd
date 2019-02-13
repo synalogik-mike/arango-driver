@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_database.R
 \name{database}
 \alias{database}
-\title{Return an object representing the database with the given name:
-the object must be used to handle requests to the database.}
+\title{Get or create database}
 \usage{
 database(.connection, name = "_system", createOnFail = FALSE)
 }

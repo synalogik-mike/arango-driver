@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_graph.R
 \name{remove_from_graph}
 \alias{remove_from_graph}
-\title{Removes a collection of elements from the given graph.}
+\title{Edges removal}
 \usage{
 remove_from_graph(.graph, listOfEdges)
 }

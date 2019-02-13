@@ -2,9 +2,12 @@
 % Please edit documentation in R/arango_graph.R
 \name{graphs}
 \alias{graphs}
-\title{Returns all the graphs belonging to the giving database}
+\title{Get all graphs}
 \usage{
 graphs(.database)
+}
+\arguments{
+\item{.database}{the AranagoDatabase handler}
 }
 \description{
 Returns all the graphs belonging to the giving database

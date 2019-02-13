@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_common_functions.R
 \name{drop}
 \alias{drop}
-\title{Drop an existing database, graph or collection}
+\title{Drop an handler}
 \usage{
 drop(.element)
 }

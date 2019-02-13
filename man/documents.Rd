@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_documents.R
 \name{documents}
 \alias{documents}
-\title{Returns all the documents belonging to the given collection}
+\title{Get all documents}
 \usage{
 documents(.collection)
 }

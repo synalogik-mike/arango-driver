@@ -2,12 +2,13 @@
 % Please edit documentation in R/arango_graph.R
 \name{connections}
 \alias{connections}
-\title{Returns the graph vertices and edges for the given ArangoGraph}
+\title{Get complete graph}
 \usage{
 connections(.graph)
 }
 \description{
-Returns the graph vertices and edges for the given ArangoGraph
+Returns the graph vertices and edges for the given ArangoGraph (BE CAREFUL, the grap may
+ contains lot of elements)
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

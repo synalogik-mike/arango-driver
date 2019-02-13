@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_graph.R
 \name{edge_definition}
 \alias{edge_definition}
-\title{Adds an edge definition to this graph}
+\title{Define new edges types}
 \usage{
 edge_definition(.graph, fromCollection, relation, toCollection)
 }

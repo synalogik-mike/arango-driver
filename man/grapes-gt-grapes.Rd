@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%gt\%}
 \alias{\%gt\%}
-\title{Creates a string expression representing an AQL filter "greater than" clause for
-numeric values}
+\title{Comparison > operator for aRangodb::filter()}
 \usage{
 expr \%gt\% value
 }

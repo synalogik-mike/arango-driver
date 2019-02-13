@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%owns\%}
 \alias{\%owns\%}
-\title{Assign a relation, i.e. an edge collection, to an anonymous edge, i.e. a list containing at least _from/_to
-attributes.}
+\title{Concrete edge assigment}
 \usage{
 relation \%owns\% edgeDefinition
 }

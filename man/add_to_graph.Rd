@@ -2,15 +2,17 @@
 % Please edit documentation in R/arango_graph.R
 \name{add_to_graph}
 \alias{add_to_graph}
-\title{Adds a set of verticies to the given graph}
+\title{Edges insertion}
 \usage{
 add_to_graph(.graph, listOfEdges)
 }
 \arguments{
+\item{.graph}{an ArangoGraph handler}
+
 \item{listOfEdges}{a list containing the edges to be added in the graph}
 }
 \description{
-Adds a set of verticies to the given graph
+Adds a set of edges to the given graph
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
