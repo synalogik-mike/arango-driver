@@ -6,6 +6,15 @@
 \usage{
 delete(.document)
 }
+\arguments{
+\item{.document}{the ArangoDocument to be removed from the collection}
+}
+\value{
+TRUE iff the document has been removed from the collection
+}
 \description{
 Deletes the given document
+}
+\author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }

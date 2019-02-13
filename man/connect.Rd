@@ -11,6 +11,9 @@ connect(host, port)
 
 \item{port}{the server port where the ArangoDB server is up and running}
 }
+\value{
+an ArangoConnection object used to handle requests to the given Arango server
+}
 \description{
 Creates a connection object to be used for subsequent requests to the given server.
 }

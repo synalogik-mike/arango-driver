@@ -2,10 +2,19 @@
 % Please edit documentation in R/arango_documents.R
 \name{execute}
 \alias{execute}
-\title{Excecute the update of a function.}
+\title{Excecute the update of a document on the server}
 \usage{
 execute(.data)
 }
+\arguments{
+\item{the}{ArangoDocument to be updated on the server}
+}
+\value{
+the ArangoDocument updated but not yet consistent with the server image
+}
 \description{
-Excecute the update of a function.
+Excecute the update of a document on the server
+}
+\author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }

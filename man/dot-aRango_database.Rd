@@ -3,8 +3,8 @@
 \docType{data}
 \name{.aRango_database}
 \alias{.aRango_database}
-\title{An ArangoDatabase is a class that wraps all the operations and interaction methods with
-a database existing within the specific ArangoConnection.}
+\title{An ArangoDatabase is a class where instances are used to handle the interaction with
+real databases on the server.}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 .aRango_database
@@ -14,11 +14,18 @@ a database existing within the specific ArangoConnection.}
 
 \item{dbname}{the database name to which connect to 
 
-Returns the name of the db wrapped by this object}
+Returns the name of the database}
+}
+\value{
+the name of the database
+
+TRUE iff this object is connected to a system database, FALSE otherwise
+
+the identifier of the database
 }
 \description{
-An ArangoDatabase is a class that wraps all the operations and interaction methods with
-a database existing within the specific ArangoConnection.
+An ArangoDatabase is a class where instances are used to handle the interaction with
+real databases on the server.
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
@@ -28,7 +35,7 @@ Gabriele Galatolo, g.galatolo(at)kode.srl
 Returns TRUE iff this object is connected to a system database, FALSE otherwise
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
-Returns the identifier of the database within the connected server
+Returns the identifier of the database
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
 }

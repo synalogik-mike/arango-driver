@@ -7,9 +7,12 @@
 insert(.collection, key)
 }
 \arguments{
-\item{.collection}{the collection where add the new document}
+\item{.collection}{the ArangoCollection that handles the collection to be updated}
 
 \item{key}{the key that will be used as unique identifier within the collection for the new document}
+}
+\value{
+an ArangoDocument representing the new document data
 }
 \description{
 Creates a new document of this collection and returns it

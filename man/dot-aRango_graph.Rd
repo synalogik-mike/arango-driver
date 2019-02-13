@@ -3,19 +3,22 @@
 \docType{data}
 \name{.aRango_graph}
 \alias{.aRango_graph}
-\title{The ArangoGraph class encapsulate the representation and the methods useful to manage
-the retrieval, representation and updates of specific node and vertices belonging to Arango graph.}
+\title{An ArangoGraph is a class where instances are used to handle the interaction with
+real graphs on the server.}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 .aRango_graph
 }
 \description{
-Creates a new graph from a one existing on the database
-}
-\details{
-Returns the name of the graph
+An ArangoGraph is a class where instances are used to handle the interaction with
+real graphs on the server.
 }
 \author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Creates a new graph from a one existing on the database
+
+Returns the name of the graph
+
 Gabriele Galatolo, g.galatolo(at)kode.srl
 Returns the identifier of the graph
 
@@ -24,6 +27,9 @@ Returns the current revision of the graph
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
 Returns the edges definition of the graph
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns the orphan collections of the graph
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
 }

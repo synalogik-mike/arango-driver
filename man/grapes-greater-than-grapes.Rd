@@ -11,6 +11,9 @@ v1 \%->\% v2
 
 \item{v2}{destination document of the edge}
 }
+\value{
+a list containing the `_from` and the `_to` attributes needed for an edge
+}
 \description{
 Creates a list representing an empty edge with an outbound from v1 to v2
 }

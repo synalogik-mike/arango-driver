@@ -3,8 +3,8 @@
 \docType{data}
 \name{.aRango_collection}
 \alias{.aRango_collection}
-\title{An ArangoCollection is a class that contains and manages a collection belonging to a database 
-in a server.}
+\title{An ArangoCollection is a class where instances are used to handle the interaction with
+real collections on the server.}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 .aRango_collection
@@ -21,9 +21,16 @@ with an underscore}
 \item{type}{(from Arango doc) the type of the collection to create. The following values are valid,
 collection_type$DOCUMENT or collection_type$EDGE}
 }
+\value{
+the name of the collection handled by this object
+
+TRUE iff this object handles a system collection, FALSE otherwise
+
+the number of the element of this collection
+}
 \description{
-An ArangoCollection is a class that contains and manages a collection belonging to a database 
-in a server.
+An ArangoCollection is a class where instances are used to handle the interaction with
+real collections on the server.
 }
 \seealso{
 collection_status enumeration
@@ -35,19 +42,19 @@ Gabriele Galatolo, g.galatolo(at)kode.srl
 Creates a new collection belonging to an existing database in the server
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
-Returns the name of the collection wrapped by this object
+Returns the name of the collection handled by this object
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
-Returns TRUE iff this object is connected to a system collection, FALSE otherwise
+Returns TRUE iff this object handles a system collection, FALSE otherwise
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
-Returns the identifier of the collection within the connected server
+Returns the identifier of the collection
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
 Returns the status of the collection
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
-Returns the number of the element of the collection
+Returns the number of the element of this collection
 
 Gabriele Galatolo, g.galatolo(at)kode.srl
 Returns the type of the collection

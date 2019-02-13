@@ -7,8 +7,7 @@
 add_to_graph(.graph, listOfEdges)
 }
 \arguments{
-\item{...}{an undefined number of verticies belonging to some of the existing collection for this
-database}
+\item{listOfEdges}{a list containing the edges to be added in the graph}
 }
 \description{
 Adds a set of verticies to the given graph

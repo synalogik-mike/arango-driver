@@ -2,12 +2,15 @@
 % Please edit documentation in R/arango_documents.R
 \name{documents}
 \alias{documents}
-\title{Returns all the documents belonging to the giving collections}
+\title{Returns all the documents belonging to the given collection}
 \usage{
 documents(.collection)
 }
+\value{
+all the documents belonging to the given collection
+}
 \description{
-Returns all the documents belonging to the giving collections
+Returns all the documents belonging to the given collection
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

@@ -14,19 +14,13 @@ or to interact in other ways with an existing instance of the db.}
 \item{host}{the address on which the Arango instance is running}
 
 \item{port}{the port on the server on which the Arango instance is running}
+}
+\value{
+the server address where the Arango instance is running
 
-\item{database}{OPTIONAL, the name of the database to which connect
+the version of the Arango instance
 
-Returns the server indicated by the instance running on this connection
-
-
-Returns the version of the server indicated by the instance running on this connection
-
-
-Returns the license indicated by the instance running on this connection
-
-
-Returns a string in the form of "http://<localhost>:<port>" useful to execute new requests}
+the license of the Arango instance
 }
 \description{
 An ArangoConnection is a class that contains and manages the connection with one specific 
@@ -37,5 +31,19 @@ or to interact in other ways with an existing instance of the db.
 Gabriele Galatolo, g.galatolo(at)kode.srl
 
 Creates a new connection to a server running ArangoDB
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns the server address where the Arango instance is running
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns the version of the Arango instance
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns the license of the Arango instance
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns a string in the form of "http://<localhost>:<port>" useful to execute new requests
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }
 \keyword{datasets}

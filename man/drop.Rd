@@ -2,15 +2,18 @@
 % Please edit documentation in R/arango_common_functions.R
 \name{drop}
 \alias{drop}
-\title{Drop an existing database or collection}
+\title{Drop an existing database, graph or collection}
 \usage{
 drop(.element)
 }
 \arguments{
-\item{.element}{can be an ArangoDatabase OR ArangoCollection, other objects raise exception}
+\item{.element}{can be an ArangoDatabase or an ArangoCollection or an ArangoGraph}
+}
+\value{
+TRUE iff the element has been deleted, FALSE otherwise
 }
 \description{
-Drop an existing database or collection
+Drop an existing database, graph or collection
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

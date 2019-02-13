@@ -6,6 +6,13 @@
 \usage{
 edge_definition(.graph, fromCollection, relation, toCollection)
 }
+\arguments{
+\item{fromCollection}{an ArangoCollection or a string that indicates the type of "_from" document for the edge}
+
+\item{relation}{a string that indicates the name of the edge to which add those collection _from/_to}
+
+\item{toCollection}{an ArangoCollection or a string that indicates the type of "_to" document for the edge}
+}
 \description{
 Adds an edge definition to this graph
 }

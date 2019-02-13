@@ -2,21 +2,22 @@
 % Please edit documentation in R/arango_database.R
 \name{database}
 \alias{database}
-\title{Return a wrapper to the given database, if any for the given connection}
+\title{Return an object representing the database with the given name:
+the object must be used to handle requests to the database.}
 \usage{
 database(.connection, name = "_system", createOnFail = FALSE)
 }
 \arguments{
-\item{.connection}{the server connection to the ArangoDB instance}
+\item{.connection}{the ArangoConnection handler}
 
-\item{name}{the name of the database to which connect to, the default is "_system" that is
-the default of ArangoDB}
+\item{name}{the name of the database, the default is "_system" that is ArangoDB default one}
 
 \item{createOnFail}{if the database were not found creates it. If the parameter is set to TRUE
-and the default database is requested the function fails. Default is FALSE}
+and the default database is requested the function fails. (default FALSE)}
 }
 \description{
-Return a wrapper to the given database, if any for the given connection
+Return an object representing the database with the given name:
+the object must be used to handle requests to the database.
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

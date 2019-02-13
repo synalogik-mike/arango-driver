@@ -2,18 +2,21 @@
 % Please edit documentation in R/arango_database.R
 \name{databases}
 \alias{databases}
-\title{Returns all the databases available on the server identified by the current connection}
+\title{Returns all the databases available in the server identified by the current connection}
 \usage{
 databases(.connection, includeSystem = FALSE)
 }
 \arguments{
-\item{.connection}{the server connection to the ArangoDB instance}
+\item{.connection}{the ArangoConnection handler}
 
 \item{includeSystem}{TRUE iff the system databases must be included in the results, FALSE
 otherwise}
 }
+\value{
+a character vector with all the databases available in the server
+}
 \description{
-Returns all the databases available on the server identified by the current connection
+Returns all the databases available in the server identified by the current connection
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

@@ -3,20 +3,18 @@
 \name{aql}
 \alias{aql}
 \title{Create an R function that interprets the statement as AQL query. Every
-bindvar of the statement representing the AQL query will become a mandatory
-parameter of the function.}
+bindvar of the statement will become a mandatory parameter of the function.}
 \usage{
 aql(.element, statement)
 }
 \arguments{
-\item{.element}{a valid database for this server}
+\item{.element}{a valid ArangoDatabase object}
 
 \item{statement}{an AQL statement}
 }
 \description{
 Create an R function that interprets the statement as AQL query. Every
-bindvar of the statement representing the AQL query will become a mandatory
-parameter of the function.
+bindvar of the statement will become a mandatory parameter of the function.
 }
 \examples{
 paperWithTitle <- db \%>\% aql("FOR p IN Papers FILTER p.title==@search RETURN p")

@@ -2,10 +2,23 @@
 % Please edit documentation in R/arango_documents.R
 \name{find_edge}
 \alias{find_edge}
-\title{Returns the edge in this collection connecting the document passed as argument, if any.}
+\title{Returns the edge in this collection connecting the documents passed as argument, if any.}
 \usage{
 find_edge(.collection, from, to)
 }
+\arguments{
+\item{.collection}{the ArangoCollection that handles the collection}
+
+\item{from}{the document id ("collection/key") that represents the _from vertex}
+
+\item{to}{the document id ("collection/key") that represents the _to vertex}
+}
+\value{
+the document representing the edge between the given documents
+}
 \description{
-Returns the edge in this collection connecting the document passed as argument, if any.
+Returns the edge in this collection connecting the documents passed as argument, if any.
+}
+\author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }

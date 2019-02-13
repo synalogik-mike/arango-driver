@@ -2,17 +2,19 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%geq\%}
 \alias{\%geq\%}
-\title{Creates a string expression representing a filter clause for AQL}
+\title{Creates a string expression representing an AQL filter "greater or equal than" clause for
+numeric values}
 \usage{
 expr \%geq\% value
 }
 \arguments{
-\item{expr}{the expression to left as given in the resulting string}
+\item{expr}{the expression to be left as given in the resulting string}
 
 \item{value}{the expression to be evaluated and printed in the resulting string}
 }
 \description{
-Creates a string expression representing a filter clause for AQL
+Creates a string expression representing an AQL filter "greater or equal than" clause for
+numeric values
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

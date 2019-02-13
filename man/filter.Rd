@@ -6,6 +6,18 @@
 \usage{
 filter(.collection, ...)
 }
+\arguments{
+\item{.collection}{the ArangoCollection that handles the collection}
+
+\item{...}{a list of assigment, will be translated as "id==value", or comparison
+filters given using the %gt%, %lt%, %geq%, %leq% operators.}
+}
+\value{
+the documents that matches the given filters
+}
 \description{
 Filter the documents from a collection
+}
+\author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }

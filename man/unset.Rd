@@ -2,10 +2,23 @@
 % Please edit documentation in R/arango_documents.R
 \name{unset}
 \alias{unset}
-\title{Deletes some values from the given data}
+\title{Remove the assigments for the key passed as argument from the given document. 
+When it is needed to made effective the updates must be call the execute() function.}
 \usage{
 unset(.data, ...)
 }
+\arguments{
+\item{.data}{the document to be updated}
+
+\item{...}{keys to be removed from the given document}
+}
+\value{
+the ArangoDocument updated but not yet consistent with the server image
+}
 \description{
-Deletes some values from the given data
+Remove the assigments for the key passed as argument from the given document. 
+When it is needed to made effective the updates must be call the execute() function.
+}
+\author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }

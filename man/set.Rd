@@ -2,10 +2,23 @@
 % Please edit documentation in R/arango_documents.R
 \name{set}
 \alias{set}
-\title{Updates a document with the given parameters}
+\title{Updates the attributes of the given document. When it is needed to made effective
+the updates must be call the execute() function.}
 \usage{
-set(.data, ..., .updateOnly = FALSE)
+set(.data, ...)
+}
+\arguments{
+\item{.data}{the document to be updated}
+
+\item{...}{new or updated assignment to be added to the given document}
+}
+\value{
+the ArangoDocument updated but not yet consistent with the server image
 }
 \description{
-Updates a document with the given parameters
+Updates the attributes of the given document. When it is needed to made effective
+the updates must be call the execute() function.
+}
+\author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }

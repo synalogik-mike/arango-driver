@@ -2,12 +2,20 @@
 % Please edit documentation in R/arango_collection.R
 \name{collections}
 \alias{collections}
-\title{Returns all the collections belonging to the giving database}
+\title{Returns all the collections contained in the given database}
 \usage{
 collections(.database, includeSystem = FALSE)
 }
+\arguments{
+\item{includeSystem}{if TRUE include the system databases (default FALSE)}
+
+\item{.element}{a valid ArangoDatabase object}
+}
+\value{
+a character vector with all the collections contained in the given database
+}
 \description{
-Returns all the collections belonging to the giving database
+Returns all the collections contained in the given database
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

@@ -3,15 +3,53 @@
 \docType{data}
 \name{.aRango_document}
 \alias{.aRango_document}
-\title{The ArangoDocument class encapsulate the representation and the methods useful to manage
-the retrieval, representation and updates of specific documents belonging to Arango collections.
-Each document is strictly related to some collection and within the environment SHOULD exists
-only one copy of this object.}
+\title{An ArangoDocument contains the data regarding a document that belongs to some
+collection in the Arango Server instance. The object allows the user to get/set
+and find other information regarding the document in the server.}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 .aRango_document
 }
+\value{
+the name of the collection to which the document belongs
+
+the id of the document ("collection/key")
+
+the key of the document
+
+the current revision of the document
+
+a list containing the key-values of the document
+
+a character vector containing the available keys for this document
+}
 \description{
+An ArangoDocument contains the data regarding a document that belongs to some
+collection in the Arango Server instance. The object allows the user to get/set
+and find other information regarding the document in the server.
+}
+\author{
+Gabriele Galatolo, g.galatolo(at)kode.srl
 Initialize the arango document
+
+
+Returns the name of the collection to which the document belongs
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns the id of the document ("collection/key")
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns the key of the document
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns the current revision of the document
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns a list containing the key-values of the document
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
+Returns a character vector containing the available keys for this document
+
+Gabriele Galatolo, g.galatolo(at)kode.srl
 }
 \keyword{datasets}

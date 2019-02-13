@@ -2,22 +2,24 @@
 % Please edit documentation in R/arango_collection.R
 \name{collection}
 \alias{collection}
-\title{Return a wrapper to the given database, if any for the given connection}
+\title{Return an object representing the collection with the given name into the specified the database:
+the object must be used to handle requests to the collection.}
 \usage{
-collection(.database, name, createOnFail = FALSE, createOption = NULL)
+collection(.database, name, createOnFail = FALSE)
 }
 \arguments{
-\item{name}{the name of the collection to which connect to}
+\item{name}{the name of the collection}
 
-\item{createOnFail}{if the collection were not found creates it. Default is FALSE}
+\item{createOnFail}{if the collection were not found creates it (default FALSE)}
 
-\item{.connection}{the server connection to the ArangoDB instance}
-
-\item{createOptions}{if a list is provided tells which options must be used when creating the new collection.
-Valid options are 'waitForSync' (BOOLEAN), 'isSystem' (BOOLEAN), 'type' (collection_type).}
+\item{.element}{a valid ArangoDatabase object}
+}
+\value{
+an object representing the collection with the given name
 }
 \description{
-Return a wrapper to the given database, if any for the given connection
+Return an object representing the collection with the given name into the specified the database:
+the object must be used to handle requests to the collection.
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
