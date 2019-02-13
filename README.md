@@ -54,7 +54,12 @@ In order to understand the examples in the next sections it is desirable underst
 * **AQL** https://docs.arangodb.com/3.4/AQL/
 
 ## Install the package <a name="installation"></a>
-Explain how to install the package from GitHub
+To install the aRangodb package you can run the following commands.
+
+```R
+devtools::install_gitlab("ggalatolo/arango-driver")
+library(aRangodb)
+```
 
 ## Usage examples <a name="usage"></a>
 In the following sections are shown usage's examples of this driver. The conmplete example, as R script, is located into the repository at the path "examples/arango_full_example.R".
