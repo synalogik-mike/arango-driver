@@ -2,7 +2,8 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%<-\%}
 \alias{\%<-\%}
-\title{Creates a list representing an empty edge with an outbound from v2 to v1}
+\title{Creates a list representing an empty edge with an outbound from v2 to v1.
+v1 %<-% v2 return list(`_from`=v2$getId(), `_to`=v1$getId())}
 \usage{
 v1 \%<-\% v2
 }
@@ -15,7 +16,8 @@ v1 \%<-\% v2
 a list containing the `_from` and the `_to` attributes needed for an edge
 }
 \description{
-Creates a list representing an empty edge with an outbound from v2 to v1
+Creates a list representing an empty edge with an outbound from v2 to v1.
+v1 %<-% v2 return list(`_from`=v2$getId(), `_to`=v1$getId())
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

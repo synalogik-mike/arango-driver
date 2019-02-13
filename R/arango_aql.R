@@ -12,6 +12,8 @@ library(R6)
   }
 }
 
+#' AQL query wrapper
+#' 
 #' Create an R function that interprets the statement as AQL query. Every
 #' bindvar of the statement will become a mandatory parameter of the function.
 #'

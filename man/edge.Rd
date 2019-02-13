@@ -2,8 +2,7 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{edge}
 \alias{edge}
-\title{Creates a list with the _from/_to indication used to define an anonymous edge, i.e. still without
-relation for which the edge is defined. If indicated, the attributes (in key-value form) for the resulting anonymous edge}
+\title{Anonymous edge creator}
 \usage{
 edge(definition, ...)
 }
@@ -15,6 +14,10 @@ edge(definition, ...)
 \description{
 Creates a list with the _from/_to indication used to define an anonymous edge, i.e. still without
 relation for which the edge is defined. If indicated, the attributes (in key-value form) for the resulting anonymous edge
+}
+\examples{
+edge(data_science \%->\% math)
+
 }
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl

@@ -4,7 +4,11 @@ library(R6)
 library(magrittr)
 library(purrr)
 
+#' Get all graphs
+#' 
 #' Returns all the graphs belonging to the giving database
+#'
+#' @param .database the AranagoDatabase handler
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 graphs <- function(.database){
@@ -62,8 +66,11 @@ graph <- function(.database, name, createOnFail = FALSE){
 }
 
 
-#' Adds a set of verticies to the given graph
+#' Edges insertion
 #' 
+#' Adds a set of edges to the given graph
+#' 
+#' @param .graph an ArangoGraph handler
 #' @param listOfEdges a list containing the edges to be added in the graph
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
@@ -93,6 +100,8 @@ add_to_graph <- function(.graph, listOfEdges){
 
 
 
+#' Edges removal
+#' 
 #' Removes a collection of elements from the given graph.
 #' 
 #' @param .graph the graph affected by the deletion
@@ -140,6 +149,8 @@ remove_from_graph <- function(.graph, listOfEdges){
 
 
 
+#' Define new edges types
+#' 
 #' Adds an edge definition to this graph 
 #' 
 #' @param fromCollection an ArangoCollection or a string that indicates the type of "_from" document for the edge
@@ -237,7 +248,10 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
   return(.graph)
 }
 
-#' Returns the graph vertices and edges for the given ArangoGraph
+#' Get complete graph
+#' 
+#' Returns the graph vertices and edges for the given ArangoGraph (BE CAREFUL, the grap may
+#'  contains lot of elements)
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 connections <- function(.graph){

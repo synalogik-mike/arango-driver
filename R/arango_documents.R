@@ -2,8 +2,7 @@ library(jsonlite)
 library(httr)
 library(R6)
 
-#' 
-#' @export
+
 .check_numeric_value <- function(value){
   if(!is.numeric(value)){
     stop("the value must be numeric")
@@ -11,6 +10,8 @@ library(R6)
   return(value)
 }
 
+#' Get all documents
+#' 
 #' Returns all the documents belonging to the given collection
 #'
 #' @return all the documents belonging to the given collection
@@ -66,6 +67,8 @@ documents <- function(.collection){
 
 
 
+#' Create new documents
+#' 
 #' Creates a new document of this collection and returns it
 #'
 #' @param .collection the ArangoCollection that handles the collection to be updated
@@ -105,6 +108,8 @@ insert <- function(.collection, key){
 
 
 
+#' Update a document
+#' 
 #' Updates the attributes of the given document. When it is needed to made effective
 #' the updates must be call the execute() function.
 #'
@@ -132,6 +137,8 @@ set <- function(.data, ...){
 
 
 
+#' Remove documents' properties
+#' 
 #' Remove the assigments for the key passed as argument from the given document. 
 #' When it is needed to made effective the updates must be call the execute() function.
 #'
@@ -157,7 +164,9 @@ unset <- function(.data, ...){
 
 
 
-#' Excecute the update of a document on the server
+#' Execute document updates
+#' 
+#' Excecutes the update of a document on the server
 #'
 #' @param the ArangoDocument to be updated on the server
 #'
@@ -194,6 +203,8 @@ execute <- function(.data){
   return(.data)
 }
 
+#' Find edge document
+#' 
 #' Returns the edge in this collection connecting the documents passed as argument, if any.
 #' 
 #' @param .collection the ArangoCollection that handles the collection
@@ -232,10 +243,12 @@ find_edge <- function(.collection, from, to){
   }
 }
 
-#' Filter the documents from a collection
+#' Filter documents
+#' 
+#' Filters the documents from a collection
 #'
 #' @param .collection the ArangoCollection that handles the collection
-#' @param ... a list of assigment, will be translated as "id==value", or comparison
+#' @param ... a list of assigment, will be translated as "id==val", or comparison
 #' filters given using the %gt%, %lt%, %geq%, %leq% operators.
 #' 
 #' @return the documents that matches the given filters
@@ -334,6 +347,8 @@ filter <- function(.collection, ...){
 
 
 
+#' Delete document
+#' 
 #' Deletes the given document
 #'
 #' @param .document the ArangoDocument to be removed from the collection

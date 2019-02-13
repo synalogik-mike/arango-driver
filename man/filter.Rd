@@ -9,7 +9,7 @@ filter(.collection, ...)
 \arguments{
 \item{.collection}{the ArangoCollection that handles the collection}
 
-\item{...}{a list of assigment, will be translated as "id==value", or comparison
+\item{...}{a list of assigment, will be translated as "id==val", or comparison
 filters given using the %gt%, %lt%, %geq%, %leq% operators.}
 }
 \value{

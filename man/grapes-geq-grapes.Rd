@@ -16,6 +16,10 @@ expr \%geq\% value
 Creates a string expression representing an AQL filter "greater or equal than" clause for
 numeric values
 }
+\examples{
+age \%geq\% 33 gives "age >= 33" 
+
+}
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
 }

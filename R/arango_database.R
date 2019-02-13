@@ -14,6 +14,8 @@ library(magrittr)
 }
 
 
+#' Get all databases
+#' 
 #' Returns all the databases available in the server identified by the current connection 
 #'
 #' @param .connection the ArangoConnection handler
@@ -45,6 +47,8 @@ databases <- function(.connection, includeSystem=FALSE){
 
 
 
+#' Get or create database
+#' 
 #' Return an object representing the database with the given name:
 #' the object must be used to handle requests to the database.
 #' 

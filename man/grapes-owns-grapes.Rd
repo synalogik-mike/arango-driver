@@ -16,6 +16,11 @@ relation \%owns\% edgeDefinition
 Assign a relation, i.e. an edge collection, to an anonymous edge, i.e. a list containing at least _from/_to
 attributes.
 }
+\examples{
+"requires" \%:\% edge(data_science \%->\% math) returns a list(collection=..., edge=...) where 
+edge contains a _from and a _to valid verticies
+
+}
 \seealso{
 edge
 }

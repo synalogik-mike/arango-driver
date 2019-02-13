@@ -16,6 +16,10 @@ expr \%leq\% value
 Creates a string expression representing an AQL filter "less or equal than" clause for
 numeric values
 }
+\examples{
+age \%leq\% 33 gives "age <= 33" 
+
+}
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
 }

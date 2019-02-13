@@ -16,6 +16,10 @@ expr \%lt\% value
 Creates a string expression representing an AQL filter "less than" clause for
 numeric values
 }
+\examples{
+age \%lt\% 33 gives "age < 33" 
+
+}
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
 }

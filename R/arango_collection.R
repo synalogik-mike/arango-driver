@@ -3,6 +3,8 @@ library(httr)
 library(R6)
 
 
+#' Get all collections name
+#'
 #' Returns all the collections contained in the given database
 #'
 #' @param .element a valid ArangoDatabase object
@@ -41,6 +43,8 @@ collections <- function(.database, includeSystem=FALSE){
 
 
 
+#' Get or create a collection
+#' 
 #' Return an object representing the collection with the given name into the specified the database:
 #' the object must be used to handle requests to the collection.
 #'

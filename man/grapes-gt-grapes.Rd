@@ -16,6 +16,11 @@ expr \%gt\% value
 Creates a string expression representing an AQL filter "greater than" clause for
 numeric values
 }
+\examples{
+ 
+age \%gt\% 33 gives "age > 33" 
+
+}
 \author{
 Gabriele Galatolo, g.galatolo(at)kode.srl
 }

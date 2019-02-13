@@ -2,6 +2,8 @@
 # COMMON FUNCTIONS, i.e. set of functions that have the same signature in different context
 # =========================================================================================
 
+#' Drop an handler
+#' 
 #' Drop an existing database, graph or collection
 #'
 #' @param .element can be an ArangoDatabase or an ArangoCollection or an ArangoGraph
