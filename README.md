@@ -47,6 +47,12 @@ To setup an ArangoDB instance using the stand-alone version you can [follow thos
 ## ArangoDB basic concepts <a name="arangoconcepts"></a>
 In order to understand the examples in the next sections it is desirable understand some basic concepts of the behaving and logic of ArangoDB. Each instance of an ArangoDB server can store multiple databases: even if you don't create any database, there is the default one named **\_system**. Every operation you invoke that is invoked with no database specified affects the **\_system** one. It is suggested to not use this database for applications.
 
+####References
+
+* **Quick introduction** https://docs.arangodb.com/3.4/Manual/GettingStarted/DatabasesCollectionsDocuments.html
+* **Core Concepts** https://docs.arangodb.com/3.4/Manual/DataModeling/
+* **AQL** https://docs.arangodb.com/3.4/AQL/
+
 ## Install the package <a name="installation"></a>
 Explain how to install the package from GitHub
 
