@@ -69,7 +69,7 @@ database <- function(.connection, name="_system", createOnFail=FALSE){
     response <- httr::POST(databaseInfoRequest, encode = "json", body = list(name=name))
   }
   
-  db <- .aRango_database$new(.connection, name, forceCreate = createOnFail)
+  db <- .aRango_database$new(.connection, name)
   
   return(db)
 }
