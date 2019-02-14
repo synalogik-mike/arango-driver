@@ -22,7 +22,8 @@ Imports:
   jsonlite,
   R6,
   magrittr,
-  purrr
+  purrr,
+  visNetwork
 Suggests: 
   httptest, 
   testthat
