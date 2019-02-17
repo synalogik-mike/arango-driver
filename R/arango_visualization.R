@@ -61,6 +61,20 @@ library(RColorBrewer)
   }
 }
 
+#' Set visualization edges options
+#'
+#' Allows the user to set some options regarding the visualization of the edges of the graph
+#'
+#' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
+#' options. Those lists are automatically created when this method is inside a pre-visualization
+#' pipe. 
+#' @param directions a list containing the direction to be visualized on the edge for each type
+#' of relation contained into the graph, e.g. in a graph containing "friend_of" and "spouse" this parameter
+#' can be list(friend_of="to", spouse="from")
+#'
+#' @return a list containing the visualization options updated
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 gedges <- function(.element, directions = NULL){
   netOptions <- .check_element(.element)
   
