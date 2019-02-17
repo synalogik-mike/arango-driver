@@ -2,7 +2,7 @@ library(jsonlite)
 library(httr)
 library(R6)
 
-.check_element <- function(.element){
+.check_element.aql <- function(.element){
   if(is.null(.element)){
     stop("Database is NULL, please provide a valid 'ArangoDatabase'")
   }
@@ -29,7 +29,7 @@ library(R6)
 aql <- function(.element, statement){
   
   # Check connection
-  .check_element(.element)
+  .check_element.aql(.element)
   
   if(is.null(statement)){
     stop("Statement cannot be null, provide an AQL statement")
