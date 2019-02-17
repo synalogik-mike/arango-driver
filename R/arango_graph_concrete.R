@@ -69,3 +69,71 @@ connections <- function(.graph){
   
   return(.aRango_graph_concrete$new(vertexSet = vertexSet, edgeSet = edgeSet, uniqueRelations = names(.graph$getEdgeDefinitions())))
 }
+
+
+#' The ArangoGraph class encapsulate the representation and the methods useful to manage
+#' the retrieval, representation and updates of specific node and vertices belonging to Arango graph.
+#'
+.aRango_graph_concrete <- R6Class (
+  "ArangoGraphConcrete",
+  
+  public = list(
+    
+    initialize = function(vertexSet = NULL, edgeSet = NULL, uniqueRelations = NULL){
+      # TODO: up to now the vertexSet and the edgeSet are lists, while the next step is to have them as documents
+      # better if they come from the same repository
+      private$verticies <- vertexSet
+      private$edges <- edgeSet
+      private$relations <- uniqueRelations
+    },
+    
+    #' Returns a list of matrices that contains, for each relation between the nodes, an adjacency matrix
+    #' for that relation.
+    #' For example, given "a" -friend_of-> "b", "c" -spouse-> "b" the results will be:
+    #' 
+    #'                a   b   c
+    #'             a  0   1   0
+    #' friend_of = b  0   0   0
+    #'             c  0   0   0
+    #'             
+    #'                a   b   c
+    #'             a  0   0   0
+    #' spouse    = b  0   0   0
+    #'             c  0   1   0             
+    #' 
+    #' If "complete" option is set to TRUE the content of the matrix will be the edge key within the ArangoDB
+    #' server: looking to the previous example
+    #' 
+    #'                a         b         c
+    #'             a  0   friend_of/112   0
+    #' friend_of = b  0         0         0
+    #'             c  0         0         0
+    #'             
+    #'                a        b       c
+    #'             a  0        0       0
+    #' spouse    = b  0        0       0
+    #'             c  0   spouse/231   0
+    #'
+    getAdjacencyTensor = function(complete=FALSE){
+      tensor <- list()
+      vertexNames <- unique(unlist(sapply(private$verticies, function(v){return(v$"_id")})))
+      
+      for(relation in private$relations){
+        tensor[[relation]] <- matrix(0, length(private$verticies), length(private$verticies))
+        colnames(tensor[[relation]]) <- vertexNames
+        rownames(tensor[[relation]]) <- vertexNames
+      }
+      
+      # Fill the tensor
+      private$edges %>% walk(function(e){ tensor[[strsplit(e$"_id", "/")[[1]][1]]][e$"_from", e$"_to"] <<- 1 })
+      
+      return(tensor)
+    }
+  ),
+  
+  private = list(
+    verticies = NULL,
+    edges = NULL,
+    relations = NULL
+  )
+)
