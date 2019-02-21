@@ -4,6 +4,96 @@ library(R6)
 library(magrittr)
 library(purrr)
 
+
+#' Traversal of a graph
+#' 
+#' Execute the traversal of a graph OR starting from a given set of edges
+#' 
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+traversal <- function(.graph, verticies, depth=1, edges=NULL){
+  
+  # ==== Check on .graph variable ====
+  if(is.null(.graph)){
+    stop("Graph is NULL, please provide a valid 'ArangoGraph'")
+  }
+  
+  if(class(.graph)[1] != "ArangoGraph"){
+    stop("Only 'ArangoGraph' objects can be processed by aRango::edge_definition")
+  }
+  
+  # ==== Check parameters ====
+  # verticies must be a vector of documents or strings containing the starting verticies 
+  for(start in verticies){
+    if(class(start)[1] != "ArangoDocument" && class(start)[1] != "character"){
+      stop("Starting verticies can be only ArangoDocument or strings containing the _id of the starting node")
+    }
+  }
+  
+  # ==== Preparing the AQL query ====
+  firstStartVertex <- TRUE
+  startVertexList <- NULL
+  
+  for(start in verticies){
+    if(class(start)[1] == "ArangoDocument"){
+      if(firstStartVertex){
+        startVertexList <- paste0("'", start$getId(), "'")
+        firstStartVertex <- FALSE
+      }
+      else{
+        startVertexList <- paste0(startVertexList,",","'", start$getId(), "'")
+      }
+    }
+    
+    if(class(start)[1] == "character"){
+      if(firstStartVertex){
+        startVertexList <- paste0("'", start, "'")
+        firstStartVertex <- FALSE
+      }
+      else{
+        startVertexList <- paste0(startVertexList,",","'", start, "'")
+      }
+    }
+  }
+  
+  subgraphQuery <- paste0("FOR startVertex IN [", startVertexList,"] ",
+                          "FOR v,e,p IN 1..", depth," ANY startVertex GRAPH '", .graph$getName(),"' ",
+                          "RETURN p")
+  
+  getSubgraph <- .graph$.__enclos_env__$private$currentDatabase %>% aql(subgraphQuery)
+  subgraphElements <- getSubgraph()
+  
+  # Fourth, create collect the results and return the graph
+  edgeSet <- list()
+  vertexSet <- list()
+  uniqueRelations <- NULL
+  firstElement <- TRUE
+  
+  for(path in subgraphElements){
+    
+    for(edge in path$edges){
+      if(firstElement){
+        uniqueRelations <- c(strsplit(edge$"_id", "/")[[1]][1])
+        firstElement <- FALSE
+      }
+      else{
+        uniqueRelations <- c(uniqueRelations, strsplit(edge$"_id", "/")[[1]][1])
+      }
+      
+      # Edge of the path
+      edgeSet[[edge$"_id"]] <- edge
+    }
+    
+    for(vertex in path$vertices){
+      # Vertices of the path
+      vertexSet[[vertex$"_id"]] <- vertex
+    }
+  }
+  
+  return(.aRango_graph_concrete$new(vertexSet = vertexSet, edgeSet = edgeSet, uniqueRelations = unique(uniqueRelations)))
+}
+
+
 #' Get complete graph
 #' 
 #' Returns the graph vertices and edges for the given ArangoGraph (BE CAREFUL, the grap may
