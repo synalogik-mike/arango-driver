@@ -61,13 +61,14 @@ library(RColorBrewer)
   }
 }
 
+
 #' Set visualization edges options
 #'
 #' Allows the user to set some options regarding the visualization of the edges of the graph
 #'
 #' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
-#' options. Those lists are automatically created when this method is inside a pre-visualization
-#' pipe. 
+#' options. This list is automatically created when this method is inside a pre-visualization
+#' pipe 
 #' @param directions a list containing the direction to be visualized on the edge for each type
 #' of relation contained into the graph, e.g. in a graph containing "friend_of" and "spouse" this parameter
 #' can be list(friend_of="to", spouse="from")
@@ -93,6 +94,23 @@ gedges <- function(.element, directions = NULL){
   return(netOptions)
 }
 
+
+#' Set visualization nodes options
+#'
+#' Allows the user to set some options regarding the visualization of the nodes of the graph
+#'
+#' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
+#' options. This list is automatically created when this method is inside a pre-visualization
+#' pipe 
+#' @param icons a list containing the icon name (from FontAwesome) to be set for each node type
+#' @param colors a list containing the colors to assign to each node type
+#'
+#' @return a list containing the visualization options updated
+#'
+#' @examples
+#' graph %>% gnodes(icons=list(employee="f007", company="f275"), colors=list(employee="red", company="blues"))
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 gnodes <- function(.element, icons = NULL, colors = NULL){
   netOptions <- .check_element(.element)
   
@@ -121,6 +139,19 @@ gnodes <- function(.element, icons = NULL, colors = NULL){
   return(netOptions)
 }
 
+
+#' Set graph width
+#'
+#' Allows the user to set the width for the canvas of the graph
+#'
+#' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
+#' options. This list is automatically created when this method is inside a pre-visualization
+#' pipe 
+#' @param width the width of the resulting graph in CSS style, e.g. "90%"
+#'
+#' @return a list containing the visualization options updated
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 gwidth <- function(.element, width){
   netOptions <- .check_element(.element)
   netOptions[["width"]] <- width
@@ -129,6 +160,18 @@ gwidth <- function(.element, width){
 }
 
 
+#' Set graph height
+#'
+#' Allows the user to set the width for the canvas of the graph
+#'
+#' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
+#' options. This list is automatically created when this method is inside a pre-visualization
+#' pipe 
+#' @param height the height of the resulting graph in CSS style, e.g. "90%"
+#'
+#' @return a list containing the visualization options updated
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 gheight <- function(.element, height){
   netOptions <- .check_element(.element)
   netOptions[["height"]] <- height
@@ -137,6 +180,19 @@ gheight <- function(.element, height){
 }
   
 
+#' Set graph legend
+#'
+#' Allows the user to the legend for this graph
+#'
+#' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
+#' options. This list is automatically created when this method is inside a pre-visualization
+#' pipe 
+#' @param nodes a boolean that indicate whether show or not the legend for nodes
+#' @param edges a boolean that indicate whether show or not the legend for edges
+#'
+#' @return a list containing the visualization options updated
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 glegend <- function(.element, nodes=TRUE, edges=FALSE){
   netOptions <- .check_element(.element)
   
@@ -151,6 +207,18 @@ glegend <- function(.element, nodes=TRUE, edges=FALSE){
   return(netOptions)
 }
 
+
+#' Graph visualization
+#'
+#' Returns the visualization of the given graph
+#'
+#' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
+#' options. This list is automatically created when this method is inside a pre-visualization
+#' pipe 
+#' 
+#' @return the visualization of the graph
+#'
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 visualize <- function(.element){
   netOptions <- .check_element(.element)
   
