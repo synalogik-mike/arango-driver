@@ -23,6 +23,7 @@ Depends:
   jsonlite,
   magrittr,
   purrr,
+  RColorBrewer,
   visNetwork (>= 2.0.5)
 Suggests: 
   httptest, 
