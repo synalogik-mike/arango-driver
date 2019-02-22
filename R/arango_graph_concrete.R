@@ -24,10 +24,10 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
   }
   
   # ==== Check parameters ====
-  # verticies must be a vector of documents or strings containing the starting verticies 
-  for(start in verticies){
+  # vertices must be a vector of documents or strings containing the starting vertices 
+  for(start in vertices){
     if(class(start)[1] != "ArangoDocument" && class(start)[1] != "character"){
-      stop("Starting verticies can be only ArangoDocument or strings containing the _id of the starting node")
+      stop("Starting vertices can be only ArangoDocument or strings containing the _id of the starting node")
     }
   }
   
@@ -35,7 +35,7 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
   firstStartVertex <- TRUE
   startVertexList <- NULL
   
-  for(start in verticies){
+  for(start in vertices){
     if(class(start)[1] == "ArangoDocument"){
       if(firstStartVertex){
         startVertexList <- paste0("'", start$getId(), "'")
@@ -135,8 +135,8 @@ connections <- function(.graph){
   allCollections <- ""
   firstCollection <- TRUE
   
-  # First, create the search for all verticies
-  for(collectionName in .graph$.__enclos_env__$private$verticies){
+  # First, create the search for all vertices
+  for(collectionName in .graph$.__enclos_env__$private$vertices){
     if(firstCollection){
       allCollections <- paste0("(FOR v IN ", collectionName, " RETURN v)")
       firstCollection <- FALSE
@@ -193,7 +193,7 @@ connections <- function(.graph){
     initialize = function(vertexSet = NULL, edgeSet = NULL, uniqueRelations = NULL){
       # TODO: up to now the vertexSet and the edgeSet are lists, while the next step is to have them as documents
       # better if they come from the same repository
-      private$verticies <- vertexSet
+      private$vertices <- vertexSet
       private$edges <- edgeSet
       private$relations <- uniqueRelations
     },
@@ -227,10 +227,10 @@ connections <- function(.graph){
     #'
     getAdjacencyTensor = function(complete=FALSE){
       tensor <- list()
-      vertexNames <- unique(unlist(sapply(private$verticies, function(v){return(v$"_id")})))
+      vertexNames <- unique(unlist(sapply(private$vertices, function(v){return(v$"_id")})))
       
       for(relation in private$relations){
-        tensor[[relation]] <- matrix(0, length(private$verticies), length(private$verticies))
+        tensor[[relation]] <- matrix(0, length(private$vertices), length(private$vertices))
         colnames(tensor[[relation]]) <- vertexNames
         rownames(tensor[[relation]]) <- vertexNames
       }
@@ -243,7 +243,7 @@ connections <- function(.graph){
   ),
   
   private = list(
-    verticies = NULL,
+    vertices = NULL,
     edges = NULL,
     relations = NULL
   )

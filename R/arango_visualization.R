@@ -35,7 +35,7 @@ library(RColorBrewer)
   
   if(class(element)[1] == "ArangoGraphConcrete"){
     e <- element$.__enclos_env__$private$edges
-    v <- element$.__enclos_env__$private$verticies
+    v <- element$.__enclos_env__$private$vertices
     
     nodes <- data.frame(
       id = unlist(lapply(v, function(el){ return(el$"_id") } )),
@@ -230,7 +230,7 @@ visualize <- function(.element){
     netOptions[["width"]] <- "100%"
   }
   
-  # Are verticies and edges colored? If not execute coloring
+  # Are vertices and edges colored? If not execute coloring
   if(!("color" %in% colnames(netOptions$v))){
     nodeColor <- .element_coloring(
                     unique(unlist(apply(netOptions$v, 1, function(el) {el[["group"]]} ))), brewer.pal(8, "Pastel1")

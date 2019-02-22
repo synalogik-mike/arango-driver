@@ -223,13 +223,13 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
   }
   
   # ==== Adding on the server has been done correctly, now adding the edges into the structure ====
-  # adding collections from/to into the list of verticies
-  if(!(fromCollectionName %in% .graph$.__enclos_env__$private$verticies)){
-    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, fromCollectionName)
+  # adding collections from/to into the list of vertices
+  if(!(fromCollectionName %in% .graph$.__enclos_env__$private$vertices)){
+    .graph$.__enclos_env__$private$vertices <- c(.graph$.__enclos_env__$private$vertices, fromCollectionName)
   }
   
-  if(!(toCollectionName %in% .graph$.__enclos_env__$private$verticies)){
-    .graph$.__enclos_env__$private$verticies <- c(.graph$.__enclos_env__$private$verticies, toCollectionName)
+  if(!(toCollectionName %in% .graph$.__enclos_env__$private$vertices)){
+    .graph$.__enclos_env__$private$vertices <- c(.graph$.__enclos_env__$private$vertices, toCollectionName)
   }
   
   # if the relation still not exist it is added to the list of edges definition
@@ -306,12 +306,12 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
                          '", collectionFromName,"' -> '",collectionToName,"'."))
         }
         
-        # Adding verticies references
-        if(is.null(private$verticies)){
-          private$verticies <- unlist(c(collectionEdgeName))
+        # Adding vertices references
+        if(is.null(private$vertices)){
+          private$vertices <- unlist(c(collectionEdgeName))
         }
         else{
-          private$verticies <- unlist(c(private$verticies, collectionEdgeName))
+          private$vertices <- unlist(c(private$vertices, collectionEdgeName))
         }
         
         # Adding edges references: only pair of collection (_from, _to)
@@ -322,12 +322,12 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
         private$edges[[collectionEdgeName]] <- list(from = c(collectionFromName), to = c(collectionToName))
         
         # Adding from and to collection iff not existing
-        if(!(collectionFromName %in% private$verticies)){
-          private$verticies <- unlist(c(private$verticies, collectionFromName))
+        if(!(collectionFromName %in% private$vertices)){
+          private$vertices <- unlist(c(private$vertices, collectionFromName))
         }
         
-        if(!(collectionToName %in% private$verticies)){
-          private$verticies <- unlist(c(private$verticies, collectionToName))
+        if(!(collectionToName %in% private$vertices)){
+          private$vertices <- unlist(c(private$vertices, collectionToName))
         }
       }
       
@@ -341,8 +341,8 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
           private$orphans <- unlist(c(private$orphans, orphan))
         }
         
-        if(!(orphan %in% private$verticies)){
-          private$verticies <- unlist(c(private$verticies, orphan))
+        if(!(orphan %in% private$vertices)){
+          private$vertices <- unlist(c(private$vertices, orphan))
         }
       }
       
@@ -389,7 +389,7 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
   
   private = list(
     name = NULL,
-    verticies = c(),
+    vertices = c(),
     edges = list(),
     orphans = c(),
     id = NULL,
