@@ -17,10 +17,10 @@ License: AGPL-3 (to be confirmed)
 Encoding: UTF-8
 LazyData: true
 Depends:
+  R6,
   dplyr,
   httr,
   jsonlite,
-  R6,
   magrittr,
   purrr,
   visNetwork (>= 2.0.5)
