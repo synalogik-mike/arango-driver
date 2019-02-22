@@ -17,12 +17,12 @@ License: AGPL-3 (to be confirmed)
 Encoding: UTF-8
 LazyData: true
 Depends:
-  dplyr (>= 0.7.8),
-  httr (>= 1.4.0),
-  jsonlite (>= 1.6),
-  R6 (>= 2.3.0),
-  magrittr (>= 1.5),
-  purrr (>= 0.2.5),
+  dplyr,
+  httr,
+  jsonlite,
+  R6,
+  magrittr,
+  purrr,
   visNetwork (>= 2.0.5)
 Suggests: 
   httptest, 
