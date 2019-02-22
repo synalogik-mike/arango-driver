@@ -15,8 +15,8 @@
     * [ Working with documents. ](#workingdocuments)
     * [ Custom AQL queries. ](#aqlcustom)
     * [ Working with graphs. ](#workinggrapphs)
-1. [ Bugs and known limitations. ](#bugslimitations)
 1. [ Functions and classes summary. ](#summary)
+1. [ Bugs and known limitations. ](#bugslimitations)
 1. [ Roadmap. ](#roadmap)
 
 
