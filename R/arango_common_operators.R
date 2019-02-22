@@ -156,7 +156,7 @@ edge <- function(definition, ...) {
 #'
 #' @seealso edge
 #' @examples "requires" %:% edge(data_science %->% math) returns a list(collection=..., edge=...) where 
-#' edge contains a _from and a _to valid verticies
+#' edge contains a _from and a _to valid vertices
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 #' @export
