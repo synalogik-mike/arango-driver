@@ -289,8 +289,9 @@ residenceGraph <-
   add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```
 
-### Bugs and Knonw Limitations <a name="bugslimitations"></a>
-TODO
+### Visualize graphs <a name="visualizegrapphs"></a>
+
+
 
 ### Functions and Class Summary <a name="summary"></a>
 
@@ -429,9 +430,33 @@ Find an existing edge, where the ArangoCollection represents a collection_type$E
 ArangoDocument <- ArangoCollection %>% find_edge(from=<ArangoDocument>, to=<ArangoDocument>)
 ```
 
+### Bugs and Knonw Limitations <a name="bugslimitations"></a>
+The following is an uncomplete list of known limitations to be addressed in the next versions:
+
+* **user management is disabled**, in this prototipal state every operation is done with security options disabled on the server. Probably this will added in the version __0.0.1-beta__
+
+* **partial graph traversal**, it is not natively provided by the aRangodb::traversal() function the possibility to filter some vertex, edge or path using the FILTER AQL clause. In order to do that you have to define a custom aRangodb::aql() function, but this will not return you a graph: this because aql() returns generic results from the server.
+
 ### Roadmap <a name="roadmap"></a>
-Version 0.0.2: TBD
+The following is an uncomplete frequently-updated list to recap the major features in plan for the next versions.
 
-Version 0.0.3: TBD
+* Version **0.0.1-beta**:
+    * User management functions
 
-Version 0.1.0: TBD
+* Version **0.0.1**:
+    * First release of the package
+
+* Version **0.1.0**:
+    * first stable release with major bug fixing 
+    * complete unit tests coverage
+
+* Version **0.2.0**:
+    * bulk insertion of JSON files
+    * bulk insertion of CSV files
+    * bulk export of graphs/collection in JSON files
+    * bulk export of graphs/collection in CSV files
+    
+* Version **0.3.0**:
+    * support for basic algorithms on graphs
+    
+* ...
