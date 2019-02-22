@@ -430,4 +430,8 @@ ArangoDocument <- ArangoCollection %>% find_edge(from=<ArangoDocument>, to=<Aran
 ```
 
 ### Roadmap <a name="roadmap"></a>
-TODO
+Version 0.0.2: TBD
+
+Version 0.0.3: TBD
+
+Version 0.1.0: TBD
