@@ -26,6 +26,9 @@ Depends:
   RColorBrewer,
   visNetwork (>= 2.0.5)
 Suggests: 
-  httptest, 
-  testthat
+    httptest,
+    testthat,
+    knitr,
+    rmarkdown
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr
