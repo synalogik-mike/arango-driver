@@ -82,7 +82,7 @@ aql <- function(.element, statement){
     cursorResponse <- content(resultsBatch)
     
     if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
-      stop("Something were wrong during the management of the cursor (arango cursor not created)")
+      stop(paste0("ArangoCursor not created: ", cursorResponse$errorMessage))
     }
     
     # Save the cursor id, it is needed for all the subsequent access to the cursor

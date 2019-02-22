@@ -9,9 +9,10 @@ library(purrr)
 #' 
 #' Execute the traversal of a graph OR starting from a given set of edges
 #' 
+#' @param vertices
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-traversal <- function(.graph, verticies, depth=1, edges=NULL){
+traversal <- function(.graph, vertices, depth=1, edges=NULL){
   
   # ==== Check on .graph variable ====
   if(is.null(.graph)){
@@ -56,9 +57,29 @@ traversal <- function(.graph, verticies, depth=1, edges=NULL){
     }
   }
   
-  subgraphQuery <- paste0("FOR startVertex IN [", startVertexList,"] ",
-                          "FOR v,e,p IN 1..", depth," ANY startVertex GRAPH '", .graph$getName(),"' ",
-                          "RETURN p")
+  if(is.null(edges)){
+    subgraphQuery <- paste0("FOR startVertex IN [", startVertexList,"] ",
+                            "FOR v,e,p IN 1..", depth," ANY startVertex GRAPH '", .graph$getName(),"' ",
+                            "RETURN p")
+  }
+  else{
+    edgeNames <- ""
+    firstEdge <- TRUE
+    for(edgeCollection in edges){
+      if(firstEdge){
+        edgeNames <- edgeCollection
+        firstEdge <- FALSE
+      }
+      else
+      {
+        edgeNames <- paste0(edgeNames,", ", edgeCollection)
+      }
+    }
+    
+    subgraphQuery <- paste0("FOR startVertex IN [", startVertexList,"] ",
+                            "FOR v,e,p IN 1..", depth," ANY startVertex ", edgeNames," ",
+                            "RETURN p")
+  }
   
   getSubgraph <- .graph$.__enclos_env__$private$currentDatabase %>% aql(subgraphQuery)
   subgraphElements <- getSubgraph()
