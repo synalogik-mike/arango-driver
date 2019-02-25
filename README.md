@@ -179,7 +179,7 @@ Using a collection object you can filter out documents that match some condition
 greater or less than some condition to be matched use operators %lt%, %gt%, %leq%, %geq%. Next lines will be translated as _"ehy, give me all cities of UK over latitude 52.0"_
 
 ```R
-filtered.cities <- cities %>% filter(country="UK", position.latitude %gt% 52.0)
+filtered.cities <- cities %>% collection_filter(country="UK", position.latitude %gt% 52.0)
 
 if(is.null(filtered.cities$Manchester)){
   print("Ehy, who moved away Manchester??") # Could be very bad
@@ -373,7 +373,7 @@ character <- id %lt% expr
 character <- id %leq% expr
 character <- id %gt% expr
 character <- id %geq% expr
-list<ArangoDocument> <- ArangoCollection %>% aRango::filter(...)
+list<ArangoDocument> <- ArangoCollection %>% aRango::collection_filter(...)
 ```
 
 Returns a list with all the available graphs for the given database

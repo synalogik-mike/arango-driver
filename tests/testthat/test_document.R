@@ -248,7 +248,7 @@ with_mock_api({
             aRangodb::collection(name = "example_coll")
     
     # when
-    docs <- coll %>% aRangodb::filter(type="key", subtype="subtype1")
+    docs <- coll %>% aRangodb::collection_filter(type="key", subtype="subtype1")
     
     # then
     expect_equal(docs$"key1"$getKey(), "key1")
@@ -314,7 +314,7 @@ with_mock_api({
             aRangodb::collection(name = "example_coll")
     
     # when
-    docs <- coll %>% aRangodb::filter(type = "key", isSystem = TRUE, qty %gt% 0, qty %lt% 3.3)
+    docs <- coll %>% aRangodb::collection_filter(type = "key", isSystem = TRUE, qty %gt% 0, qty %lt% 3.3)
     
     # then
     expect_equal(docs$"key1"$getKey(), "key1")

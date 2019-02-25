@@ -224,7 +224,7 @@ find_edge <- function(.collection, from, to){
   }
     
   if(class(from)[1] == "ArangoDocument" && class(to)[1] == "ArangoDocument"){
-    foundEdge <- .collection %>% filter(`_from`=from$getId(), `_to`=to$getId())
+    foundEdge <- .collection %>% collection_filter(`_from`=from$getId(), `_to`=to$getId())
     
     if(length(foundEdge) > 0){
       return(foundEdge[[1]])
@@ -232,7 +232,7 @@ find_edge <- function(.collection, from, to){
   }
   else if(class(from)[1] == "character" && class(to)[1] == "character"){
     foundEdge <- .collection %>% 
-      filter(`_from`=from, `_to`=to)
+      collection_filter(`_from`=from, `_to`=to)
     
     if(length(foundEdge) > 0){
       return(foundEdge[[1]])
@@ -253,7 +253,7 @@ find_edge <- function(.collection, from, to){
 #' 
 #' @return the documents that matches the given filters
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-filter <- function(.collection, ...){
+collection_filter <- function(.collection, ...){
   
   documents <- list()
   

@@ -68,7 +68,7 @@ if(all.cities$London$getValues()$capital){
 # Using a collection object you can filter out documents that match some conditions. To express values
 # greater or less than some condition to be matched use operators %lt%, %gt%, %leq%, %geq%.
 # Next lines will be translated as "ehy, give me all cities of UK over latitude 52.0"
-filtered.cities <- cities %>% filter(country="UK", position.latitude %gt% 52.0)
+filtered.cities <- cities %>% collection_filter(country="UK", position.latitude %gt% 52.0)
 
 if(is.null(filtered.cities$Manchester)){
   print("Ehy, who moved away Manchester??") # Could be very bad

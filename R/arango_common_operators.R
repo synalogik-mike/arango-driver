@@ -7,7 +7,7 @@ library(R6)
   return(value)
 }
 
-#' Comparison > operator for aRangodb::filter()
+#' Comparison > operator for aRangodb::collection_filter()
 #' 
 #' Creates a string expression representing an AQL filter "less than" clause for
 #' numeric values
@@ -25,7 +25,7 @@ library(R6)
 }
 
 
-#' Comparison >= operator for aRangodb::filter()
+#' Comparison >= operator for aRangodb::collection_filter()
 #' 
 #' Creates a string expression representing an AQL filter "less or equal than" clause for
 #' numeric values
@@ -43,7 +43,7 @@ library(R6)
 }
 
 
-#' Comparison > operator for aRangodb::filter()
+#' Comparison > operator for aRangodb::collection_filter()
 #' 
 #' Creates a string expression representing an AQL filter "greater than" clause for
 #' numeric values
@@ -61,7 +61,7 @@ library(R6)
 }
 
 
-#' Comparison >= operator for aRangodb::filter()
+#' Comparison >= operator for aRangodb::collection_filter()
 #' 
 #' Creates a string expression representing an AQL filter "greater or equal than" clause for
 #' numeric values
