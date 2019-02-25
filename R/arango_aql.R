@@ -90,7 +90,7 @@ aql <- function(.element, statement){
     i <- 0
     
     for(document in cursorResponse$result){
-      documents[[paste0("queryResult_",i)]] <- document
+      documents[[paste0("doc",i)]] <- document
       i <- i+1
     }
     
@@ -106,7 +106,7 @@ aql <- function(.element, statement){
       }
       
       for(document in cursorResponse$result){
-        documents[[paste0("queryResult_",i)]] <- document
+        documents[[paste0("doc",i)]] <- document
         i <- i+1
       }
     }

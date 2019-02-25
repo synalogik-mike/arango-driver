@@ -226,14 +226,14 @@ In conclusion from now on you can now execute the query as normal R function:
 filtered.persons <- searchByAgeGreaterThen(age = 30)
 ```
 
-The results of those functions calls are returned as list, where each result has an automatically generated id within the list (up to now queryResult_<n>, but it can change before the first stable release)
+The results of those functions calls are returned as list, where each result has an automatically generated id within the list (up to now doc<n>, but it can change before the first stable release)
 
 ```R
 if(length(filtered.persons) != 3){
   print("Did you change something?")
 }
 
-print(paste0("'I'm Alice Foo, isn't it?' ", filtered.persons$queryResult_0$getKey() == "alice.foo"))
+print(paste0("'I'm Alice Foo, isn't it?' ", filtered.persons$doc0$getKey() == "alice.foo"))
 ```
 
 ### Working with graphs <a name="workinggrapphs"></a>

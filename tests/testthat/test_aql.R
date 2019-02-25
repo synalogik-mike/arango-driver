@@ -45,10 +45,10 @@ with_mock_api({
       
     # then
     expect_equal(length(results), 2)
-    expect_equal(results$queryResult_0$type, "key")
-    expect_equal(results$queryResult_0$name, "name1")
-    expect_equal(results$queryResult_1$type, "key")
-    expect_equal(results$queryResult_1$name, "name2")
+    expect_equal(results$doc0$type, "key")
+    expect_equal(results$doc0$name, "name1")
+    expect_equal(results$doc1$type, "key")
+    expect_equal(results$doc1$name, "name2")
   })
 })
 

@@ -284,14 +284,14 @@ filtered.persons <- searchByAgeGreaterThen(age = 30)
 filtered.persons <- searchByAgeGreaterThen(age = 30)
 ```
 
-The results of those functions calls are returned as list, where each result has an automatically generated id within the list (up to now queryResult_<n>, but it can change before the first stable release)
+The results of those functions calls are returned as list, where each result has an automatically generated id within the list (up to now doc<n>, but it can change before the first stable release)
 
 ```{r step_5, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 if(length(filtered.persons) != 3){
   print("Did you change something?")
 }
 
-print(paste0("'I'm Brandon Fee, isn't it?' ", filtered.persons$queryResult_0$`_key` == "brandon.fee"))
+print(paste0("'I'm Brandon Fee, isn't it?' ", filtered.persons$doc0$`_key` == "brandon.fee"))
 ```
 
 ```{r step_5_real, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
@@ -299,7 +299,7 @@ if(length(filtered.persons) != 3){
   print("Did you change something?")
 }
 
-print(paste0("'I'm Brandon Fee, isn't it?' ", filtered.persons$queryResult_0$`_key` == "brandon.fee"))
+print(paste0("'I'm Brandon Fee, isn't it?' ", filtered.persons$doc0$`_key` == "brandon.fee"))
 ```
 
 ### Working with graphs <a name="workinggrapphs"></a>
