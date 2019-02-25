@@ -20,7 +20,7 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
   }
   
   if(class(.graph)[1] != "ArangoGraph"){
-    stop("Only 'ArangoGraph' objects can be processed by aRango::edge_definition")
+    stop("Only 'ArangoGraph' objects can be processed by aRango::traversal")
   }
   
   # ==== Check parameters ====
@@ -129,7 +129,7 @@ connections <- function(.graph){
   }
   
   if(class(.graph)[1] != "ArangoGraph"){
-    stop("Only 'ArangoGraph' objects can be processed by aRango::edge_definition")
+    stop("Only 'ArangoGraph' objects can be processed by aRango::connections")
   }
   
   allCollections <- ""

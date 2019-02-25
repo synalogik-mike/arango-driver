@@ -158,7 +158,7 @@ remove_from_graph <- function(.graph, listOfEdges){
 #' @param toCollection an ArangoCollection or a string that indicates the type of "_to" document for the edge
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-edge_definition <- function(.graph, fromCollection, relation, toCollection){
+define_edge <- function(.graph, fromCollection, relation, toCollection){
   
   # ==== Check on .graph variable ====
   if(is.null(.graph)){
@@ -166,7 +166,7 @@ edge_definition <- function(.graph, fromCollection, relation, toCollection){
   }
   
   if(class(.graph)[1] != "ArangoGraph"){
-    stop("Only 'ArangoGraph' objects can be processed by aRango::edge_definition")
+    stop("Only 'ArangoGraph' objects can be processed by aRango::define_edge")
   }
   
   # ==== Check on from/to variable ====

@@ -108,10 +108,10 @@ gedges <- function(.element, directions = NULL){
 #' @return a list containing the visualization options updated
 #'
 #' @examples
-#' graph %>% gnodes(icons=list(employee="f007", company="f275"), colors=list(employee="red", company="blues"))
+#' graph %>% viz_vertices(icons=list(employee="f007", company="f275"), colors=list(employee="red", company="blues"))
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-gnodes <- function(.element, icons = NULL, colors = NULL){
+viz_vertices <- function(.element, icons = NULL, colors = NULL){
   netOptions <- .check_element(.element)
   
   # Set the vertices icons (if defined)
@@ -152,7 +152,7 @@ gnodes <- function(.element, icons = NULL, colors = NULL){
 #' @return a list containing the visualization options updated
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-gwidth <- function(.element, width){
+viz_width <- function(.element, width){
   netOptions <- .check_element(.element)
   netOptions[["width"]] <- width
   
@@ -172,7 +172,7 @@ gwidth <- function(.element, width){
 #' @return a list containing the visualization options updated
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-gheight <- function(.element, height){
+viz_height <- function(.element, height){
   netOptions <- .check_element(.element)
   netOptions[["height"]] <- height
   
@@ -193,7 +193,7 @@ gheight <- function(.element, height){
 #' @return a list containing the visualization options updated
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-glegend <- function(.element, nodes=TRUE, edges=FALSE){
+viz_legend <- function(.element, nodes=TRUE, edges=FALSE){
   netOptions <- .check_element(.element)
   
   if(nodes){

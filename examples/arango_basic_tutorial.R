@@ -9,7 +9,6 @@ if(!is.null(sandboxArangoDb)){
   sandboxArangoDb %>% drop()
 }
 
-
 # Create a sandbox database: if you already have one you can use it for this example
 sandboxArangoDb <- arangoConnection %>% database("sandbox", createOnFail = TRUE)
 
@@ -100,8 +99,8 @@ residenceGraph <- sandboxArangoDb %>% graph("residence", createOnFail = TRUE)
 # sources of edges, and it will creates a collection for the edge relation
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition("person", "lives_in", "city") %>%
-  edge_definition("person", "loves", "city")
+  define_edge("person", "lives_in", "city") %>%
+  define_edge("person", "loves", "city")
 
 livesInCollection <- sandboxArangoDb %>% collection("lives_in")
 
@@ -111,7 +110,7 @@ if(!(is.null(livesInCollection))){
 }
 
 # Also collections will be automatically created if not in the collection set
-residenceGraph <- residenceGraph %>% edge_definition(cities, "had_weather", "weather")
+residenceGraph <- residenceGraph %>% define_edge(cities, "had_weather", "weather")
 weatherCollection <- sandboxArangoDb %>% collection("weather")
 
 if(!(is.null(weatherCollection))){

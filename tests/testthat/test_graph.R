@@ -140,7 +140,7 @@ with_mock_api({
       aRangodb::database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
     
     # when
-    existingGraph <- existingGraph %>% aRangodb::edge_definition("employee", "has", "skill")
+    existingGraph <- existingGraph %>% aRangodb::define_edge("employee", "has", "skill")
     
     # then
     expect_false(is.null(existingGraph$getEdgeDefinitions()$has))
@@ -157,8 +157,8 @@ with_mock_api({
     # when
     # TODO: it works, but there is a bit to work to prepare the mock responses. The test is the following:
     #existingGraph <- existingGraph %>% 
-    #                 aRangodb::edge_definition("employee", "has", "skill")
-    #                 aRangodb::edge_definition("skill", "has", "requirement")
+    #                 aRangodb::define_edge("employee", "has", "skill")
+    #                 aRangodb::define_edge("skill", "has", "requirement")
     
     # then
 
@@ -174,8 +174,8 @@ with_mock_api({
     # when
     # TODO: it works, but there is a bit to work to prepare the mock responses. The test is the following:
     #existingGraph <- existingGraph %>% 
-    #                 aRangodb::edge_definition("employee", "has", "skill")
-    #                 aRangodb::edge_definition("skill", "has", "requirement")
+    #                 aRangodb::define_edge("employee", "has", "skill")
+    #                 aRangodb::define_edge("skill", "has", "requirement")
     
     # then
     
@@ -190,8 +190,8 @@ with_mock_api({
     # when
     # TODO: tests on relational operators %->% and %<-%, same work of the previous test
     #existingGraph <- existingGraph %>% 
-    #                 aRangodb::edge_definition("employee", "has", "skill")
-    #                 aRangodb::edge_definition("skill", "has", "requirement")
+    #                 aRangodb::define_edge("employee", "has", "skill")
+    #                 aRangodb::define_edge("skill", "has", "requirement")
     
     # then
     

@@ -323,7 +323,7 @@ that the graph can store. Adding an edge will automatically adds the collections
 ```{r step_7, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition("person", "lives_in", "city")
+  define_edge("person", "lives_in", "city")
 
 livesInCollection <- 
   sandboxArangoDb %>% 
@@ -338,7 +338,7 @@ if(!(is.null(livesInCollection))){
 ```{r step_7_real, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition("person", "lives_in", "city")
+  define_edge("person", "lives_in", "city")
 
 livesInCollection <- 
   sandboxArangoDb %>% 
@@ -355,7 +355,7 @@ Also collections will be automatically created if not in the collection set:
 ```{r step_8, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition(cities, "had_weather", "weather")
+  define_edge(cities, "had_weather", "weather")
   
 weatherCollection <- 
   sandboxArangoDb %>% 
@@ -370,7 +370,7 @@ if(!(is.null(weatherCollection))){
 ```{r step_8_real, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition(cities, "had_weather", "weather")
+  define_edge(cities, "had_weather", "weather")
   
 weatherCollection <- 
   sandboxArangoDb %>% 

@@ -251,7 +251,7 @@ that the graph can store. Adding an edge will automatically adds the collections
 ```R
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition("person", "lives_in", "city")
+  define_edge("person", "lives_in", "city")
 
 livesInCollection <- 
   sandboxArangoDb %>% 
@@ -268,7 +268,7 @@ Also collections will be automatically created if not in the collection set:
 ```R
 residenceGraph <- 
   residenceGraph %>% 
-  edge_definition(cities, "had_weather", "weather")
+  define_edge(cities, "had_weather", "weather")
   
 weatherCollection <- 
   sandboxArangoDb %>% 
@@ -392,7 +392,7 @@ ArangoGraph <- ArangoDatabase %>% aRango::graph(name)
 Adds a definition of a new edge for the given graph
 
 ```R
-ArangoGraph <- ArangoGraph %>% aRangodb::edge_definition(fromCollection, relation, toCollection)
+ArangoGraph <- ArangoGraph %>% aRangodb::define_edge(fromCollection, relation, toCollection)
 ```
 
 Adds and removes of edge. Input of the folloqing functions are list of list, where each inner list contains the information
