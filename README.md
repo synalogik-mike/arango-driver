@@ -400,7 +400,7 @@ representing the edge: e.g. list(list(collection="friends", edge=list(`_from`="p
 
 ```R
 ArangoGraph <- ArangoGraph %>% add_edges(...)      # takes a list of list representing edges definitions
-ArangoGraph <- ArangoGraph %>% remove_from_graph(...) # takes a list of list representing edges definitions
+ArangoGraph <- ArangoGraph %>% remove_edges(...) # takes a list of list representing edges definitions
 ```
 
 To simplify the process of addition/removal of edges you can use the relationa operators for inbound edges %<-% or outbound edges %->%, aRangodb::edge() function and the %owns% relation.

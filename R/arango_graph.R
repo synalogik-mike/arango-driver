@@ -110,7 +110,7 @@ add_edges <- function(.graph, listOfEdges){
 #' @return the ArangoGraph object of the structure affected by the change
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-remove_from_graph <- function(.graph, listOfEdges){
+remove_edges <- function(.graph, listOfEdges){
   
   # ==== Check on .graph variable ====
   if(is.null(.graph)){
@@ -118,7 +118,7 @@ remove_from_graph <- function(.graph, listOfEdges){
   }
   
   if(class(.graph)[1] != "ArangoGraph"){
-    stop("Only 'ArangoGraph' objects can be processed by aRango::add_elements")
+    stop("Only 'ArangoGraph' objects can be processed by aRangodb::remove_edges")
   }
   
   # ==== TEMPORARY SOLUTION: which will be the final signature of this method? ====

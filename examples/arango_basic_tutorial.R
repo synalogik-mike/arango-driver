@@ -127,7 +127,7 @@ residenceGraph <- residenceGraph %>%
 
 # Now I want to remove some edge in a similar way I did for adding
 residenceGraph <- residenceGraph %>%
-  remove_from_graph("loves" %owns% edge(all.persons$john.doe %->% all.cities$London))
+  remove_edges("loves" %owns% edge(all.persons$john.doe %->% all.cities$London))
 
 # The edge is not more present in the graph
 lovesCollection <- sandboxArangoDb %>% collection("loves")
