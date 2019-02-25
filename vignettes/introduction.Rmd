@@ -382,18 +382,18 @@ if(!(is.null(weatherCollection))){
 }
 ```
 
-But a graph isn't useful if you cannot populate with relations. Just use the aRangodb::add_to_graph() method and the relational operators!
+But a graph isn't useful if you cannot populate with relations. Just use the aRangodb::add_edges() method and the relational operators!
 
 ```{r step_9, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   residenceGraph %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
+  add_edges("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
+  add_edges("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```
 
 ```{r step_9_real, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   residenceGraph %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
+  add_edges("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
+  add_edges("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```

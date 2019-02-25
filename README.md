@@ -280,13 +280,13 @@ if(!(is.null(weatherCollection))){
 }
 ```
 
-But a graph isn't useful if you cannot populate with relations. Just use the aRangodb::add_to_graph() method and the relational operators!
+But a graph isn't useful if you cannot populate with relations. Just use the aRangodb::add_edges() method and the relational operators!
 
 ```R
 residenceGraph <- 
   residenceGraph %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
+  add_edges("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
+  add_edges("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```
 
 ### Visualize graphs <a name="visualizegrapphs"></a>
@@ -399,7 +399,7 @@ Adds and removes of edge. Input of the folloqing functions are list of list, whe
 representing the edge: e.g. list(list(collection="friends", edge=list(`_from`="person/bob", `_to`="person/alice", ...))...)
 
 ```R
-ArangoGraph <- ArangoGraph %>% add_to_graph(...)      # takes a list of list representing edges definitions
+ArangoGraph <- ArangoGraph %>% add_edges(...)      # takes a list of list representing edges definitions
 ArangoGraph <- ArangoGraph %>% remove_from_graph(...) # takes a list of list representing edges definitions
 ```
 

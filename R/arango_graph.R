@@ -74,7 +74,7 @@ graph <- function(.database, name, createOnFail = FALSE){
 #' @param listOfEdges a list containing the edges to be added in the graph
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-add_to_graph <- function(.graph, listOfEdges){
+add_edges <- function(.graph, listOfEdges){
   
   # ==== Check on .graph variable ====
   if(is.null(.graph)){

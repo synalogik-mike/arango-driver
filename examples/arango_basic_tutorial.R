@@ -118,12 +118,12 @@ if(!(is.null(weatherCollection))){
                "'",weatherCollection$getType() == collection_type$DOCUMENT,"'"))
 }
 
-# But a graph isn't useful if you cannot populate with relations. Just use the add_to_graph method and
+# But a graph isn't useful if you cannot populate with relations. Just use the add_edges method and
 # the relational operators!
 residenceGraph <- residenceGraph %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
-  add_to_graph("loves" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
-  add_to_graph("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
+  add_edges("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
+  add_edges("loves" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
+  add_edges("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 
 # Now I want to remove some edge in a similar way I did for adding
 residenceGraph <- residenceGraph %>%
