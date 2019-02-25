@@ -16,7 +16,7 @@ library(R6)
 #'
 #' @return all the documents belonging to the given collection
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-documents <- function(.collection){
+all_documents <- function(.collection){
   
   if(class(.collection)[1] != "ArangoCollection"){
     stop("Only 'ArangoDocument' objects can be processed by aRango::documents function")
@@ -447,7 +447,7 @@ delete <- function(.document){
     #' 
     #' @return a character vector containing the available keys for this document
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-    getAvailableValues = function(){
+    getKeys = function(){
       return(names(private$documentValues))
     }
   ),

@@ -56,8 +56,8 @@ print(paste("Persons registered:", persons$getCount(), sep = " "))
 # ... or you can use it to retrieve documents within the collection. For example you can get ALL the
 # document from a given collection (BE CAREFUL, collections could contains hundred of results) and access
 # specific document using its key
-all.cities <- cities %>% documents()
-all.persons <- persons %>% documents()
+all.cities <- cities %>% all_documents()
+all.persons <- persons %>% all_documents()
 
 if(all.cities$London$getValues()$capital){
   print("London is still the capital of UK")

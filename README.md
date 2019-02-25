@@ -156,11 +156,11 @@ print(paste("Persons registered:", persons$getCount(), sep = " "))
 
 ### Working with documents <a name="workingdocuments"></a>
 
-You can use collections to retrieve and access documents within the collection itself. For example you can get ALL the document of a collection (**BE CAREFUL**, collections could contains hundred of results) and access specific document using its key. The aRango::documents() return a list with all the documents found for the given collection.
+You can use collections to retrieve and access documents within the collection itself. For example you can get ALL the document of a collection (**BE CAREFUL**, collections could contains hundred of results) and access specific document using its key. The aRango::all_documents() return a list with all the documents found for the given collection.
 
 ```R
-all.cities <- cities %>% documents()
-all.persons <- persons %>% documents()
+all.cities <- cities %>% all_documents()
+all.persons <- persons %>% all_documents()
 
 if(all.cities$London$getValues()$capital){
   print("London is still the capital of UK")
@@ -171,7 +171,7 @@ if(all.cities$London$getValues()$capital){
 
 Each document is an object belonging to the ArangoDocument class: every instance expose the following methods:
 
-* getAvailableValues(), returns a vector of properties for which the document has a valid value (not null)
+* getKeys(), returns a vector of properties for which the document has a valid value (not null)
 * getValues(), returns the list of pairs key-value for which exist a not-null mapping
 
 
@@ -343,13 +343,13 @@ bool <- collection %>% aRango::drop()
 Returns a list with all the documents belonging to the given collection
 
 ```R
-list<ArangoDocument> <- ArangoCollection %>% aRango::documents()
+list<ArangoDocument> <- ArangoCollection %>% aRango::all_documents()
 ```
 
 Returns a list with all the documents belonging to the given collection
 
 ```R
-list<ArangoDocument> <- ArangoCollection %>% aRango::documents()
+list<ArangoDocument> <- ArangoCollection %>% aRango::all_documents()
 ```
 Methods for document management: insert a new document, with custom key, set the attributes of the document, remove the mapping for the given keys, delete a document and execute the pending modifies to a document.
 
