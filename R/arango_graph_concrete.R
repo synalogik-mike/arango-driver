@@ -80,7 +80,7 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
                             "FOR v,e,p IN 1..", depth," ANY startVertex ", edgeNames," ",
                             "RETURN p")
   }
-  
+
   getSubgraph <- .graph$.__enclos_env__$private$currentDatabase %>% aql(subgraphQuery)
   subgraphElements <- getSubgraph()
   

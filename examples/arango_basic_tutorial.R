@@ -140,3 +140,8 @@ if(is.null(lovesCollection %>% find_edge(all.persons$john.doe, all.cities$London
 
 # Retrieve the entire graph
 all.residence <- residenceGraph %>% all_graph()
+
+# Now you can also try to find the subgraph centered in London
+residenceGraph %>% 
+  traversal(all.cities$London, depth = 2) %>%
+  visualize()

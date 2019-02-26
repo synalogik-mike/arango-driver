@@ -259,23 +259,37 @@ visualize <- function(.element){
   # Adding legend?
   if("legend.nodes" %in% names(netOptions) && "legend.edges" %in% names(netOptions)){
     ledges <- data.frame(color = unique(netOptions$e$color), label = unique(netOptions$e$group))
-    lnodes <- data.frame(color = unique(netOptions$v$color), 
-                         label = unique(netOptions$v$group),
-                         icon.code = unique(netOptions$v$icon.code),
-                         icon.color = unique(netOptions$v$icon.color))
     
-    lnodes$shape <- ifelse(is.na(lnodes$icon.code), NA, "icon")
+    if("icon.code" %in% names(netOptions$v$icon.code)){
+      lnodes <- data.frame(color = unique(netOptions$v$color), 
+                           label = unique(netOptions$v$group),
+                           icon.code = unique(netOptions$v$icon.code),
+                           icon.color = unique(netOptions$v$icon.color))
+      
+      lnodes$shape <- ifelse(is.na(lnodes$icon.code), NA, "icon")
+    }
+    else{
+      lnodes <- data.frame(color = unique(netOptions$v$color), 
+                           label = unique(netOptions$v$group))
+    }
     
     networkVisualized <- networkVisualized %>%
       visLegend(addEdges = ledges, addNodes = lnodes, useGroups = FALSE)
   }
   else if("legend.nodes" %in% names(netOptions) && !("legend.edges" %in% names(netOptions))){
-    lnodes <- data.frame(color = unique(netOptions$v$color), 
-                         label = unique(netOptions$v$group),
-                         icon.code = unique(netOptions$v$icon.code),
-                         icon.color = unique(netOptions$v$icon.color))
     
-    lnodes$shape <- ifelse(is.na(lnodes$icon.code), NA, "icon")
+    if("icon.code" %in% names(netOptions$v$icon.code)){
+      lnodes <- data.frame(color = unique(netOptions$v$color), 
+                           label = unique(netOptions$v$group),
+                           icon.code = unique(netOptions$v$icon.code),
+                           icon.color = unique(netOptions$v$icon.color))
+      
+      lnodes$shape <- ifelse(is.na(lnodes$icon.code), NA, "icon")
+    }
+    else{
+      lnodes <- data.frame(color = unique(netOptions$v$color), 
+                           label = unique(netOptions$v$group))
+    }
     
     networkVisualized <- networkVisualized %>%
       visLegend(addNodes = lnodes, useGroups = FALSE)
