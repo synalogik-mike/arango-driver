@@ -84,7 +84,7 @@ with_mock_api({
             aRangodb::arango_collection(name = "test_coll")
     
     # when
-    doc <- coll %>% aRangodb::insert(key = "newDoc") 
+    doc <- coll %>% aRangodb::document_insert(key = "newDoc") 
     
     # then
     expect_equal(doc$getCollection(), "test_coll")
@@ -118,7 +118,7 @@ with_mock_api({
             aRangodb::arango_collection(name = "test_coll")
     
     # when
-    removed <- coll %>% aRangodb::insert(key = "newDoc") %>% aRangodb::delete()
+    removed <- coll %>% aRangodb::document_insert(key = "newDoc") %>% aRangodb::delete()
     
     # then
     expect_true(removed)
@@ -155,7 +155,7 @@ with_mock_api({
     doc <- aRangodb::arango_connection("localhost", "1234") %>% 
            aRangodb::arango_database(name = "testdb") %>% 
            aRangodb::arango_collection(name = "test_coll") %>% 
-           aRangodb::insert(key = "newDoc")
+           aRangodb::document_insert(key = "newDoc")
     
     # when
     previousUpdateRevision <- doc$getRevision()
@@ -195,7 +195,7 @@ with_mock_api({
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll/newDoc-7dde6e-PATCH.json")
     
     doc <- aRangodb::arango_connection("localhost", "1234") %>% aRangodb::arango_database(name = "testdb") %>% 
-      aRangodb::arango_collection(name = "test_coll") %>% aRangodb::insert(key = "newDoc")
+      aRangodb::arango_collection(name = "test_coll") %>% aRangodb::document_insert(key = "newDoc")
     
     # when
     previousUpdateRevision <- doc$getRevision()

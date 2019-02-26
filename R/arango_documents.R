@@ -77,10 +77,10 @@ all_documents <- function(.collection){
 #' @return an ArangoDocument representing the new document data         
 #'     
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-insert <- function(.collection, key){
+document_insert <- function(.collection, key){
   
   if(class(.collection)[1] != "ArangoCollection"){
-    stop("Only 'ArangoDocument' objects can be processed by aRango::insert function")
+    stop("Only 'ArangoDocument' objects can be processed by aRango::document_insert function")
   }
   
   # Creates the cursor and iterate over it to retrieve the entire collection

@@ -114,36 +114,36 @@ Again it has been used the option _createOnFail_ to create the collections if th
 
 ### Insertion of documents into a collection <a name="insertcollection"></a>
 
-Now we have two different collections: we can populate with some fake data for subsequent examples using the aRangodb::insert(key) to create a new document with the given key as identifier, and setting its values using the aRangodb::set() function. The insertion, and the values' updates, are effective once invoked the aRangodb::collection_update() function. It could be a limitation, but for synchronous (and immediate) call there will be a dedicated release of the driver.
+Now we have two different collections: we can populate with some fake data for subsequent examples using the aRangodb::document_insert(key) to create a new document with the given key as identifier, and setting its values using the aRangodb::set() function. The insertion, and the values' updates, are effective once invoked the aRangodb::collection_update() function. It could be a limitation, but for synchronous (and immediate) call there will be a dedicated release of the driver.
 
 ```R
 persons %>% 
-  insert("john.doe") %>% 
+  document_insert("john.doe") %>% 
   set(age=30, birthday="17/01/1989") %>% 
   collection_update()
 
 persons %>% 
-  insert("alice.foo") %>% 
+  document_insert("alice.foo") %>% 
   set(age=36, birthday="07/02/1983", graduated = TRUE) %>% 
   collection_update()
 
 persons %>% 
-  insert("brandon.fee") %>% 
+  document_insert("brandon.fee") %>% 
   set(age=36, birthday="03/11/1983", jobTitle="Software Developer") %>% 
   collection_update()
 
 persons %>% 
-  insert("charlie.foo") %>% 
+  document_insert("charlie.foo") %>% 
   set(age=34, birthday="03/02/1985") %>% 
   collection_update()
 
 cities %>% 
-  insert("London") %>% 
+  document_insert("London") %>% 
   set(position=list(latitude=51.5098, longitude=-2.0122), capital=TRUE, country="UK") %>% 
   collection_update()
 
 cities %>% 
-  insert("Manchester") %>% 
+  document_insert("Manchester") %>% 
   set(position=list(latitude=53.4839, longitude=-2.2446), capital=FALSE, country="UK") %>% 
   collection_update()
 ```
@@ -194,7 +194,7 @@ You can use the aRangodb::set() or aRangodb::unset() methods to insert/update or
 
 ```R
 Lyon <- cities %>% 
-  insert("Lyon") %>% 
+  document_insert("Lyon") %>% 
   set(capital=FALSE, country="Fran") %>%    # wrong insertion
   collection_update()
   
@@ -354,7 +354,7 @@ list<ArangoDocument> <- ArangoCollection %>% aRango::all_documents()
 Methods for document management: insert a new document, with custom key, set the attributes of the document, remove the mapping for the given keys, delete a document and execute the pending modifies to a document.
 
 ```R
-ArangoDocument <- ArangoCollection %>% aRango::insert(key)
+ArangoDocument <- ArangoCollection %>% aRango::document_insert(key)
 ArangoDocument <- ArangoDocument %>% aRango::set(...)
 ArangoDocument <- ArangoDocument %>% aRango::unset(...)
 ArangoDocument <- ArangoDocument %>% aRango::delete()
