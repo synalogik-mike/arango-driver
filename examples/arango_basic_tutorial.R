@@ -23,32 +23,32 @@ cities <- sandboxArangoDb %>% collection("city", createOnFail = TRUE)
 persons %>% 
   insert(key = "john.doe") %>% 
   set(age=30, birthday="17/01/1989") %>% 
-  execute()
+  collection_update()
 
 persons %>% 
   insert("alice.foo") %>% 
   set(age=36, birthday="07/02/1983", graduated = TRUE) %>% 
-  execute()
+  collection_update()
 
 persons %>% 
   insert("brandon.fee") %>% 
   set(age=36, birthday="03/11/1983", jobTitle="Software Developer") %>% 
-  execute()
+  collection_update()
 
 persons %>% 
   insert("charlie.foo") %>% 
   set(age=34, birthday="03/02/1985") %>% 
-  execute()
+  collection_update()
 
 cities %>% 
   insert("London") %>% 
   set(position=list(latitude=51.5098, longitude=-2.0122), capital=TRUE, country="UK") %>% 
-  execute()
+  collection_update()
 
 cities %>% 
   insert("Manchester") %>% 
   set(position=list(latitude=53.4839, longitude=-2.2446), capital=FALSE, country="UK") %>% 
-  execute()
+  collection_update()
 
 # You can use the collection to access some useful information about the collection itself...
 print(paste("Persons registered:", persons$getCount(), sep = " "))

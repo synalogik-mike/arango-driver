@@ -111,7 +111,7 @@ insert <- function(.collection, key){
 #' Update a document
 #' 
 #' Updates the attributes of the given document. When it is needed to made effective
-#' the updates must be call the execute() function.
+#' the updates must be call the collection_update() function.
 #'
 #' @param .data the document to be updated
 #' @param ... new or updated assignment to be added to the given document
@@ -140,7 +140,7 @@ set <- function(.data, ...){
 #' Remove documents' properties
 #' 
 #' Remove the assigments for the key passed as argument from the given document. 
-#' When it is needed to made effective the updates must be call the execute() function.
+#' When it is needed to made effective the updates must be call the collection_update() function.
 #'
 #' @param .data the document to be updated
 #' @param ... keys to be removed from the given document
@@ -172,7 +172,7 @@ unset <- function(.data, ...){
 #'
 #' @return the ArangoDocument updated but not yet consistent with the server image
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-execute <- function(.data){
+collection_update <- function(.data){
   
   if(class(.data)[1] != "ArangoDocument"){
     stop("Only 'ArangoDocument' objects can be processed by aRango::execute function")

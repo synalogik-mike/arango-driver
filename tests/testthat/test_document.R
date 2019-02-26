@@ -159,7 +159,7 @@ with_mock_api({
     
     # when
     previousUpdateRevision <- doc$getRevision()
-    doc <- doc %>% aRangodb::set(prop1="value1", prop2="value2") %>% aRangodb::execute()
+    doc <- doc %>% aRangodb::set(prop1="value1", prop2="value2") %>% aRangodb::collection_update()
     
     # then
     expect_false(doc$getRevision() == previousUpdateRevision)
@@ -200,7 +200,7 @@ with_mock_api({
     # when
     previousUpdateRevision <- doc$getRevision()
     doc <- doc %>% aRangodb::set(prop1="value1", prop2="value2") %>% 
-      unset("prop1") %>% aRangodb::execute()
+      unset("prop1") %>% aRangodb::collection_update()
     
     # then
     expect_false(doc$getRevision() == previousUpdateRevision)
