@@ -203,7 +203,7 @@ with_mock_api({
   test_that("Deletion of an existing graph works correctly", {
     # given
     existingGraph <- aRangodb::arango_connection("localhost", "1234") %>% 
-      aRangodb::arango_database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
+      aRangodb::arango_database(name = "testdb") %>% aRangodb::arango_graph(name = "testgraph")
     
     # when
     deleted <- existingGraph %>% aRangodb::drop()

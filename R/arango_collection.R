@@ -55,13 +55,13 @@ collections <- function(.database, includeSystem=FALSE){
 #' @return an object representing the collection with the given name
 #' 
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-collection <- function(.database, name, createOnFail=FALSE){
+arango_collection <- function(.database, name, createOnFail=FALSE){
   if(is.null(.database)){
     stop("Database is NULL, please provide a valid 'ArangoDatabase'")
   }
   
   if(class(.database)[1] != "ArangoDatabase"){
-    stop("Only 'ArangoDatabase' objects can be processed by aRango::collection")
+    stop("Only 'ArangoDatabase' objects can be processed by aRango::arango_collection")
   }
   
   # If createOnFail first trying to create the collection: if a collection with same name
@@ -123,7 +123,7 @@ collection <- function(.database, name, createOnFail=FALSE){
       # Check response status
       if(status_code(response) == 404){
         stop(paste0("Collection ", name, " not found. Creates it on the server or call the 
-                    aRango::collection(name, createOnFail=TRUE, createOption = list(...))"))
+                    aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))"))
       }
       
       # Response is ok, fill the internal state

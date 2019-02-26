@@ -63,7 +63,7 @@ with_mock_api({
           aRangodb::arango_database(name = "testdb")
     
     # when
-    collection <- db %>% aRangodb::collection(name = "test_coll")
+    collection <- db %>% aRangodb::arango_collection(name = "test_coll")
     
     # then
     expect_equal(collection$getName(), "test_coll")
@@ -85,7 +85,7 @@ with_mock_api({
           aRangodb::arango_database(name = "testdb")
     
     # when
-    collection <- db %>% aRangodb::collection(name = "test_coll")
+    collection <- db %>% aRangodb::arango_collection(name = "test_coll")
     
     # then
     expect_equal(collection$getName(), "test_coll")
@@ -101,7 +101,7 @@ with_mock_api({
     # given
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
             aRangodb::arango_database(name = "testdb") %>% 
-            aRangodb::collection(name = "example_coll")
+            aRangodb::arango_collection(name = "example_coll")
     
     # when
     deleted <- coll %>% aRangodb::drop()
@@ -119,7 +119,7 @@ with_mock_api({
     
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
             aRangodb::arango_database(name = "testdb") %>% 
-            aRangodb::collection(name = "example_coll")
+            aRangodb::arango_collection(name = "example_coll")
     
     # when
     count <- coll$getCount() # line 38, count is 20
@@ -149,7 +149,7 @@ with_mock_api({
                                            )
                                       ))
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/cursor-1e503a-POST.json")
-    coll <- aRangodb::arango_connection("localhost", "1234") %>% aRangodb::arango_database(name = "testdb") %>% aRangodb::collection(name = "example_coll")
+    coll <- aRangodb::arango_connection("localhost", "1234") %>% aRangodb::arango_database(name = "testdb") %>% aRangodb::arango_collection(name = "example_coll")
     
     # when
     documents <- coll %>% aRangodb::all_documents()
@@ -224,7 +224,7 @@ with_mock_api({
     
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
             aRangodb::arango_database(name = "testdb") %>% 
-            aRangodb::collection(name = "example_coll")
+            aRangodb::arango_collection(name = "example_coll")
     
     # when
     documents <- coll %>% aRangodb::all_documents()

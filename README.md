@@ -106,8 +106,8 @@ and available from this DB.
 Now create the "person" and "city" collections:
 
 ```R
-persons <- sandboxArangoDb %>% collection("person", createOnFail = TRUE)
-cities <- sandboxArangoDb %>% collection("city", createOnFail = TRUE)
+persons <- sandboxArangoDb %>% arango_collection("person", createOnFail = TRUE)
+cities <- sandboxArangoDb %>% arango_collection("city", createOnFail = TRUE)
 ```
 
 Again it has been used the option _createOnFail_ to create the collections if they were not found into the database. The call otherwise would launch an error (collection not found).
@@ -255,7 +255,7 @@ residenceGraph <-
 
 livesInCollection <- 
   sandboxArangoDb %>% 
-  collection("lives_in")
+  arango_collection("lives_in")
 
 if(!(is.null(livesInCollection))){
   print(paste0("'Voilà, I'm an edge collection, isn't it?' ", 
@@ -272,7 +272,7 @@ residenceGraph <-
   
 weatherCollection <- 
   sandboxArangoDb %>% 
-  collection("weather")
+  arango_collection("weather")
 
 if(!(is.null(weatherCollection))){
   print(paste0("'Voilà, I'm a document collection, isn't it?' ", 
@@ -330,8 +330,8 @@ character_vector <- ArangoDatabase %>% aRango::collections()
 Return an object representing the collection with the given name or create a collection with the given name (if not exist).
 
 ```R
-ArangoCollection <- ArangoDatabase %>% aRango::collection(name, createOnFail=FALSE)
-ArangoCollection <- ArangoDatabase %>% aRango::collection(name)
+ArangoCollection <- ArangoDatabase %>% aRango::arango_collection(name, createOnFail=FALSE)
+ArangoCollection <- ArangoDatabase %>% aRango::arango_collection(name)
 ```
 
 The given collection is deleted from the server.

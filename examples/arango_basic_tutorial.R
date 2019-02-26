@@ -16,8 +16,8 @@ sandboxArangoDb <- arangoConnection %>% arango_database("sandbox", createOnFail 
 # (or the db you had choosen): this means that collections, documents, and graphs will be visible
 # and available from this DB.
 # Now create the "person" and "city" collections:
-persons <- sandboxArangoDb %>% collection("person", createOnFail = TRUE)
-cities <- sandboxArangoDb %>% collection("city", createOnFail = TRUE)
+persons <- sandboxArangoDb %>% arango_collection("person", createOnFail = TRUE)
+cities <- sandboxArangoDb %>% arango_collection("city", createOnFail = TRUE)
 
 # Now we have two different collections: we can populate with some fake data for subsequent examples
 persons %>% 
@@ -102,7 +102,7 @@ residenceGraph <-
   define_edge("person", "lives_in", "city") %>%
   define_edge("person", "loves", "city")
 
-livesInCollection <- sandboxArangoDb %>% collection("lives_in")
+livesInCollection <- sandboxArangoDb %>% arango_collection("lives_in")
 
 if(!(is.null(livesInCollection))){
   print(paste0("'Voilà, I'm an edge collection, isn't it?' ", 
@@ -111,7 +111,7 @@ if(!(is.null(livesInCollection))){
 
 # Also collections will be automatically created if not in the collection set
 residenceGraph <- residenceGraph %>% define_edge(cities, "had_weather", "weather")
-weatherCollection <- sandboxArangoDb %>% collection("weather")
+weatherCollection <- sandboxArangoDb %>% arango_collection("weather")
 
 if(!(is.null(weatherCollection))){
   print(paste0("'Voilà, I'm a document collection, isn't it?' ", 
@@ -130,7 +130,7 @@ residenceGraph <- residenceGraph %>%
   remove_edges("loves" %owns% edge(all.persons$john.doe %->% all.cities$London))
 
 # The edge is not more present in the graph
-lovesCollection <- sandboxArangoDb %>% collection("loves")
+lovesCollection <- sandboxArangoDb %>% arango_collection("loves")
 
 if(is.null(lovesCollection %>% find_edge(all.persons$john.doe, all.cities$London))){
   print("Ok, the edge has been removed!")

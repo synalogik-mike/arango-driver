@@ -81,7 +81,7 @@ with_mock_api({
     
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
             aRangodb::arango_database(name = "testdb") %>% 
-            aRangodb::collection(name = "test_coll")
+            aRangodb::arango_collection(name = "test_coll")
     
     # when
     doc <- coll %>% aRangodb::insert(key = "newDoc") 
@@ -115,7 +115,7 @@ with_mock_api({
     
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
             aRangodb::arango_database(name = "testdb") %>% 
-            aRangodb::collection(name = "test_coll")
+            aRangodb::arango_collection(name = "test_coll")
     
     # when
     removed <- coll %>% aRangodb::insert(key = "newDoc") %>% aRangodb::delete()
@@ -154,7 +154,7 @@ with_mock_api({
     
     doc <- aRangodb::arango_connection("localhost", "1234") %>% 
            aRangodb::arango_database(name = "testdb") %>% 
-           aRangodb::collection(name = "test_coll") %>% 
+           aRangodb::arango_collection(name = "test_coll") %>% 
            aRangodb::insert(key = "newDoc")
     
     # when
@@ -195,7 +195,7 @@ with_mock_api({
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/document/test_coll/newDoc-7dde6e-PATCH.json")
     
     doc <- aRangodb::arango_connection("localhost", "1234") %>% aRangodb::arango_database(name = "testdb") %>% 
-      aRangodb::collection(name = "test_coll") %>% aRangodb::insert(key = "newDoc")
+      aRangodb::arango_collection(name = "test_coll") %>% aRangodb::insert(key = "newDoc")
     
     # when
     previousUpdateRevision <- doc$getRevision()
@@ -245,7 +245,7 @@ with_mock_api({
     
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
             aRangodb::arango_database(name = "testdb") %>% 
-            aRangodb::collection(name = "example_coll")
+            aRangodb::arango_collection(name = "example_coll")
     
     # when
     docs <- coll %>% aRangodb::collection_filter(type="key", subtype="subtype1")
@@ -311,7 +311,7 @@ with_mock_api({
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/cursor-a81381-POST.json")
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
             aRangodb::arango_database(name = "testdb") %>% 
-            aRangodb::collection(name = "example_coll")
+            aRangodb::arango_collection(name = "example_coll")
     
     # when
     docs <- coll %>% aRangodb::collection_filter(type = "key", isSystem = TRUE, qty %gt% 0, qty %lt% 3.3)

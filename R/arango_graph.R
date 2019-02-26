@@ -44,7 +44,7 @@ graphs <- function(.database){
 #' @param name the name of the graph
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-graph <- function(.database, name, createOnFail = FALSE){
+arango_graph <- function(.database, name, createOnFail = FALSE){
   if(is.null(.database)){
     stop("Database is NULL, please provide a valid 'ArangoDatabase'")
   }
@@ -128,7 +128,7 @@ remove_edges <- function(.graph, listOfEdges){
     toId <- current$edge$`_to`
     
     edgeToRemove <- .graph$.__enclos_env__$private$currentDatabase %>%
-      collection(currentCollection) %>% 
+      arango_collection(currentCollection) %>% 
       find_edge(fromId, toId)
     
     if(is.null(edgeToRemove)){
@@ -287,7 +287,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
       # Check response status
       if(status_code(response) == 404){
         stop(paste0("Graph ", name, " not found. Creates it on the server or call the 
-                    aRango::collection(name, createOnFail=TRUE, createOption = list(...))"))
+                    aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))"))
       }
       
       graphInformation <- content(response)$graph
