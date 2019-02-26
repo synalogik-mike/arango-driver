@@ -121,7 +121,7 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
 #'  contains lot of elements)
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-connections <- function(.graph){
+all_graph <- function(.graph){
   
   # ==== Check on .graph variable ====
   if(is.null(.graph)){
@@ -129,7 +129,7 @@ connections <- function(.graph){
   }
   
   if(class(.graph)[1] != "ArangoGraph"){
-    stop("Only 'ArangoGraph' objects can be processed by aRango::connections")
+    stop("Only 'ArangoGraph' objects can be processed by aRango::all_graph")
   }
   
   allCollections <- ""

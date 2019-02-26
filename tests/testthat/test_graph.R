@@ -105,7 +105,7 @@ with_mock_api({
       aRangodb::arango_database(name = "testdb")
     
     # when
-    foundGraph <- db %>% graph(name = "testgraph")
+    foundGraph <- db %>% arango_graph(name = "testgraph")
     
     # then
     expect_equal(foundGraph$getName(), "testgraph")
@@ -123,7 +123,7 @@ with_mock_api({
       aRangodb::arango_database(name = "testdb")
     
     # when
-    foundGraph <- db %>% graph(name = "testgraph", createOnFail = TRUE)
+    foundGraph <- db %>% arango_graph(name = "testgraph", createOnFail = TRUE)
     
     # then
     expect_equal(foundGraph$getName(), "testgraph")
@@ -137,7 +137,7 @@ with_mock_api({
   test_that("Addition of an edge definition for a graph works correctly", {
     # given
     existingGraph <- aRangodb::arango_connection("localhost", "1234") %>% 
-      aRangodb::arango_database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
+      aRangodb::arango_database(name = "testdb") %>% aRangodb::arango_graph(name = "testgraph")
     
     # when
     existingGraph <- existingGraph %>% aRangodb::define_edge("employee", "has", "skill")

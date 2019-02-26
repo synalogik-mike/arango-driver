@@ -92,7 +92,7 @@ if(length(filtered.persons) != 3){
 }
 
 # Last but not least, you can define a graph structure in the same way you can define a collection.
-residenceGraph <- sandboxArangoDb %>% graph("residence", createOnFail = TRUE)
+residenceGraph <- sandboxArangoDb %>% arango_graph("residence", createOnFail = TRUE)
 
 # If you created the graph from scratch, as in this case, you can add the definitions of possible edges
 # that the graph can store. Adding an edge will automatically adds the collections to the graph as possible
@@ -139,4 +139,4 @@ if(is.null(lovesCollection %>% find_edge(all.persons$john.doe, all.cities$London
 }
 
 # Retrieve the entire graph
-all.residence <- residenceGraph %>% connections()
+all.residence <- residenceGraph %>% all_graph()

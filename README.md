@@ -242,7 +242,7 @@ Last but not least, you can define a graph structure in the same way you can def
 ```R
 residenceGraph <- 
   sandboxArangoDb %>% 
-  graph("residence", createOnFail = TRUE)
+  arango_graph("residence", createOnFail = TRUE)
 ```
 
 If you created the graph from scratch, as in this case, you can add the definitions of possible edges
@@ -385,8 +385,8 @@ character_vector <- ArangoDatabase %>% aRango::graphs()
 Returns a list with all the available graphs for the given database
 
 ```R
-ArangoGraph <- ArangoDatabase %>% aRango::graph(name, createOnFail=FALSE)
-ArangoGraph <- ArangoDatabase %>% aRango::graph(name)
+ArangoGraph <- ArangoDatabase %>% aRango::arango_graph(name, createOnFail=FALSE)
+ArangoGraph <- ArangoDatabase %>% aRango::arango_graph(name)
 ```
 
 Adds a definition of a new edge for the given graph

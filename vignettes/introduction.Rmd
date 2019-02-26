@@ -308,13 +308,13 @@ Last but not least, you can define a graph structure in the same way you can def
 ```{r step_6, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   sandboxArangoDb %>% 
-  graph("residence", createOnFail = TRUE)
+  arango_graph("residence", createOnFail = TRUE)
 ```
 
 ```{r step_6_real, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE}
 residenceGraph <- 
   sandboxArangoDb %>% 
-  graph("residence", createOnFail = TRUE)
+  arango_graph("residence", createOnFail = TRUE)
 ```
 
 If you created the graph from scratch, as in this case, you can add the definitions of possible edges
