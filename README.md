@@ -114,37 +114,37 @@ Again it has been used the option _createOnFail_ to create the collections if th
 
 ### Insertion of documents into a collection <a name="insertcollection"></a>
 
-Now we have two different collections: we can populate with some fake data for subsequent examples using the aRangodb::document_insert(key) to create a new document with the given key as identifier, and setting its values using the aRangodb::set() function. The insertion, and the values' updates, are effective once invoked the aRangodb::collection_update() function. It could be a limitation, but for synchronous (and immediate) call there will be a dedicated release of the driver.
+Now we have two different collections: we can populate with some fake data for subsequent examples using the aRangodb::document_insert(key) to create a new document with the given key as identifier, and setting its values using the aRangodb::document_set() function. The insertion, and the values' updates, are effective once invoked the aRangodb::collection_update() function. It could be a limitation, but for synchronous (and immediate) call there will be a dedicated release of the driver.
 
 ```R
 persons %>% 
   document_insert("john.doe") %>% 
-  set(age=30, birthday="17/01/1989") %>% 
+  document_set(age=30, birthday="17/01/1989") %>% 
   collection_update()
 
 persons %>% 
   document_insert("alice.foo") %>% 
-  set(age=36, birthday="07/02/1983", graduated = TRUE) %>% 
+  document_set(age=36, birthday="07/02/1983", graduated = TRUE) %>% 
   collection_update()
 
 persons %>% 
   document_insert("brandon.fee") %>% 
-  set(age=36, birthday="03/11/1983", jobTitle="Software Developer") %>% 
+  document_set(age=36, birthday="03/11/1983", jobTitle="Software Developer") %>% 
   collection_update()
 
 persons %>% 
   document_insert("charlie.foo") %>% 
-  set(age=34, birthday="03/02/1985") %>% 
+  document_set(age=34, birthday="03/02/1985") %>% 
   collection_update()
 
 cities %>% 
   document_insert("London") %>% 
-  set(position=list(latitude=51.5098, longitude=-2.0122), capital=TRUE, country="UK") %>% 
+  document_set(position=list(latitude=51.5098, longitude=-2.0122), capital=TRUE, country="UK") %>% 
   collection_update()
 
 cities %>% 
   document_insert("Manchester") %>% 
-  set(position=list(latitude=53.4839, longitude=-2.2446), capital=FALSE, country="UK") %>% 
+  document_set(position=list(latitude=53.4839, longitude=-2.2446), capital=FALSE, country="UK") %>% 
   collection_update()
 ```
 
@@ -190,20 +190,20 @@ if(!is.null(filtered.cities$London)){
 }
 ```
 
-You can use the aRangodb::set() or aRangodb::unset() methods to insert/update or remove an attribute from a document. For example, the following code shown an insertion, followed by an update and an unset.
+You can use the aRangodb::document_set() or aRangodb::document_unset() methods to insert/update or remove an attribute from a document. For example, the following code shown an insertion, followed by an update and an unset.
 
 ```R
 Lyon <- cities %>% 
   document_insert("Lyon") %>% 
-  set(capital=FALSE, country="Fran") %>%    # wrong insertion
+  document_set(capital=FALSE, country="Fran") %>%    # wrong insertion
   collection_update()
   
 Lyon %>%
-  set(country="France") %>%                 # update
+  document_set(country="France") %>%                 # update
   collection_update()
   
 Lyon %>%
-  unset(capital) %>%                        # no more important
+  document_unset(capital) %>%                        # no more important
   collection_update()
 ```
 
@@ -355,8 +355,8 @@ Methods for document management: insert a new document, with custom key, set the
 
 ```R
 ArangoDocument <- ArangoCollection %>% aRango::document_insert(key)
-ArangoDocument <- ArangoDocument %>% aRango::set(...)
-ArangoDocument <- ArangoDocument %>% aRango::unset(...)
+ArangoDocument <- ArangoDocument %>% aRango::document_set(...)
+ArangoDocument <- ArangoDocument %>% aRango::document_unset(...)
 ArangoDocument <- ArangoDocument %>% aRango::delete()
 ArangoDocument <- ArangoDocument %>% aRango::collection_update()
 ```

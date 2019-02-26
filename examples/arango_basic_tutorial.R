@@ -22,32 +22,32 @@ cities <- sandboxArangoDb %>% arango_collection("city", createOnFail = TRUE)
 # Now we have two different collections: we can populate with some fake data for subsequent examples
 persons %>% 
   document_insert(key = "john.doe") %>% 
-  set(age=30, birthday="17/01/1989") %>% 
+  document_set(age=30, birthday="17/01/1989") %>% 
   collection_update()
 
 persons %>% 
   document_insert("alice.foo") %>% 
-  set(age=36, birthday="07/02/1983", graduated = TRUE) %>% 
+  document_set(age=36, birthday="07/02/1983", graduated = TRUE) %>% 
   collection_update()
 
 persons %>% 
   document_insert("brandon.fee") %>% 
-  set(age=36, birthday="03/11/1983", jobTitle="Software Developer") %>% 
+  document_set(age=36, birthday="03/11/1983", jobTitle="Software Developer") %>% 
   collection_update()
 
 persons %>% 
   document_insert("charlie.foo") %>% 
-  set(age=34, birthday="03/02/1985") %>% 
+  document_set(age=34, birthday="03/02/1985") %>% 
   collection_update()
 
 cities %>% 
   document_insert("London") %>% 
-  set(position=list(latitude=51.5098, longitude=-2.0122), capital=TRUE, country="UK") %>% 
+  document_set(position=list(latitude=51.5098, longitude=-2.0122), capital=TRUE, country="UK") %>% 
   collection_update()
 
 cities %>% 
   document_insert("Manchester") %>% 
-  set(position=list(latitude=53.4839, longitude=-2.2446), capital=FALSE, country="UK") %>% 
+  document_set(position=list(latitude=53.4839, longitude=-2.2446), capital=FALSE, country="UK") %>% 
   collection_update()
 
 # You can use the collection to access some useful information about the collection itself...

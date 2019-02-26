@@ -118,10 +118,10 @@ document_insert <- function(.collection, key){
 #' 
 #' @return the ArangoDocument updated but not yet consistent with the server image
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-set <- function(.data, ...){
+document_set <- function(.data, ...){
   
   if(class(.data)[1] != "ArangoDocument"){
-    stop("Only 'ArangoDocument' objects can be processed by aRango::set function")
+    stop("Only 'ArangoDocument' objects can be processed by aRango::document_set function")
   }
   
   arguments <- list(...)
@@ -147,10 +147,10 @@ set <- function(.data, ...){
 #' 
 #' @return the ArangoDocument updated but not yet consistent with the server image
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-unset <- function(.data, ...){
+document_unset <- function(.data, ...){
   
   if(class(.data)[1] != "ArangoDocument"){
-    stop("Only 'ArangoDocument' objects can be processed by aRango::unset function")
+    stop("Only 'ArangoDocument' objects can be processed by aRango::document_unset function")
   }
   
   variableToRemove <- c(...)
