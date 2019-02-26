@@ -74,7 +74,7 @@ library(aRangodb)
 Connect to an ArangoDB server up and running
 
 ```R
-arangoConnection <- connect(<instance_ip>, <instance_port>)
+arangoConnection <- arango_connection(<instance_ip>, <instance_port>)
 ```
 
 ### Create or connect to a database <a name="connectdatabase"></a>
@@ -298,7 +298,7 @@ residenceGraph <-
 Create a connection with an ArangoDB instance.
 
 ```R
-ArangoConnection <- aRango::connect(server, port)
+ArangoConnection <- aRango::arango_connection(server, port)
 ```
 
 Returns a list with the name of all the available databases for this ArangoDB instance

@@ -44,11 +44,11 @@ library(aRangodb)
 Connect to an ArangoDB server up and running
 
 ```{r connetion_ex, echo=TRUE, eval=FALSE}
-arangoConnection <- connect(<instance_ip>, <instance_port>)
+arangoConnection <- arango_connection(<instance_ip>, <instance_port>)
 ```
 
 ```{r connection_real, echo=FALSE}
-arangoConnection <- connect("138.201.225.72", 41000)
+arangoConnection <- arango_connection("138.201.225.72", 41000)
 
 # If you want to delete the existing database to have a clear environment
 sandboxArangoDb <- arangoConnection %>% database("sandbox")

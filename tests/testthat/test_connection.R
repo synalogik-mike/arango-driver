@@ -20,7 +20,7 @@ with_mock_api({
     # given
     
     # when
-    connection <- aRangodb::connect("localhost", "1234")
+    connection <- aRangodb::arango_connection("localhost", "1234")
     
     # then
     expect_equal(class(connection)[1], "ArangoConnection")
@@ -37,7 +37,7 @@ with_mock_api({
     # given
     
     # when
-    connection <- aRangodb::connect("localhost", 1234)
+    connection <- aRangodb::arango_connection("localhost", 1234)
     
     # then
     expect_equal(class(connection)[1], "ArangoConnection")
@@ -54,7 +54,7 @@ test_that("No connection can be setup with no hostname", {
   
   # when
   tryCatch({
-    aRangodb::connect(NULL, 1234)
+    aRangodb::arango_connection(NULL, 1234)
   }, warning = function(w) {
     fail("must not be reached")
   }, error = function(e) {
@@ -69,7 +69,7 @@ test_that("No connection can be setup with no hostname", {
   
   # when
   tryCatch({
-    aRangodb::connect("localhost", NULL)
+    aRangodb::arango_connection("localhost", NULL)
   }, warning = function(w) {
     fail("must not be reached")
   }, error = function(e) {

@@ -10,7 +10,7 @@ library(R6)
 #' @return an ArangoConnection object used to handle requests to the given Arango server
 #' 
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-connect <- function(host, port){
+arango_connection <- function(host, port){
   
   if(is.null(host)){
     stop("to setup a connection you must indicate a 'host'")

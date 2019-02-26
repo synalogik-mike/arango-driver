@@ -1,7 +1,7 @@
 library(aRangodb)
 
 # Connect to an ArangoDB server up and running
-arangoConnection <- connect(<server>, <port>)
+arangoConnection <- arango_connection(<server>, <port>)
 
 # If you want to delete the existing database to have a clear environment
 sandboxArangoDb <- arangoConnection %>% database("sandbox")
