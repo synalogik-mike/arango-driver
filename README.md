@@ -46,8 +46,13 @@ To setup an ArangoDB instance using the stand-alone version you can [follow thos
 
 ## ArangoDB basic concepts <a name="arangoconcepts"></a>
 In order to understand the examples in the next sections it is desirable understand some basic concepts of the behaving and logic of ArangoDB. Each instance of an ArangoDB server can store multiple databases: even if you don't create any database, there is the default one named **\_system**. Every operation you invoke that is invoked with no database specified affects the **\_system** one. It is suggested to not use this database for applications.
+ArangoDB is a **Multi-Model database**, this means that there are multiple ways to organize data. In particular ArangoDB is based on two main structures:
 
-####References
+* **collections** set of documents without a fixed schema, like the structure used in MongoDb. The documents are basically set of key-value pairs (possibly nested) that can be represented with JSON standard;
+
+* **graphs** where every graph you define is basically a container that links collections between them. In fact to define a graph the user has to indicate the definitions of the edges composing the graph, where every edge is a particular collection (an _edge collection_). The edge collections share the characteristics to be defined between set of _document collections_, e.g. if you have the document collections **persons, motorbikes, cars** you can define the edge DRIVE({person}, {motorbikes, cars}). Edges collections are composed by documents with the charateristic to have two special attributes "_from" and "_to" that associate the key of the document from which the edge starts to the document where the edge ends, e.g. {"_from":"persons/gabriele", "_to":"pegout"}. Edges, being documents, can also have their own attributes, e.g. {"_from":"persons/gabriele", "_to":"pegout", "since": "2016"}  
+
+For details please refer to the official ArangoDB documentation:
 
 * **Quick introduction** https://docs.arangodb.com/3.4/Manual/GettingStarted/DatabasesCollectionsDocuments.html
 * **Core Concepts** https://docs.arangodb.com/3.4/Manual/DataModeling/
@@ -288,6 +293,8 @@ residenceGraph <-
   add_edges("lives_in" %owns% edge(all.persons$john.doe %->% all.cities$London)) %>%
   add_edges("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```
+
+
 
 ### Visualize graphs <a name="visualizegrapphs"></a>
 
