@@ -4,13 +4,13 @@ library(aRangodb)
 arangoConnection <- arango_connection(<server>, <port>)
 
 # If you want to delete the existing database to have a clear environment
-sandboxArangoDb <- arangoConnection %>% database("sandbox")
+sandboxArangoDb <- arangoConnection %>% arango_database("sandbox")
 if(!is.null(sandboxArangoDb)){
   sandboxArangoDb %>% drop()
 }
 
 # Create a sandbox database: if you already have one you can use it for this example
-sandboxArangoDb <- arangoConnection %>% database("sandbox", createOnFail = TRUE)
+sandboxArangoDb <- arangoConnection %>% arango_database("sandbox", createOnFail = TRUE)
 
 # From now on all the collections, documents and graphs will be manipulated within "sandbox"
 # (or the db you had choosen): this means that collections, documents, and graphs will be visible

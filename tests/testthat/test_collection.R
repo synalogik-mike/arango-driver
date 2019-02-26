@@ -44,7 +44,7 @@ with_mock_api({
   test_that("Requests for all available collections into a database works correctly", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-          aRangodb::database(name = "testdb")
+          aRangodb::arango_database(name = "testdb")
     
     # when
     availableCollections <- db %>% collections()
@@ -60,7 +60,7 @@ with_mock_api({
   test_that("Request for an existing collection that is not a system one returns the collection info", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-          aRangodb::database(name = "testdb")
+          aRangodb::arango_database(name = "testdb")
     
     # when
     collection <- db %>% aRangodb::collection(name = "test_coll")
@@ -82,7 +82,7 @@ with_mock_api({
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/collection/test_coll.json")
     
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-          aRangodb::database(name = "testdb")
+          aRangodb::arango_database(name = "testdb")
     
     # when
     collection <- db %>% aRangodb::collection(name = "test_coll")
@@ -100,7 +100,7 @@ with_mock_api({
   test_that("Deletion of an existing collection works correctly", {
     # given
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
-            aRangodb::database(name = "testdb") %>% 
+            aRangodb::arango_database(name = "testdb") %>% 
             aRangodb::collection(name = "example_coll")
     
     # when
@@ -118,7 +118,7 @@ with_mock_api({
     write(collectionCountResponse, file="./localhost-1234/_db/testdb/_api/collection/example_coll/count.json")
     
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
-            aRangodb::database(name = "testdb") %>% 
+            aRangodb::arango_database(name = "testdb") %>% 
             aRangodb::collection(name = "example_coll")
     
     # when
@@ -149,7 +149,7 @@ with_mock_api({
                                            )
                                       ))
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/cursor-1e503a-POST.json")
-    coll <- aRangodb::arango_connection("localhost", "1234") %>% aRangodb::database(name = "testdb") %>% aRangodb::collection(name = "example_coll")
+    coll <- aRangodb::arango_connection("localhost", "1234") %>% aRangodb::arango_database(name = "testdb") %>% aRangodb::collection(name = "example_coll")
     
     # when
     documents <- coll %>% aRangodb::all_documents()
@@ -223,7 +223,7 @@ with_mock_api({
     write(serverResponse, file="./localhost-1234/_db/testdb/_api/cursor-PUT.json")
     
     coll <- aRangodb::arango_connection("localhost", "1234") %>% 
-            aRangodb::database(name = "testdb") %>% 
+            aRangodb::arango_database(name = "testdb") %>% 
             aRangodb::collection(name = "example_coll")
     
     # when

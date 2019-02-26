@@ -85,7 +85,7 @@ _createOnFail_ option (default is FALSE):
 ```R
 sandboxArangoDb <- 
   arangoConnection %>% 
-  database("sandbox", createOnFail = TRUE)
+  arango_database("sandbox", createOnFail = TRUE)
 ```
 
 To use the default database (**DISCOURAGED**) you can do:
@@ -93,7 +93,7 @@ To use the default database (**DISCOURAGED**) you can do:
 ```R
 defaultArangoDb <- 
   arangoConnection %>% 
-  database()
+  arango_database()
 ```
 
 The object that those methods return is an instance of ArangoDatabase class and it will be used for all the operations affecting the database.
@@ -310,9 +310,9 @@ character_vector <- ArangoConnection %>% aRango::databases()
 Return an object representing the database with the given name, create a database with the given name (if not exist), or the default database.
 
 ```R
-ArangoDatabase <- ArangoConnection %>% aRango::database(name)
-ArangoDatabase <- ArangoConnection %>% aRango::database(name, createOnFail=TRUE)
-ArangoDatabase <- ArangoConnection %>% aRango::database()
+ArangoDatabase <- ArangoConnection %>% aRango::arango_database(name)
+ArangoDatabase <- ArangoConnection %>% aRango::arango_database(name, createOnFail=TRUE)
+ArangoDatabase <- ArangoConnection %>% aRango::arango_database()
 ```
 
 The given database is deleted from the server.

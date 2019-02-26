@@ -57,7 +57,7 @@ databases <- function(.connection, includeSystem=FALSE){
 #' @param createOnFail if the database were not found creates it. If the parameter is set to TRUE
 #'                     and the default database is requested the function fails. (default FALSE)             
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-database <- function(.connection, name="_system", createOnFail=FALSE){
+arango_database <- function(.connection, name="_system", createOnFail=FALSE){
   .check_connection(.connection)
   
   if(is.null(name)){

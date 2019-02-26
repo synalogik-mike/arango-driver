@@ -88,7 +88,7 @@ with_mock_api({
     
     # when
     defaultDb <- connection %>% 
-                 aRangodb::database()
+                 aRangodb::arango_database()
     
     # then
     expect_equal(defaultDb$getName(), "_system")
@@ -105,7 +105,7 @@ with_mock_api({
     
     # when
     defaultDb <- connection %>% 
-                 aRangodb::database(name = "testdb")
+                 aRangodb::arango_database(name = "testdb")
     
     # then
     expect_equal(defaultDb$getName(), "testdb")
@@ -122,7 +122,7 @@ with_mock_api({
     
     # when
     defaultDb <- connection %>% 
-                 aRangodb::database(name = "example", createOnFail = TRUE)
+                 aRangodb::arango_database(name = "example", createOnFail = TRUE)
     
     # then
     expect_equal(defaultDb$getName(), "example")
@@ -136,7 +136,7 @@ with_mock_api({
   test_that("Requests for drop of an existing database works correctly", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-          aRangodb::database(name = "testdb")
+          aRangodb::arango_database(name = "testdb")
    
     # when
     dropResult <- db %>% aRangodb::drop()

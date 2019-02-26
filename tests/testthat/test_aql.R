@@ -37,7 +37,7 @@ with_mock_api({
   test_that("Creation of a correct AQL statement let the returns of correct results", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-          aRangodb::database(name = "testdb")
+          aRangodb::arango_database(name = "testdb")
     
     # when
     searchByType <- db %>% aRangodb::aql("FOR elem IN example_coll FILTER elem.type==@type RETURN elem")
@@ -57,7 +57,7 @@ with_mock_api({
   test_that("Creation of a wrong AQL statement let the parsing return an error", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-          aRangodb::database(name = "testdb")
+          aRangodb::arango_database(name = "testdb")
     
     # when
     tryCatch({

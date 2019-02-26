@@ -51,7 +51,7 @@ arangoConnection <- arango_connection(<instance_ip>, <instance_port>)
 arangoConnection <- arango_connection("138.201.225.72", 41000)
 
 # If you want to delete the existing database to have a clear environment
-sandboxArangoDb <- arangoConnection %>% database("sandbox")
+sandboxArangoDb <- arangoConnection %>% arango_database("sandbox")
 if(!is.null(sandboxArangoDb)){
   sandboxArangoDb %>% drop()
 }
@@ -66,7 +66,7 @@ _createOnFail_ option (default is FALSE):
 ```{r connection_db, echo=TRUE, message=FALSE, warning=FALSE}
 sandboxArangoDb <- 
   arangoConnection %>% 
-  database("sandbox", createOnFail = TRUE)
+  arango_database("sandbox", createOnFail = TRUE)
 ```
 
 To use the default database (**DISCOURAGED**) you can do:
@@ -74,7 +74,7 @@ To use the default database (**DISCOURAGED**) you can do:
 ```{r connection_default_db, echo=TRUE, message=FALSE, warning=FALSE}
 defaultArangoDb <- 
   arangoConnection %>% 
-  database()
+  arango_database()
 ```
 
 The object that those methods return is an instance of ArangoDatabase class and it will be used for all the operations affecting the database.

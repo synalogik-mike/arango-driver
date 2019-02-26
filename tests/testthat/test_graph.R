@@ -83,7 +83,7 @@ with_mock_api({
   test_that("Requests for all available graphs into a database works correctly", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-          aRangodb::database(name = "testdb")
+          aRangodb::arango_database(name = "testdb")
     
     # when
     availableGraphs <- db %>% graphs()
@@ -102,7 +102,7 @@ with_mock_api({
   test_that("Requests for an existing graph into a database works correctly", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-      aRangodb::database(name = "testdb")
+      aRangodb::arango_database(name = "testdb")
     
     # when
     foundGraph <- db %>% graph(name = "testgraph")
@@ -120,7 +120,7 @@ with_mock_api({
   test_that("Requests for a not existing existing graph into a database works correctly", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234") %>% 
-      aRangodb::database(name = "testdb")
+      aRangodb::arango_database(name = "testdb")
     
     # when
     foundGraph <- db %>% graph(name = "testgraph", createOnFail = TRUE)
@@ -137,7 +137,7 @@ with_mock_api({
   test_that("Addition of an edge definition for a graph works correctly", {
     # given
     existingGraph <- aRangodb::arango_connection("localhost", "1234") %>% 
-      aRangodb::database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
+      aRangodb::arango_database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
     
     # when
     existingGraph <- existingGraph %>% aRangodb::define_edge("employee", "has", "skill")
@@ -203,7 +203,7 @@ with_mock_api({
   test_that("Deletion of an existing graph works correctly", {
     # given
     existingGraph <- aRangodb::arango_connection("localhost", "1234") %>% 
-      aRangodb::database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
+      aRangodb::arango_database(name = "testdb") %>% aRangodb::graph(name = "testgraph")
     
     # when
     deleted <- existingGraph %>% aRangodb::drop()
