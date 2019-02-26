@@ -1,9 +1,3 @@
-library(jsonlite)
-library(httr)
-library(R6)
-library(magrittr)
-library(purrr)
-
 #' Get all graphs
 #' 
 #' Returns all the graphs belonging to the giving database
@@ -18,8 +12,8 @@ graphs <- function(.database){
   
   allGraphsResponse <- httr::GET(paste0(connectionString,"/_api/gharial/"))
   
-  stop_for_status(allGraphsResponse)
-  response <- content(allGraphsResponse)
+  httr::stop_for_status(allGraphsResponse)
+  response <- httr::content(allGraphsResponse)
   
   if(!is.null(response$graphs) && response$code == 200){
     results <- response$graphs
@@ -92,7 +86,7 @@ add_edges <- function(.graph, listOfEdges){
                                        body = current$edge)
     
     # TODO, how to manage?
-    stop_for_status(arangoServerResponse)
+    httr::stop_for_status(arangoServerResponse)
   }
   
   return(.graph)
@@ -140,7 +134,7 @@ remove_edges <- function(.graph, listOfEdges){
       arangoServerResponse <- httr::DELETE(deleteEdgeEndpoint)
       
       # TODO, how to manage?
-      stop_for_status(arangoServerResponse)
+      httr::stop_for_status(arangoServerResponse)
     }
   }
   
@@ -203,7 +197,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
   arangoServerResponse <- httr::POST(addEdgeDefinitionEndpoint, encode="json", 
                                      body = list(from=list(fromCollectionName), to=list(toCollectionName), collection=relation))
   
-  response <- content(arangoServerResponse)
+  response <- httr::content(arangoServerResponse)
   
   # Edge already exist
   if(response$error == TRUE && response$errorNum == 1920){
@@ -255,7 +249,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
 #' real graphs on the server.
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-.aRango_graph <- R6Class (
+.aRango_graph <- R6::R6Class (
   "ArangoGraph",
   
   public = list(
@@ -290,7 +284,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
                     aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))"))
       }
       
-      graphInformation <- content(response)$graph
+      graphInformation <- httr::content(response)$graph
       
       # Save all the edges that has been retrieved
       for(edge in graphInformation$edgeDefinitions){

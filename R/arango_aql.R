@@ -1,7 +1,3 @@
-library(jsonlite)
-library(httr)
-library(R6)
-
 .check_element.aql <- function(.element){
   if(is.null(.element)){
     stop("Database is NULL, please provide a valid 'ArangoDatabase'")
@@ -52,7 +48,7 @@ aql <- function(.element, statement){
   connectionString <- .element$.__enclos_env__$private$connectionStringRequest
   parseAqlEndpoint <- paste0(.element$.__enclos_env__$private$connectionStringRequest, "/_api/query")
   parsingResultResponse <- httr::POST(parseAqlEndpoint, encode="json", body = list(query=statement))
-  parsingResult <- content(parsingResultResponse)
+  parsingResult <- httr::content(parsingResultResponse)
   
   if(parsingResult$code == 400){
     stop(parsingResult$errorMessage)
@@ -79,7 +75,7 @@ aql <- function(.element, statement){
                                     bindVars = bindVarsList
                                   ),
                                   encode = "json")
-    cursorResponse <- content(resultsBatch)
+    cursorResponse <- httr::content(resultsBatch)
     
     if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
       stop(paste0("ArangoCursor not created: ", cursorResponse$errorMessage))
@@ -99,7 +95,7 @@ aql <- function(.element, statement){
       
       # Requesting next data batch
       resultsBatch <- httr::PUT(paste0(connectionString,"/_api/cursor/",cursor))
-      cursorResponse <- content(resultsBatch)
+      cursorResponse <- httr::content(resultsBatch)
       
       if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
         stop("Something were wrong during the retrieval of the documents of this collection (arango cursor not created)")

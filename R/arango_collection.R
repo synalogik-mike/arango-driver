@@ -1,8 +1,3 @@
-library(jsonlite)
-library(httr)
-library(R6)
-
-
 #' Get all collections name
 #'
 #' Returns all the collections contained in the given database
@@ -20,8 +15,8 @@ collections <- function(.database, includeSystem=FALSE){
   
   allCollectionsResponse <- httr::GET(paste0(connectionString,"/_api/collection/"))
   
-  stop_for_status(allCollectionsResponse)
-  response <- content(allCollectionsResponse)
+  httr::stop_for_status(allCollectionsResponse)
+  response <- httr::content(allCollectionsResponse)
   
   if(!is.null(response$result)){
     results <- response$result
@@ -84,7 +79,7 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
 #' real collections on the server.
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-.aRango_collection <- R6Class (
+.aRango_collection <- R6::R6Class (
   "ArangoCollection",
   
   public = list(
@@ -127,7 +122,7 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
       }
       
       # Response is ok, fill the internal state
-      collectionInformation <- content(response)
+      collectionInformation <- httr::content(response)
       private$collname <- name
       private$isSystem <- collectionInformation$isSystem
       private$id <- collectionInformation$id
@@ -177,12 +172,12 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
       countResponse <- httr::GET(countRequest)
       
       # Check response status
-      if(status_code(countResponse) == 404){
+      if(httr::status_code(countResponse) == 404){
         stop(paste0("Collection ", name, " not found. The collection has been deleted?"))
       }
       
       # Response is ok, fill the internal state
-      countInfo <- content(countResponse)
+      countInfo <- httr::content(countResponse)
       
       return(countInfo$count)
     },

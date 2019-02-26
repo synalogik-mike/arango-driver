@@ -1,10 +1,3 @@
-library(jsonlite)
-library(httr)
-library(R6)
-library(magrittr)
-library(purrr)
-
-
 #' Traversal of a graph
 #' 
 #' Execute the traversal of a graph OR starting from a given set of edges
@@ -185,7 +178,7 @@ all_graph <- function(.graph){
 #' The ArangoGraph class encapsulate the representation and the methods useful to manage
 #' the retrieval, representation and updates of specific node and vertices belonging to Arango graph.
 #'
-.aRango_graph_concrete <- R6Class (
+.aRango_graph_concrete <- R6::R6Class (
   "ArangoGraphConcrete",
   
   public = list(
@@ -236,7 +229,7 @@ all_graph <- function(.graph){
       }
       
       # Fill the tensor
-      private$edges %>% walk(function(e){ tensor[[strsplit(e$"_id", "/")[[1]][1]]][e$"_from", e$"_to"] <<- 1 })
+      private$edges %>% purrr::walk(function(e){ tensor[[strsplit(e$"_id", "/")[[1]][1]]][e$"_from", e$"_to"] <<- 1 })
       
       return(tensor)
     }

@@ -1,5 +1,3 @@
-library(R6)
-
 .check_numeric_value <- function(value){
   if(!is.numeric(value)){
     stop("the value must be numeric")

@@ -1,8 +1,3 @@
-library(jsonlite)
-library(httr)
-library(R6)
-
-
 .check_numeric_value <- function(value){
   if(!is.numeric(value)){
     stop("the value must be numeric")
@@ -33,7 +28,7 @@ all_documents <- function(.collection){
                                   batchSize = 50
                                 ),
                                 encode = "json")
-  cursorResponse <- content(collectionBatch)
+  cursorResponse <- httr::content(collectionBatch)
   
   if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
     stop("Something were wrong during the retrieval of the documents of this collection (arango cursor not created)")
@@ -51,7 +46,7 @@ all_documents <- function(.collection){
     
     # Requesting next data batch
     collectionBatch <- httr::PUT(paste0(connectionString,"/_api/cursor/",cursor))
-    cursorResponse <- content(collectionBatch)
+    cursorResponse <- httr::content(collectionBatch)
     
     if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
       stop("Something were wrong during the retrieval of the documents of this collection (arango cursor not created)")
@@ -88,7 +83,7 @@ document_insert <- function(.collection, key){
   insertionResult <- httr::POST(paste0(connectionString,"/_api/document/", .collection$getName(), "?returnNew=true"),
                                 body = list(`_key`=key),
                                 encode = "json")
-  insertionResponse <- content(insertionResult)
+  insertionResponse <- httr::content(insertionResult)
   
   if(insertionResult$status_code == 409){
     stop("a document with the given key already exists")
@@ -197,7 +192,7 @@ collection_update <- function(.data){
   }
   
   # Updating revision
-  updatedObjectInfo <- content(updateResult)
+  updatedObjectInfo <- httr::content(updateResult)
   .data$.__enclos_env__$private$currentRevision <- updatedObjectInfo$`_rev`
   
   return(.data)
@@ -331,7 +326,7 @@ collection_filter <- function(.collection, ...){
     
     # Requesting next data batch
     collectionBatch <- httr::PUT(paste0(connectionString,"/_api/cursor/",cursor))
-    cursorResponse <- content(collectionBatch)
+    cursorResponse <- httr::content(collectionBatch)
     
     if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
       stop("Something were wrong during the retrieval of the documents of this collection (arango cursor not created)")
@@ -379,7 +374,7 @@ delete <- function(.document){
 #' and find other information regarding the document in the server.
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-.aRango_document <- R6Class (
+.aRango_document <- R6::R6Class (
   "ArangoDocument",
   
   public = list(

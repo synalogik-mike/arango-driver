@@ -1,17 +1,9 @@
-library(jsonlite)
-library(httr)
-library(R6)
-library(magrittr)
-library(purrr)
-library(visNetwork)
-library(RColorBrewer)
-
 #' Default elements coloring
 #'
 #' Calculates different coloring for the elements of the graph
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-.element_coloring <- function(edges, palette = brewer.pal(8, "Pastel1")){
+.element_coloring <- function(edges, palette = RColorBrewer::brewer.pal(8, "Pastel1")){
   
   defColors <- palette
   colorList <- list()
@@ -233,7 +225,7 @@ visualize <- function(.element){
   # Are vertices and edges colored? If not execute coloring
   if(!("color" %in% colnames(netOptions$v))){
     nodeColor <- .element_coloring(
-                    unique(unlist(apply(netOptions$v, 1, function(el) {el[["group"]]} ))), brewer.pal(8, "Pastel1")
+                    unique(unlist(apply(netOptions$v, 1, function(el) {el[["group"]]} ))), RColorBrewer::brewer.pal(8, "Pastel1")
                  )
     
     netOptions$v$color <- unlist(apply(netOptions$v, 1, function(el) nodeColor[el[["group"]]]))
@@ -245,14 +237,14 @@ visualize <- function(.element){
   
   if(!("color" %in% colnames(netOptions$e))){
     edgeColor <- .element_coloring(
-      unique(unlist(apply(netOptions$e, 1, function(el) el[['group']] ))), brewer.pal(8, "Pastel1")
+      unique(unlist(apply(netOptions$e, 1, function(el) el[['group']] ))), RColorBrewer::brewer.pal(8, "Pastel1")
     )
     
     netOptions$e$color <- unlist(apply(netOptions$e, 1, function(el) edgeColor[el[['group']]]))
   }
   
   # Creating the stub of network
-  networkVisualized <- visNetwork(nodes = netOptions$v, edges = netOptions$e,
+  networkVisualized <- visNetwork::visNetwork(nodes = netOptions$v, edges = netOptions$e,
                                   width = netOptions$width, height = netOptions$height) %>%
                        addFontAwesome()
   
@@ -274,7 +266,7 @@ visualize <- function(.element){
     }
     
     networkVisualized <- networkVisualized %>%
-      visLegend(addEdges = ledges, addNodes = lnodes, useGroups = FALSE)
+      visNetwork::visLegend(addEdges = ledges, addNodes = lnodes, useGroups = FALSE)
   }
   else if("legend.nodes" %in% names(netOptions) && !("legend.edges" %in% names(netOptions))){
     
@@ -292,13 +284,13 @@ visualize <- function(.element){
     }
     
     networkVisualized <- networkVisualized %>%
-      visLegend(addNodes = lnodes, useGroups = FALSE)
+      visNetwork::visLegend(addNodes = lnodes, useGroups = FALSE)
   }
   else if(!("legend.nodes" %in% names(netOptions)) && "legend.edges" %in% names(netOptions)){
     ledges <- data.frame(color = unique(netOptions$e$color), label = unique(netOptions$e$group))
     
     networkVisualized <- networkVisualized %>%
-      visLegend(addEdges = ledges, useGroups = FALSE)
+      visNetwork::visLegend(addEdges = ledges, useGroups = FALSE)
   }
   
   return(networkVisualized)

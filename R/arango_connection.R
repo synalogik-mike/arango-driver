@@ -1,7 +1,3 @@
-library(jsonlite)
-library(httr)
-library(R6)
-
 #' Creates a connection object to be used for subsequent requests to the given server.
 #'
 #' @param host the server address where the ArangoDB server is up and running
@@ -29,7 +25,7 @@ arango_connection <- function(host, port){
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 #'
-.aRango_connection <- R6Class (
+.aRango_connection <- R6::R6Class (
   "ArangoConnection",
   
   public = list(
@@ -50,8 +46,8 @@ arango_connection <- function(host, port){
       
       # Check the response and fill properly the internal state. Reject connection if the 200 is not
       # returned
-      stop_for_status(arangoVersionResponse)
-      arangoVersionBody <- content(arangoVersionResponse)
+      httr::stop_for_status(arangoVersionResponse)
+      arangoVersionBody <- httr::content(arangoVersionResponse)
       
       if (!is.null(arangoVersionBody$server)) {
         private$server = arangoVersionBody$server

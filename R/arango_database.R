@@ -1,8 +1,3 @@
-library(jsonlite)
-library(httr)
-library(R6)
-library(magrittr)
-
 .check_connection <- function(.connection){
   if(is.null(.connection)){
     stop("Connection is NULL, please provide a valid 'ArangoConnection'")
@@ -32,15 +27,15 @@ databases <- function(.connection, includeSystem=FALSE){
   response <- httr::GET(paste0(connectionString,"/_api/database"))
   
   # Check the return value of the response
-  if(status_code(response) == 400){
+  if(httr::status_code(response) == 400){
     stop("Request is invalid")
   }
   
-  if(status_code(response) == 403){
+  if(httr::status_code(response) == 403){
     stop("Request has been made outside '_system' domain")
   }
   
-  databasesList <- content(response)
+  databasesList <- httr::content(response)
   
   return(databasesList$result)
 }
@@ -84,7 +79,7 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
 #' real databases on the server.
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-.aRango_database <- R6Class (
+.aRango_database <- R6::R6Class (
   "ArangoDatabase",
   
   public = list(
@@ -125,7 +120,7 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
       }
       
       # Response is ok, fill the internal state
-      dbInformation <- content(response)
+      dbInformation <- httr::content(response)
       private$dbname <- dbname
       private$isSystem <- dbInformation$result$isSystem
       private$id <- dbInformation$result$id
