@@ -21,16 +21,16 @@
 
 
 ## Introduction <a name="introduction"></a>
-Relational databases are one of the most known technology developed and studied in the computer science field. Every application, or at least the majority of them, have one relational database to support the storage and the retrieval of data.
-Most of those technologies are also freely available as open-source projects, e.g. MySQL and PostgreSQL, and this made this techonolgy one of the most reliable in the data management task.
-Nonetheless those kind of databases have some drawback that for actual applications represent limitations and/or significant bottleneck for scalability or refactor of the applications themselves. For example the base elements are represented by the **relations**, i.e. tables containing set of records with fixed schema and types.
-The explosion of Big Data era and the quick availability of highly scalable techonologies, architectures and infrastructure made the management of data complex to manage.
-TODO: to be completeds here
-In this context has been developed lots of NoSQL data managment systems: notable examples are MongoDB, for document oriented databases, or Neo4J, OrientDB and ArangoDB for graph databases.
+In recent years, NoSQL technologies have seen a significant increase in their use in various software projects, also and above all of significant size, e.g. ... This is due to the simplicity with which these technologies deal efficiently with the storage of large amounts of data that have increasingly labile patterns. Among these technologies an important part is covered by graph-oriented databases: in these systems data are saved as documents or as lists of key-value pairs while the relationships between the data are considered "first class citizens". This makes it possible to express the inherent complexity in and between data more easily than relational databases. In addition, more complex requests can be made with simpler queries. ArangoDB is a multi-model database that allows to use both simplicity of documents and capacity to express relationships with graphs.
+As data scientist we are involved in growing complexities, and expressiveness of data combined with the need simplicity of management is a mandatory requirement to solve in an efficient way the problems we have to face.
+Several packages that implements drivers for other graph databases has been developed, such as for Neo4J or OrientDB; however they do not abstract sufficiently for newbies or not skilled users.
+For these reasons we developed an R package that allows data scientists and R developers to get in touch with the ArangoDB technology by combining ease of use for newbies as well as more sophisticated controls for those who have already approached the ArangoDB, the AQL and the graph oriented databases.
+The aRangodb package allow the user to: manage multiple databases that are contained in a single ArangoDB instance; create collections of heterogeneous information that are used to store data as documents by using R6 classes that wraps the data, as R list, with utilities functions; filter and retrieve data from collection using pipes and simple methods; create graphs and add to them edges representing relationships between existing data; traverse and visualize graphs using visNetwork as visualization engine. All those operations can be done ignoring how ArangoDB implements those concepts; however, for advanced users, the package offers the possibility to use the Arango Query Language (AQL, the official ArangoDB language) to define R functions that can be invoked in the normal workflow and that can be used to modify, retrieve or in general interact with the connected ArangoDB instance. 
+
 
 Link to other projects:
 
-* **neo4r** Active project (too complex): https://cran.r-project.org/web/packages/neo4r/index.html
+* **neo4r** project: https://cran.r-project.org/web/packages/neo4r/index.html
 * **orientR** project (simple connector): https://github.com/retrography/OrientR
 
 ## Prerequisite <a name="prerequisite"></a>
