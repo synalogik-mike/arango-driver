@@ -294,13 +294,26 @@ residenceGraph <-
   add_edges("lives_in" %owns% edge(all.persons$brandon.fee %->% all.cities$Manchester, since="09/01/2016"))
 ```
 
+However in most of the cases the entire graph is not relevant for the analysis, so you may want to focus on a specific part of the graph. You can use the aRangodb::traversal() function, that implements a basic support for the AQL traversal mechanism. Starting from specific vertices of your interest you can get all the edges (up to a depth you can indicate) incident on those particular vertices, called in fact start vertices. For example you may want to know all the vertices, with distance at most 2, that have an edge on London:
 
+```R
+london.residence <- residenceGraph %>% 
+  traversal(vertices = c(all.cities$London), depth = 2)
+```
 
 ### Visualize graphs <a name="visualizegrapphs"></a>
 
+A feature provided by the aRangodb package is the visualization of graphs: the underlying engine used is the visNetwork package. A feature provided by the aRangodb package is the visualization of graphs: the underlying engine used is the visNetwork package. Once you have retrieved a graph, whole graph or the result of some traversal, you can simply call the aRangodb::visualize() function:
 
+```R
+london.residence %>% visualize() 
+```
 
-### Functions and Class Summary <a name="summary"></a>
+The function result is shown in the following image:
+
+![simple graph](./examples/graph.JPG)
+
+## Functions and Class Summary <a name="summary"></a>
 
 Create a connection with an ArangoDB instance.
 
@@ -437,14 +450,14 @@ Find an existing edge, where the ArangoCollection represents a collection_type$E
 ArangoDocument <- ArangoCollection %>% find_edge(from=<ArangoDocument>, to=<ArangoDocument>)
 ```
 
-### Bugs and Knonw Limitations <a name="bugslimitations"></a>
+## Bugs and Knonw Limitations <a name="bugslimitations"></a>
 The following is an uncomplete list of known limitations to be addressed in the next versions:
 
 * **user management is disabled**, in this prototipal state every operation is done with security options disabled on the server. Probably this will added in the version __0.0.1-beta__
 
 * **partial graph traversal**, it is not natively provided by the aRangodb::traversal() function the possibility to filter some vertex, edge or path using the FILTER AQL clause. In order to do that you have to define a custom aRangodb::aql() function, but this will not return you a graph: this because aql() returns generic results from the server.
 
-### Roadmap <a name="roadmap"></a>
+## Roadmap <a name="roadmap"></a>
 The following is an uncomplete frequently-updated list to recap the major features in plan for the next versions.
 
 * Version **0.0.1-beta**:
