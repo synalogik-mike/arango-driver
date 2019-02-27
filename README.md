@@ -15,6 +15,7 @@
     * [ Working with documents. ](#workingdocuments)
     * [ Custom AQL queries. ](#aqlcustom)
     * [ Working with graphs. ](#workinggrapphs)
+    * [ Visualize graphs. ](#visualizegrapphs)
 1. [ Functions and classes summary. ](#summary)
 1. [ Bugs and known limitations. ](#bugslimitations)
 1. [ Roadmap. ](#roadmap)
@@ -312,6 +313,22 @@ london.residence %>% visualize()
 The function result is shown in the following image:
 
 ![simple graph](./examples/graph.JPG)
+
+It is also possible to have more complex visualization: you can add legend, icons (from FontAwesome 4.7), and direction of edges. For example the next command produces the graph in the next image:
+
+```R
+london.center %>% 
+    viz_vertices(
+        icon=list(person = "f007", city="f015")
+    ) %>%
+    viz_edges(
+        directions = list(lives_in="to", loves="to")
+    ) %>%
+    viz_legend(nodes = TRUE, edges = TRUE) %>%
+    visualize()
+```
+
+![complex graph](./examples/graph2.JPG)
 
 ## Functions and Class Summary <a name="summary"></a>
 

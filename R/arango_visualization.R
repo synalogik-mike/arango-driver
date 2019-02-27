@@ -252,7 +252,7 @@ visualize <- function(.element){
   if("legend.nodes" %in% names(netOptions) && "legend.edges" %in% names(netOptions)){
     ledges <- data.frame(color = unique(netOptions$e$color), label = unique(netOptions$e$group))
     
-    if("icon.code" %in% names(netOptions$v$icon.code)){
+    if("icon.code" %in% names(netOptions$v)){
       lnodes <- data.frame(color = unique(netOptions$v$color), 
                            label = unique(netOptions$v$group),
                            icon.code = unique(netOptions$v$icon.code),
@@ -270,7 +270,7 @@ visualize <- function(.element){
   }
   else if("legend.nodes" %in% names(netOptions) && !("legend.edges" %in% names(netOptions))){
     
-    if("icon.code" %in% names(netOptions$v$icon.code)){
+    if("icon.code" %in% names(netOptions$v)){
       lnodes <- data.frame(color = unique(netOptions$v$color), 
                            label = unique(netOptions$v$group),
                            icon.code = unique(netOptions$v$icon.code),
