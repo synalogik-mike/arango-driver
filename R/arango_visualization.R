@@ -68,7 +68,7 @@
 #' @return a list containing the visualization options updated
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-gedges <- function(.element, directions = NULL){
+viz_edges <- function(.element, directions = NULL){
   netOptions <- .check_element(.element)
   
   # Set the vertices icons (if defined)
