@@ -139,7 +139,7 @@ viz_vertices <- function(.element, icons = NULL, colors = NULL){
 #' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
 #' options. This list is automatically created when this method is inside a pre-visualization
 #' pipe 
-#' @param width the width of the resulting graph in CSS style, e.g. "90%"
+#' @param width the width of the resulting graph in CSS style, e.g. "90\%"
 #'
 #' @return a list containing the visualization options updated
 #'
@@ -159,7 +159,7 @@ viz_width <- function(.element, width){
 #' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
 #' options. This list is automatically created when this method is inside a pre-visualization
 #' pipe 
-#' @param height the height of the resulting graph in CSS style, e.g. "90%"
+#' @param height the height of the resulting graph in CSS style, e.g. "90\%"
 #'
 #' @return a list containing the visualization options updated
 #'

@@ -244,7 +244,7 @@ find_edge <- function(.collection, from, to){
 #'
 #' @param .collection the ArangoCollection that handles the collection
 #' @param ... a list of assigment, will be translated as "id==val", or comparison
-#' filters given using the %gt%, %lt%, %geq%, %leq% operators.
+#' filters given using the \%gt\%, \%lt\%, \%geq\%, \%leq\% operators.
 #' 
 #' @return the documents that matches the given filters
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl

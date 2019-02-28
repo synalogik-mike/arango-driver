@@ -17,7 +17,7 @@ attributes.
 }
 \examples{
 "requires" \%:\% edge(data_science \%->\% math) returns a list(collection=..., edge=...) where 
-edge contains a _from and a _to valid verticies
+edge contains a _from and a _to valid vertices
 
 }
 \seealso{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/arango_common_operators.R
 \name{\%lt\%}
 \alias{\%lt\%}
-\title{Comparison > operator for aRangodb::filter()}
+\title{Comparison > operator for aRangodb::collection_filter()}
 \usage{
 expr \%lt\% value
 }
