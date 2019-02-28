@@ -27,7 +27,7 @@ In order to understand the examples in the next sections it is desirable underst
 To install the aRangodb package you can run the following commands.
 
 ```{r install, echo=TRUE, include = FALSE, eval=FALSE}
-devtools::install_gitlab("ggalatolo/arango-driver")
+devtools::install_gitlab("krpack/arango-driver")
 library(aRangodb)
 ```
 

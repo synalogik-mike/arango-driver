@@ -63,7 +63,7 @@ For details please refer to the official ArangoDB documentation:
 To install the aRangodb package you have to run the following commands:
 
 ```R
-devtools::install_gitlab("ggalatolo/arango-driver")
+devtools::install_gitlab("krpack/arango-driver")
 library(aRangodb)
 ```
 
