@@ -191,7 +191,7 @@ all_graph <- function(.graph){
       private$relations <- uniqueRelations
     },
     
-    #' Returns a list of matrices that contains, for each relation between the nodes, an adjacency matrix
+    #' Returns a list of matrices that contains, for each relation between the vertices, an adjacency matrix
     #' for that relation.
     #' For example, given "a" -friend_of-> "b", "c" -spouse-> "b" the results will be:
     #' 

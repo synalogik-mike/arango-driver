@@ -87,7 +87,7 @@ viz_edges <- function(.element, directions = NULL){
 }
 
 
-#' Set visualization nodes options
+#' Set visualization vertices options
 #'
 #' Allows the user to set some options regarding the visualization of the nodes of the graph
 #'
@@ -179,17 +179,17 @@ viz_height <- function(.element, height){
 #' @param .element can be an 'ArangoGraphConcrete' or a list containing other visualzation
 #' options. This list is automatically created when this method is inside a pre-visualization
 #' pipe 
-#' @param nodes a boolean that indicate whether show or not the legend for nodes
+#' @param vertices a boolean that indicate whether show or not the legend for nodes
 #' @param edges a boolean that indicate whether show or not the legend for edges
 #'
 #' @return a list containing the visualization options updated
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-viz_legend <- function(.element, nodes=TRUE, edges=FALSE){
+viz_legend <- function(.element, vertices=TRUE, edges=FALSE){
   netOptions <- .check_element(.element)
   
-  if(nodes){
-    netOptions[["legend.nodes"]] <- nodes
+  if(vertices){
+    netOptions[["legend.vertices"]] <- vertices
   }
   
   if(edges){
@@ -249,7 +249,7 @@ visualize <- function(.element){
                        addFontAwesome()
   
   # Adding legend?
-  if("legend.nodes" %in% names(netOptions) && "legend.edges" %in% names(netOptions)){
+  if("legend.vertices" %in% names(netOptions) && "legend.edges" %in% names(netOptions)){
     ledges <- data.frame(color = unique(netOptions$e$color), label = unique(netOptions$e$group))
     
     if("icon.code" %in% names(netOptions$v)){
@@ -268,7 +268,7 @@ visualize <- function(.element){
     networkVisualized <- networkVisualized %>%
       visNetwork::visLegend(addEdges = ledges, addNodes = lnodes, useGroups = FALSE)
   }
-  else if("legend.nodes" %in% names(netOptions) && !("legend.edges" %in% names(netOptions))){
+  else if("legend.vertices" %in% names(netOptions) && !("legend.edges" %in% names(netOptions))){
     
     if("icon.code" %in% names(netOptions$v)){
       lnodes <- data.frame(color = unique(netOptions$v$color), 
@@ -286,7 +286,7 @@ visualize <- function(.element){
     networkVisualized <- networkVisualized %>%
       visNetwork::visLegend(addNodes = lnodes, useGroups = FALSE)
   }
-  else if(!("legend.nodes" %in% names(netOptions)) && "legend.edges" %in% names(netOptions)){
+  else if(!("legend.vertices" %in% names(netOptions)) && "legend.edges" %in% names(netOptions)){
     ledges <- data.frame(color = unique(netOptions$e$color), label = unique(netOptions$e$group))
     
     networkVisualized <- networkVisualized %>%
