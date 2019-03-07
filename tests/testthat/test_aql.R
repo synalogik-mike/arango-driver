@@ -36,7 +36,7 @@ write(queryErrorResponse, file="./localhost-1234/_db/testdb/_api/query-592753-PO
 with_mock_api({
   test_that("Creation of a correct AQL statement let the returns of correct results", {
     # given
-    db <- aRangodb::arango_connection("localhost", "1234") %>% 
+    db <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
           aRangodb::arango_database(name = "testdb")
     
     # when
@@ -56,7 +56,7 @@ with_mock_api({
 with_mock_api({
   test_that("Creation of a wrong AQL statement let the parsing return an error", {
     # given
-    db <- aRangodb::arango_connection("localhost", "1234") %>% 
+    db <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
           aRangodb::arango_database(name = "testdb")
     
     # when

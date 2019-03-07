@@ -34,7 +34,7 @@ write(dropDatabaseResponse, file="./localhost-1234/_api/database/testdb-DELETE.j
 with_mock_api({
   test_that("Requests for all available databases goes fine", {
     # given
-    connection <- aRangodb::arango_connection("localhost", "1234")
+    connection <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456")
     
     # when
     available_dbs <- connection %>% 
@@ -84,7 +84,7 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for _system database works correctly", {
     # given
-    connection <- aRangodb::arango_connection("localhost", "1234")
+    connection <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456")
     
     # when
     defaultDb <- connection %>% 
@@ -101,7 +101,7 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for existing database works correctly", {
     # given
-    connection <- aRangodb::arango_connection("localhost", "1234")
+    connection <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456")
     
     # when
     defaultDb <- connection %>% 
@@ -118,7 +118,7 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for not existing database works correctly", {
     # given
-    connection <- aRangodb::arango_connection("localhost", "1234")
+    connection <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456")
     
     # when
     defaultDb <- connection %>% 
@@ -135,7 +135,7 @@ with_mock_api({
 with_mock_api({
   test_that("Requests for drop of an existing database works correctly", {
     # given
-    db <- aRangodb::arango_connection("localhost", "1234") %>% 
+    db <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
           aRangodb::arango_database(name = "testdb")
    
     # when
