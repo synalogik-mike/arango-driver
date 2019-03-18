@@ -37,7 +37,10 @@ drop <- function(.element){
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl 
 .drop_collection <- function(.element){
   collectionRequest <- .element$.__enclos_env__$private$connectionStringRequest
-  response <- httr::DELETE(collectionRequest)
+  response <- httr::DELETE(
+    collectionRequest,
+    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+  )
   
   if(status_code(response) == 400){
     stop("Request is invalid")
@@ -56,7 +59,10 @@ drop <- function(.element){
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl 
 .drop_graph <- function(.element){
   graphRequest <- .element$.__enclos_env__$private$connectionStringRequest
-  response <- httr::DELETE(graphRequest)
+  response <- httr::DELETE(
+    graphRequest,
+    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+  )
   
   if(status_code(response) == 400){
     stop("Request is invalid")
@@ -75,7 +81,10 @@ drop <- function(.element){
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl 
 .drop_database <- function(.element){
   dbPrefixReq <- .element$.__enclos_env__$private$originalConnection
-  response <- httr::DELETE(paste0(dbPrefixReq,"/_api/database/", .element$getName()))
+  response <- httr::DELETE(
+    paste0(dbPrefixReq,"/_api/database/", .element$getName()),
+    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+  )
   
   if(status_code(response) == 400){
     stop("Request is invalid")

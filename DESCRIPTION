@@ -24,6 +24,7 @@ Depends:
   magrittr,
   purrr,
   RColorBrewer,
+  RCurl,
   visNetwork (>= 2.0.5)
 Suggests: 
     httptest,

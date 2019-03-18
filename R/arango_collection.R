@@ -13,7 +13,10 @@ collections <- function(.database, includeSystem=FALSE){
   results <- NULL
   connectionString <- .database$.__enclos_env__$private$connectionStringRequest
   
-  allCollectionsResponse <- httr::GET(paste0(connectionString,"/_api/collection/"))
+  allCollectionsResponse <- httr::GET(
+    paste0(connectionString,"/_api/collection/"),
+    add_headers(Authorization = paste0("Basic ", .database$.__enclos_env__$private$auth))
+  )
   
   httr::stop_for_status(allCollectionsResponse)
   response <- httr::content(allCollectionsResponse)
@@ -65,10 +68,14 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
     collectionInfoRequest <- paste0(.database$.__enclos_env__$private$connectionStringRequest, "/_api/collection/")
     
     # Waiting for version response
-    response <- httr::POST(collectionInfoRequest, encode="json", body = list(name=name))
+    response <- httr::POST(
+      collectionInfoRequest, 
+      add_headers(Authorization = paste0("Basic ", .database$.__enclos_env__$private$auth)),
+      encode="json", 
+      body = list(name=name))
   }
   
-  db <- .aRango_collection$new(.database, name)
+  db <- .aRango_collection$new(.database, name, .database$.__enclos_env__$private$auth)
   
   return(db)
 }
@@ -95,7 +102,7 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
     #'             collection_type$DOCUMENT or collection_type$EDGE
     #'            
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-    initialize = function(database, name, waitForSync = FALSE, isSystem = FALSE, type = collection_type$DOCUMENT) {
+    initialize = function(database, name, auth, waitForSync = FALSE, isSystem = FALSE, type = collection_type$DOCUMENT) {
       if(is.null(database)){
         stop("Database is NULL, please provide a valid 'ArangoDatabase'")
       }
@@ -108,12 +115,16 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
         stop("name is NULL, please provide a valid collection name")
       }
       
+      private$auth <- auth
       private$connectionStringDatabase <- database$.__enclos_env__$private$connectionStringRequest
       private$connectionStringRequest <- paste0(database$.__enclos_env__$private$connectionStringRequest, "/_api/collection/", name)
       collectionInfoRequest <- paste0(private$connectionStringRequest)
       
       # Waiting for server response
-      response <- httr::GET(collectionInfoRequest)
+      response <- httr::GET(
+        collectionInfoRequest,
+        add_headers(Authorization = paste0("Basic ", private$auth))
+      )
       
       # Check response status
       if(status_code(response) == 404){
@@ -169,7 +180,10 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
       count <- 0
       
       countRequest <- paste0(private$connectionStringRequest, "/count")
-      countResponse <- httr::GET(countRequest)
+      countResponse <- httr::GET(
+        countRequest,
+        add_headers(Authorization = paste0("Basic ", private$auth))
+      )
       
       # Check response status
       if(httr::status_code(countResponse) == 404){
@@ -198,6 +212,7 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
     isSystem = FALSE,
     id = NULL,
     type = NULL,
-    status = NULL
+    status = NULL,
+    auth = NULL
   )
 )

@@ -2,11 +2,13 @@
 #'
 #' @param host the server address where the ArangoDB server is up and running
 #' @param port the server port where the ArangoDB server is up and running
+#' @param username the username that wants to authenticate into the system
+#' @param password the password of the user
 #' 
 #' @return an ArangoConnection object used to handle requests to the given Arango server
 #' 
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-arango_connection <- function(host, port){
+arango_connection <- function(host, port, username, password){
   
   if(is.null(host)){
     stop("to setup a connection you must indicate a 'host'")
@@ -16,7 +18,7 @@ arango_connection <- function(host, port){
     stop("to setup a connection you must indicate a 'port'")
   }
   
-  return(.aRango_connection$new(host, port))
+  return(.aRango_connection$new(host, port, RCurl::base64Encode(paste(username,":",password, sep="")[1])))
 }
 
 #' An ArangoConnection is a class that contains and manages the connection with one specific 
@@ -33,16 +35,22 @@ arango_connection <- function(host, port){
     #'
     #' @param host the address on which the Arango instance is running
     #' @param port the port on the server on which the Arango instance is running
+    #' @param port the authentication token for HTTP Basic authentication (base64 of username:password)
     #' 
     #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-    initialize = function(host, port) {
+    initialize = function(host, port, auth) {
       private$host = host
       private$port = port
+      private$auth = auth
+      private$authMethod = authentication_type$BASIC
       
       arangoVersionRequest <- paste0("http://", host, ":", port, "/_api/version")
       
       # Waiting for version response
-      arangoVersionResponse <- httr::GET(arangoVersionRequest)
+      arangoVersionResponse <- httr::GET(
+        arangoVersionRequest,
+        add_headers(Authorization = paste0("Basic ",private$auth))
+      )
       
       # Check the response and fill properly the internal state. Reject connection if the 200 is not
       # returned
@@ -112,6 +120,8 @@ arango_connection <- function(host, port){
     port = NULL,
     server = NULL,
     version = NULL,
-    license = NULL
+    license = NULL,
+    auth = NULL,
+    authMethod = NULL
   )
 )

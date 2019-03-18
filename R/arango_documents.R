@@ -22,6 +22,7 @@ all_documents <- function(.collection){
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .collection$.__enclos_env__$private$connectionStringDatabase
   collectionBatch <- httr::POST(paste0(connectionString,"/_api/cursor"),
+                                add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth)),
                                 body = list(
                                   query=paste0("FOR d IN ", .collection$getName(), " RETURN d"),
                                   count = FALSE,
@@ -36,16 +37,19 @@ all_documents <- function(.collection){
   
   # Save the cursor id, it is needed for all the subsequent access to the cursor
   cursor <- cursorResponse$id
-  
-  for(document in cursorResponse$result){
-    documents[[document$`_key`]] <- .aRango_document$new(document, connectionString)
+
+    for(document in cursorResponse$result){
+    documents[[document$`_key`]] <- .aRango_document$new(document, connectionString, .collection$.__enclos_env__$private$auth)
   }
   
   # Iterating the entire cursor
   while(cursorResponse$hasMore){
     
     # Requesting next data batch
-    collectionBatch <- httr::PUT(paste0(connectionString,"/_api/cursor/",cursor))
+    collectionBatch <- httr::PUT(
+      paste0(connectionString,"/_api/cursor/",cursor),
+      add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth))
+    )
     cursorResponse <- httr::content(collectionBatch)
     
     if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
@@ -53,7 +57,7 @@ all_documents <- function(.collection){
     }
     
     for(document in cursorResponse$result){
-      documents[[document$`_key`]] <- .aRango_document$new(document, connectionString)
+      documents[[document$`_key`]] <- .aRango_document$new(document, connectionString, .collection$.__enclos_env__$private$auth)
     }
   }
   
@@ -81,6 +85,7 @@ document_insert <- function(.collection, key){
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .collection$.__enclos_env__$private$connectionStringDatabase
   insertionResult <- httr::POST(paste0(connectionString,"/_api/document/", .collection$getName(), "?returnNew=true"),
+                                add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth)),
                                 body = list(`_key`=key),
                                 encode = "json")
   insertionResponse <- httr::content(insertionResult)
@@ -91,14 +96,14 @@ document_insert <- function(.collection, key){
   
   if(insertionResult$status_code == 200){
     warning("this is allowed for test purposes, the server should never return 200 on creation")
-    return(.aRango_document$new(insertionResponse$new, connectionString))
+    return(.aRango_document$new(insertionResponse$new, connectionString, .collection$.__enclos_env__$private$auth))
   }
   
   if(insertionResult$status_code != 201 && insertionResult$status_code != 202){
     stop("an error occurred during the creation of the document")
   }
   
-  return(.aRango_document$new(insertionResponse$new, connectionString))
+  return(.aRango_document$new(insertionResponse$new, connectionString, .collection$.__enclos_env__$private$auth))
 }
 
 
@@ -177,6 +182,7 @@ collection_update <- function(.data){
   connectionString <- .data$.__enclos_env__$private$connectionString
   
   updateResult <- httr::PATCH(paste0(connectionString,"/_api/document/", .data$getId()),
+                            add_headers(Authorization = paste0("Basic ", .data$.__enclos_env__$private$auth)),
                             body = .data$.__enclos_env__$private$documentValues,
                             encode = "json")
   
@@ -299,6 +305,7 @@ collection_filter <- function(.collection, ...){
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .collection$.__enclos_env__$private$connectionStringDatabase
   collectionBatch <- httr::POST(paste0(connectionString,"/_api/cursor"),
+                                add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth)),
                                 body = list(
                                   query=paste0("FOR element IN ", .collection$getName(), 
                                                " FILTER ", filterString,  
@@ -318,14 +325,17 @@ collection_filter <- function(.collection, ...){
   cursor <- cursorResponse$id
   
   for(document in cursorResponse$result){
-    documents[[document$`_key`]] <- .aRango_document$new(document, connectionString)
+    documents[[document$`_key`]] <- .aRango_document$new(document, connectionString, .collection$.__enclos_env__$private$auth)
   }
   
   # Iterating the entire cursor
   while(cursorResponse$hasMore){
     
     # Requesting next data batch
-    collectionBatch <- httr::PUT(paste0(connectionString,"/_api/cursor/",cursor))
+    collectionBatch <- httr::PUT(
+      paste0(connectionString,"/_api/cursor/",cursor),
+      add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth))
+    )
     cursorResponse <- httr::content(collectionBatch)
     
     if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
@@ -333,7 +343,7 @@ collection_filter <- function(.collection, ...){
     }
     
     for(document in cursorResponse$result){
-      documents[[document$`_key`]] <- .aRango_document$new(document, connectionString)
+      documents[[document$`_key`]] <- .aRango_document$new(document, connectionString, .collection$.__enclos_env__$private$auth)
     }
   }
   
@@ -358,7 +368,10 @@ delete <- function(.document){
   
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .document$.__enclos_env__$private$connectionString
-  deletionResult <- httr::DELETE(paste0(connectionString,"/_api/document/", .document$getId()))
+  deletionResult <- httr::DELETE(
+    paste0(connectionString,"/_api/document/", .document$getId()),
+    add_headers(Authorization = paste0("Basic ", .document$.__enclos_env__$private$auth))
+  )
   
   if(deletionResult$status_code != 200 && deletionResult$status_code != 202){
     stop("an error occurred during the deletion of the document")
@@ -382,8 +395,9 @@ delete <- function(.document){
     #' Initialize the arango document
     #'
     #'
-    initialize = function(document, connectionString){
+    initialize = function(document, connectionString, auth){
       
+      private$auth <- auth
       private$connectionString <- connectionString
       idSplit <- strsplit(document$`_id`, split = "/")
       
@@ -452,6 +466,7 @@ delete <- function(.document){
     originalCollection = NULL,
     documentId = NULL,
     currentRevision = NULL,
-    connectionString = NULL
+    connectionString = NULL,
+    auth = NULL
   )
 )

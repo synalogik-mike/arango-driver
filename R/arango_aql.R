@@ -47,7 +47,11 @@ aql <- function(.element, statement){
   # Request parse and correction from the server
   connectionString <- .element$.__enclos_env__$private$connectionStringRequest
   parseAqlEndpoint <- paste0(.element$.__enclos_env__$private$connectionStringRequest, "/_api/query")
-  parsingResultResponse <- httr::POST(parseAqlEndpoint, encode="json", body = list(query=statement))
+  parsingResultResponse <- httr::POST(
+    parseAqlEndpoint, 
+    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth)),
+    encode="json", 
+    body = list(query=statement))
   parsingResult <- httr::content(parsingResultResponse)
   
   if(parsingResult$code == 400){
@@ -67,14 +71,17 @@ aql <- function(.element, statement){
     documents <- list()
     
     # Creates the cursor and iterate over it to retrieve the entire collection
-    resultsBatch <- httr::POST(paste0(connectionString,"/_api/cursor"),
-                                  body = list(
-                                    query=statement,
-                                    count = FALSE,
-                                    batchSize = 50,
-                                    bindVars = bindVarsList
-                                  ),
-                                  encode = "json")
+    resultsBatch <- httr::POST(
+      paste0(connectionString,"/_api/cursor"),
+      add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth)),
+      body = list(
+        query=statement,
+        count = FALSE,
+        batchSize = 50,
+        bindVars = bindVarsList
+      ),
+      encode = "json"
+    )
     cursorResponse <- httr::content(resultsBatch)
     
     if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
@@ -94,7 +101,10 @@ aql <- function(.element, statement){
     while(cursorResponse$hasMore){
       
       # Requesting next data batch
-      resultsBatch <- httr::PUT(paste0(connectionString,"/_api/cursor/",cursor))
+      resultsBatch <- httr::PUT(
+        paste0(connectionString,"/_api/cursor/",cursor),
+        add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+      )
       cursorResponse <- httr::content(resultsBatch)
       
       if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
