@@ -79,7 +79,7 @@ library(aRangodb)
 Connect to an ArangoDB server up and running
 
 ```R
-arangoConnection <- arango_connection(<instance_ip>, <instance_port>)
+arangoConnection <- arango_connection(<instance_ip>, <instance_port>, <username>, <password>)
 ```
 
 ### Create or connect to a database <a name="connectdatabase"></a>
@@ -497,7 +497,7 @@ ArangoGraphConcrete %>%
 ## Bugs and Knonw Limitations <a name="bugslimitations"></a>
 The following is an uncomplete list of known limitations to be addressed in the next versions:
 
-* **user management is disabled**, in this prototipal state every operation is done with security options disabled on the server. Probably this will added in the version __0.0.1-beta__
+* **user management is disabled**, user must be managed through ArangoDB Web Interface.
 
 * **partial graph traversal**, it is not natively provided by the aRangodb::traversal() function the possibility to filter some vertex, edge or path using the FILTER AQL clause. In order to do that you have to define a custom aRangodb::aql() function, but this will not return you a graph: this because aql() returns generic results from the server.
 

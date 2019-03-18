@@ -44,7 +44,7 @@ library(aRangodb)
 Connect to an ArangoDB server up and running
 
 ```{r connetion_ex, echo=TRUE, eval=FALSE}
-arangoConnection <- arango_connection(<instance_ip>, <instance_port>)
+arangoConnection <- arango_connection(<instance_ip>, <instance_port>, <username>, <password>)
 ```
 
 ```{r connection_real, echo=FALSE}
