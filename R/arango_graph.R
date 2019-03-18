@@ -10,7 +10,8 @@ graphs <- function(.database){
   results <- NULL
   connectionString <- .database$.__enclos_env__$private$connectionStringRequest
   
-  allGraphsResponse <- httr::GET(paste0(connectionString,"/_api/gharial/"))
+  allGraphsResponse <- httr::GET(paste0(connectionString,"/_api/gharial/"),
+                                 add_headers(Authorization = paste0("Basic ", .database$.__enclos_env__$private$auth)))
   
   httr::stop_for_status(allGraphsResponse)
   response <- httr::content(allGraphsResponse)
@@ -51,10 +52,13 @@ arango_graph <- function(.database, name, createOnFail = FALSE){
     collectionInfoRequest <- paste0(.database$.__enclos_env__$private$connectionStringRequest, "/_api/gharial")
     
     # Waiting for version response
-    response <- httr::POST(collectionInfoRequest, encode="json", body = list(name=name))
+    response <- httr::POST(collectionInfoRequest, 
+                           encode="json",
+                           add_headers(Authorization = paste0("Basic ", .database$.__enclos_env__$private$auth)), 
+                           body = list(name=name))
   }
   
-  completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, name, .database)
+  completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, name, .database, auth = .database$.__enclos_env__$private$auth)
   
   return(completeGraph)
 }
@@ -82,7 +86,9 @@ add_edges <- function(.graph, listOfEdges){
   # ==== TEMPORARY SOLUTION: which will be the final signature of this method? ====
   for(current in listOfEdges){
     addEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", current$collection)
-    arangoServerResponse <- httr::POST(addEdgeEndpoint, encode="json", 
+    arangoServerResponse <- httr::POST(addEdgeEndpoint, 
+                                       encode="json",
+                                       add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)),
                                        body = current$edge)
     
     # TODO, how to manage?
@@ -131,7 +137,8 @@ remove_edges <- function(.graph, listOfEdges){
     }
     else{
       deleteEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", edgeToRemove$getId())
-      arangoServerResponse <- httr::DELETE(deleteEdgeEndpoint)
+      arangoServerResponse <- httr::DELETE(deleteEdgeEndpoint,
+                                           add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)))
       
       # TODO, how to manage?
       httr::stop_for_status(arangoServerResponse)
@@ -194,7 +201,8 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
   
   # ==== Adding the edge to the graph on the server ====
   addEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge")
-  arangoServerResponse <- httr::POST(addEdgeDefinitionEndpoint, encode="json", 
+  arangoServerResponse <- httr::POST(addEdgeDefinitionEndpoint, encode="json",
+                                     add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)),
                                      body = list(from=list(fromCollectionName), to=list(toCollectionName), collection=relation))
   
   response <- httr::content(arangoServerResponse)
@@ -202,15 +210,18 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
   # Edge already exist
   if(response$error == TRUE && response$errorNum == 1920){
     replaceEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", relation)
-    arangoServerResponse <- httr::PUT(replaceEdgeDefinitionEndpoint, encode="json", 
-                                       body = list(
+    arangoServerResponse <- httr::PUT(replaceEdgeDefinitionEndpoint, 
+                                      encode="json",
+                                      add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)),
+                                      body = list(
                                          from=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$from)), 
                                          to=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$to)), 
                                          collection=relation))
     
     # Remove old graph definition
     newGraph <- .aRango_graph$new(.graph$.__enclos_env__$private$connectionStringRequest, name,
-                                  .graph$.__enclos_env__$private$currentDatabase)
+                                  .graph$.__enclos_env__$private$currentDatabase,
+                                  auth = .graph$.__enclos_env__$private$auth)
     rm(.graph)
     
     return(newGraph)
@@ -256,7 +267,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
     
     #' Creates a new graph from a one existing on the database
     #' 
-    initialize = function(dbconnstring = NULL, name = NULL, db=NULL) {
+    initialize = function(dbconnstring = NULL, name = NULL, db=NULL, auth=NULL) {
       
       if(is.null(dbconnstring)){
         stop("please provide a valid database connection string")
@@ -271,12 +282,14 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
       }
       
       private$connectionStringDatabase <- dbconnstring
-      private$currentDatabase <- db 
+      private$currentDatabase <- db
+      private$auth <- auth
       private$connectionStringRequest <- paste0(dbconnstring, "/_api/gharial/", name)
       graphInfoRequest <- paste0(private$connectionStringRequest)
       
       # Waiting for server response
-      response <- httr::GET(graphInfoRequest)
+      response <- httr::GET(graphInfoRequest,
+                            add_headers(Authorization = paste0("Basic ", auth)))
       
       # Check response status
       if(status_code(response) == 404){
@@ -390,6 +403,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
     revision = NULL,
     connectionStringDatabase = NULL,
     connectionStringRequest = NULL,
-    currentDatabase = NULL
+    currentDatabase = NULL,
+    auth = NULL
   )
 )
