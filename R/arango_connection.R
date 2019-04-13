@@ -21,6 +21,8 @@ arango_connection <- function(host, port, username, password){
   return(.aRango_connection$new(host, port, RCurl::base64Encode(paste(username,":",password, sep="")[1])))
 }
 
+
+
 #' An ArangoConnection is a class that contains and manages the connection with one specific 
 #' instance of ArangoDB. Basically this object must be used to get databases collections, graphs
 #' or to interact in other ways with an existing instance of the db.
@@ -41,8 +43,7 @@ arango_connection <- function(host, port, username, password){
     initialize = function(host, port, auth) {
       private$host = host
       private$port = port
-      private$auth = auth
-      private$authMethod = authentication_type$BASIC
+      private$auth = paste0("Basic ", auth)
       
       arangoVersionRequest <- paste0("http://", host, ":", port, "/_api/version")
       
@@ -122,6 +123,7 @@ arango_connection <- function(host, port, username, password){
     version = NULL,
     license = NULL,
     auth = NULL,
-    authMethod = NULL
+    authMethod = NULL,
+    authHeader = NULL
   )
 )

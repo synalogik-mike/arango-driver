@@ -49,7 +49,7 @@ aql <- function(.element, statement){
   parseAqlEndpoint <- paste0(.element$.__enclos_env__$private$connectionStringRequest, "/_api/query")
   parsingResultResponse <- httr::POST(
     parseAqlEndpoint, 
-    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth)),
+    add_headers(Authorization = .element$.__enclos_env__$private$auth),
     encode="json", 
     body = list(query=statement))
   parsingResult <- httr::content(parsingResultResponse)
@@ -73,7 +73,7 @@ aql <- function(.element, statement){
     # Creates the cursor and iterate over it to retrieve the entire collection
     resultsBatch <- httr::POST(
       paste0(connectionString,"/_api/cursor"),
-      add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth)),
+      add_headers(Authorization = .element$.__enclos_env__$private$auth),
       body = list(
         query=statement,
         count = FALSE,
@@ -103,7 +103,7 @@ aql <- function(.element, statement){
       # Requesting next data batch
       resultsBatch <- httr::PUT(
         paste0(connectionString,"/_api/cursor/",cursor),
-        add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+        add_headers(Authorization = .element$.__enclos_env__$private$auth)
       )
       cursorResponse <- httr::content(resultsBatch)
       

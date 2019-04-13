@@ -191,8 +191,8 @@ all_graph <- function(.graph){
       private$relations <- uniqueRelations
     },
     
-    #' Returns a list of matrices that contains, for each relation between the vertices, an adjacency matrix
-    #' for that relation.
+    #' Returns a tensor that contains, for each relation between the vertices, an adjacency matrix
+    #' for that relation. The third dimension of the tensor is then the one regarding the relation.
     #' For example, given "a" -friend_of-> "b", "c" -spouse-> "b" the results will be:
     #' 
     #'                a   b   c
@@ -205,20 +205,7 @@ all_graph <- function(.graph){
     #' spouse    = b  0   0   0
     #'             c  0   1   0             
     #' 
-    #' If "complete" option is set to TRUE the content of the matrix will be the edge key within the ArangoDB
-    #' server: looking to the previous example
-    #' 
-    #'                a         b         c
-    #'             a  0   friend_of/112   0
-    #' friend_of = b  0         0         0
-    #'             c  0         0         0
-    #'             
-    #'                a        b       c
-    #'             a  0        0       0
-    #' spouse    = b  0        0       0
-    #'             c  0   spouse/231   0
-    #'
-    getAdjacencyTensor = function(complete=FALSE){
+    getAdjacencyTensor = function(){
       tensor <- list()
       vertexNames <- unique(unlist(sapply(private$vertices, function(v){return(v$"_id")})))
       

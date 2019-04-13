@@ -11,7 +11,7 @@ graphs <- function(.database){
   connectionString <- .database$.__enclos_env__$private$connectionStringRequest
   
   allGraphsResponse <- httr::GET(paste0(connectionString,"/_api/gharial/"),
-                                 add_headers(Authorization = paste0("Basic ", .database$.__enclos_env__$private$auth)))
+                                 add_headers(Authorization = .database$.__enclos_env__$private$auth))
   
   httr::stop_for_status(allGraphsResponse)
   response <- httr::content(allGraphsResponse)
@@ -54,11 +54,13 @@ arango_graph <- function(.database, name, createOnFail = FALSE){
     # Waiting for version response
     response <- httr::POST(collectionInfoRequest, 
                            encode="json",
-                           add_headers(Authorization = paste0("Basic ", .database$.__enclos_env__$private$auth)), 
+                           add_headers(Authorization = .database$.__enclos_env__$private$auth), 
                            body = list(name=name))
   }
   
-  completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, name, .database, auth = .database$.__enclos_env__$private$auth)
+  completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, 
+                                     name, 
+                                     .database, auth = .database$.__enclos_env__$private$auth)
   
   return(completeGraph)
 }
@@ -88,7 +90,7 @@ add_edges <- function(.graph, listOfEdges){
     addEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", current$collection)
     arangoServerResponse <- httr::POST(addEdgeEndpoint, 
                                        encode="json",
-                                       add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)),
+                                       add_headers(Authorization = .graph$.__enclos_env__$private$auth),
                                        body = current$edge)
     
     # TODO, how to manage?
@@ -138,7 +140,7 @@ remove_edges <- function(.graph, listOfEdges){
     else{
       deleteEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", edgeToRemove$getId())
       arangoServerResponse <- httr::DELETE(deleteEdgeEndpoint,
-                                           add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)))
+                                           add_headers(Authorization = .graph$.__enclos_env__$private$auth))
       
       # TODO, how to manage?
       httr::stop_for_status(arangoServerResponse)
@@ -202,7 +204,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
   # ==== Adding the edge to the graph on the server ====
   addEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge")
   arangoServerResponse <- httr::POST(addEdgeDefinitionEndpoint, encode="json",
-                                     add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)),
+                                     add_headers(Authorization = .graph$.__enclos_env__$private$auth),
                                      body = list(from=list(fromCollectionName), to=list(toCollectionName), collection=relation))
   
   response <- httr::content(arangoServerResponse)
@@ -212,7 +214,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
     replaceEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", relation)
     arangoServerResponse <- httr::PUT(replaceEdgeDefinitionEndpoint, 
                                       encode="json",
-                                      add_headers(Authorization = paste0("Basic ", .graph$.__enclos_env__$private$auth)),
+                                      add_headers(Authorization = .graph$.__enclos_env__$private$auth),
                                       body = list(
                                          from=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$from)), 
                                          to=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$to)), 
@@ -289,7 +291,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
       
       # Waiting for server response
       response <- httr::GET(graphInfoRequest,
-                            add_headers(Authorization = paste0("Basic ", auth)))
+                            add_headers(Authorization = private$auth))
       
       # Check response status
       if(status_code(response) == 404){

@@ -1,27 +1,27 @@
 {
- "code":      200,
+ "code":    200,
 "error": false,
 "result": [
  {
  "name": "coll1",
 "id": "2",
-"status":        3,
+"status":      3,
 "isSystem": false,
-"type":        2 
+"type":      2 
 },
 {
  "name": "coll2",
 "id": "3",
-"status":        3,
+"status":      3,
 "isSystem": false,
-"type":        2 
+"type":      2 
 },
 {
  "name": "syscoll",
 "id": "4",
-"status":        3,
+"status":      3,
 "isSystem": true,
-"type":        2 
+"type":      2 
 } 
 ] 
 }

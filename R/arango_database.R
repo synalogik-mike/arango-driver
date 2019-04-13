@@ -26,7 +26,7 @@ databases <- function(.connection, includeSystem=FALSE){
   connectionString <- .connection$getConnectionString()
   response <- httr::GET(
     paste0(connectionString,"/_api/database"),
-    add_headers(Authorization = paste0("Basic ", .connection$.__enclos_env__$private$auth))
+    add_headers(Authorization = .connection$.__enclos_env__$private$authHeader)
   )
   
   # Check the return value of the response
@@ -57,7 +57,6 @@ databases <- function(.connection, includeSystem=FALSE){
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
 arango_database <- function(.connection, name="_system", createOnFail=FALSE){
   .check_connection(.connection)
-  auth <- .connection$.__enclos_env__$private$auth
   
   if(is.null(name)){
     stop("Name of database cannot be NULL")
@@ -71,12 +70,12 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
     # Waiting for version response
     response <- httr::POST(
       databaseInfoRequest,
-      add_headers(Authorization = paste0("Basic ", auth)),
+      add_headers(Authorization = auth <- .connection$.__enclos_env__$private$auth),
       encode = "json", 
       body = list(name=name))
   }
   
-  db <- .aRango_database$new(.connection, name, auth)
+  db <- .aRango_database$new(.connection, name, .connection$.__enclos_env__$private$auth)
   
   return(db)
 }
@@ -119,7 +118,7 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
       # Waiting for version response
       response <- httr::GET(
         databaseInfoRequest,
-        add_headers(Authorization = paste0("Basic ", auth))
+        add_headers(Authorization = auth)
       )
       
       # Check response status
@@ -170,7 +169,6 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
     originalConnection = NULL,
     isSystem = FALSE,
     id = NULL,
-    auth = NULL,
-    authMethod = NULL
+    auth = NULL
   )
 )
