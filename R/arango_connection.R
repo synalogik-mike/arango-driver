@@ -50,7 +50,7 @@ arango_connection <- function(host, port, username, password){
       # Waiting for version response
       arangoVersionResponse <- httr::GET(
         arangoVersionRequest,
-        add_headers(Authorization = paste0("Basic ",private$auth))
+        add_headers(Authorization = private$auth)
       )
       
       # Check the response and fill properly the internal state. Reject connection if the 200 is not
@@ -122,8 +122,6 @@ arango_connection <- function(host, port, username, password){
     server = NULL,
     version = NULL,
     license = NULL,
-    auth = NULL,
-    authMethod = NULL,
-    authHeader = NULL
+    auth = NULL
   )
 )

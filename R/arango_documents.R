@@ -22,7 +22,7 @@ all_documents <- function(.collection){
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .collection$.__enclos_env__$private$connectionStringDatabase
   collectionBatch <- httr::POST(paste0(connectionString,"/_api/cursor"),
-                                add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth)),
+                                add_headers(Authorization = .collection$.__enclos_env__$private$auth),
                                 body = list(
                                   query=paste0("FOR d IN ", .collection$getName(), " RETURN d"),
                                   count = FALSE,
@@ -48,7 +48,7 @@ all_documents <- function(.collection){
     # Requesting next data batch
     collectionBatch <- httr::PUT(
       paste0(connectionString,"/_api/cursor/",cursor),
-      add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth))
+      add_headers(Authorization = .collection$.__enclos_env__$private$auth)
     )
     cursorResponse <- httr::content(collectionBatch)
     
@@ -85,7 +85,7 @@ document_insert <- function(.collection, key){
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .collection$.__enclos_env__$private$connectionStringDatabase
   insertionResult <- httr::POST(paste0(connectionString,"/_api/document/", .collection$getName(), "?returnNew=true"),
-                                add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth)),
+                                add_headers(Authorization = .collection$.__enclos_env__$private$auth),
                                 body = list(`_key`=key),
                                 encode = "json")
   insertionResponse <- httr::content(insertionResult)
@@ -182,7 +182,7 @@ collection_update <- function(.data){
   connectionString <- .data$.__enclos_env__$private$connectionString
   
   updateResult <- httr::PATCH(paste0(connectionString,"/_api/document/", .data$getId()),
-                            add_headers(Authorization = paste0("Basic ", .data$.__enclos_env__$private$auth)),
+                            add_headers(Authorization = .data$.__enclos_env__$private$auth),
                             body = .data$.__enclos_env__$private$documentValues,
                             encode = "json")
   
@@ -305,7 +305,7 @@ collection_filter <- function(.collection, ...){
   # Creates the cursor and iterate over it to retrieve the entire collection
   connectionString <- .collection$.__enclos_env__$private$connectionStringDatabase
   collectionBatch <- httr::POST(paste0(connectionString,"/_api/cursor"),
-                                add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth)),
+                                add_headers(Authorization = .collection$.__enclos_env__$private$auth),
                                 body = list(
                                   query=paste0("FOR element IN ", .collection$getName(), 
                                                " FILTER ", filterString,  
@@ -334,7 +334,7 @@ collection_filter <- function(.collection, ...){
     # Requesting next data batch
     collectionBatch <- httr::PUT(
       paste0(connectionString,"/_api/cursor/",cursor),
-      add_headers(Authorization = paste0("Basic ", .collection$.__enclos_env__$private$auth))
+      add_headers(Authorization = .collection$.__enclos_env__$private$auth)
     )
     cursorResponse <- httr::content(collectionBatch)
     
@@ -370,7 +370,7 @@ delete <- function(.document){
   connectionString <- .document$.__enclos_env__$private$connectionString
   deletionResult <- httr::DELETE(
     paste0(connectionString,"/_api/document/", .document$getId()),
-    add_headers(Authorization = paste0("Basic ", .document$.__enclos_env__$private$auth))
+    add_headers(Authorization = .document$.__enclos_env__$private$auth)
   )
   
   if(deletionResult$status_code != 200 && deletionResult$status_code != 202){

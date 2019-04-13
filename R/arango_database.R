@@ -26,7 +26,7 @@ databases <- function(.connection, includeSystem=FALSE){
   connectionString <- .connection$getConnectionString()
   response <- httr::GET(
     paste0(connectionString,"/_api/database"),
-    add_headers(Authorization = .connection$.__enclos_env__$private$authHeader)
+    add_headers(Authorization = .connection$.__enclos_env__$private$auth)
   )
   
   # Check the return value of the response
@@ -70,7 +70,7 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
     # Waiting for version response
     response <- httr::POST(
       databaseInfoRequest,
-      add_headers(Authorization = auth <- .connection$.__enclos_env__$private$auth),
+      add_headers(Authorization = .connection$.__enclos_env__$private$auth),
       encode = "json", 
       body = list(name=name))
   }
