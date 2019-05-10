@@ -255,7 +255,8 @@ visualize <- function(.element){
     if("icon.code" %in% names(netOptions$v)){
       lnodes <- data.frame(color = unique(netOptions$v$color), 
                            label = unique(netOptions$v$group),
-                           icon.code = unique(netOptions$v$icon.code),
+                           icon.code = c(unique(netOptions$v$icon.code), 
+                                         rep(NA, length(unique(netOptions$v$color)) - length(unique(netOptions$v$icon.code)))),
                            icon.color = unique(netOptions$v$icon.color))
       
       lnodes$shape <- ifelse(is.na(lnodes$icon.code), NA, "icon")
@@ -273,7 +274,8 @@ visualize <- function(.element){
     if("icon.code" %in% names(netOptions$v)){
       lnodes <- data.frame(color = unique(netOptions$v$color), 
                            label = unique(netOptions$v$group),
-                           icon.code = unique(netOptions$v$icon.code),
+                           icon.code = c(unique(netOptions$v$icon.code), 
+                                         rep(NA, length(unique(netOptions$v$color)) - length(unique(netOptions$v$icon.code)))),
                            icon.color = unique(netOptions$v$icon.color))
       
       lnodes$shape <- ifelse(is.na(lnodes$icon.code), NA, "icon")
