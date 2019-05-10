@@ -39,7 +39,7 @@ drop <- function(.element){
   collectionRequest <- .element$.__enclos_env__$private$connectionStringRequest
   response <- httr::DELETE(
     collectionRequest,
-    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+    add_headers(Authorization = .element$.__enclos_env__$private$auth)
   )
   
   if(status_code(response) == 400){
@@ -61,7 +61,7 @@ drop <- function(.element){
   graphRequest <- .element$.__enclos_env__$private$connectionStringRequest
   response <- httr::DELETE(
     graphRequest,
-    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+    add_headers(Authorization = .element$.__enclos_env__$private$auth)
   )
   
   if(status_code(response) == 400){
@@ -83,7 +83,7 @@ drop <- function(.element){
   dbPrefixReq <- .element$.__enclos_env__$private$originalConnection
   response <- httr::DELETE(
     paste0(dbPrefixReq,"/_api/database/", .element$getName()),
-    add_headers(Authorization = paste0("Basic ", .element$.__enclos_env__$private$auth))
+    add_headers(Authorization = .element$.__enclos_env__$private$auth)
   )
   
   if(status_code(response) == 400){

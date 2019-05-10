@@ -4,7 +4,7 @@
   }
   
   if(class(.connection)[1] != "ArangoConnection"){
-    stop("Only 'ArangoConnection' objects can be processed by aRango::databases")
+    stop("Only 'ArangoConnection' objects can be processed by this method")
   }
 }
 
