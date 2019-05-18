@@ -221,8 +221,9 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
                                          collection=relation))
     
     # Remove old graph definition
-    newGraph <- .aRango_graph$new(.graph$.__enclos_env__$private$connectionStringRequest, name,
-                                  .graph$.__enclos_env__$private$currentDatabase,
+    newGraph <- .aRango_graph$new(dbconnstring = .graph$.__enclos_env__$private$connectionStringDatabase, 
+                                  name = .graph$.__enclos_env__$private$name,
+                                  db = .graph$.__enclos_env__$private$currentDatabase,
                                   auth = .graph$.__enclos_env__$private$auth)
     rm(.graph)
     
@@ -280,7 +281,7 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
       }
       
       if(is.null(name)){
-        stop("name is NULL, please provide a valid collection name")
+        stop("name is NULL, please provide a valid graph name")
       }
       
       private$connectionStringDatabase <- dbconnstring
@@ -291,12 +292,12 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
       
       # Waiting for server response
       response <- httr::GET(graphInfoRequest,
-                            add_headers(Authorization = private$auth))
+                            add_headers(Authorization = auth))
       
       # Check response status
       if(status_code(response) == 404){
         stop(paste0("Graph ", name, " not found. Creates it on the server or call the 
-                    aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))"))
+                    aRango::arango_graph(name, createOnFail=TRUE, createOption = list(...))"))
       }
       
       graphInformation <- httr::content(response)$graph
