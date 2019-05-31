@@ -20,6 +20,7 @@ enum <- function(...) {
 collection_type <- enum(.NOTUSED, DOCUMENT, EDGE)
 collection_status <- enum(NEW, UNLOADED, LOADED, UNLOADING, DELETED, LOADING)
 authentication_type <- enum(BASIC)
+resource_access <- enum(ADMIN, ACCESS, NO_ACCESS, NONE)
 
 # Strings that are constants
 protocol <- "http://"
