@@ -494,10 +494,40 @@ ArangoGraphConcrete %>%
   visualize()
 ```
 
+The following functions are the ones for users management. Retrieve all the users registered to the connected instance:
+
+```R
+ArangoConnection %>% users()
+```
+
+Adding, editing, removing a user.
+
+```R
+ArangoConnection %>% add_user(username, password)
+ArangoConnection %>% edit_user(username, password)
+ArangoConnection %>% remove_user(username)
+```
+
+Retrieve the level access of a user for a resource (database/collection). The results are the one given by the ArangoDB instance:
+
+* "rw" read/write, correspond to the ADMIN level
+* "ro" read, correspond to the ACCESS level
+* "none" correspond to the NO ACCESS level
+
+```R
+ArangoConnection %>% user_access_level_database(user, database)
+ArangoConnection %>% user_access_level_collection(user, database, collection)
+```
+
+To set the level access of a user for a resource (database/collection). It is possible to use the grant as string ("rw", "ro", "none") or the corresponding enumeration (resource_access\$ADMIN, resource_access\$ACCESS, resource_access\$NO_ACCESS):
+
+```R
+ArangoConnection %>% set_user_access_level_database(user, database, grant)
+ArangoConnection %>% set_user_access_level_collection(user, database, collection, grant)
+```
+
 ## Bugs and Knonw Limitations <a name="bugslimitations"></a>
 The following is an uncomplete list of known limitations to be addressed in the next versions:
-
-* **user management is disabled**, user must be managed through ArangoDB Web Interface.
 
 * **partial graph traversal**, it is not natively provided by the aRangodb::traversal() function the possibility to filter some vertex, edge or path using the FILTER AQL clause. In order to do that you have to define a custom aRangodb::aql() function, but this will not return you a graph: this because aql() returns generic results from the server.
 
