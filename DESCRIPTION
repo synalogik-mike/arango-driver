@@ -1,8 +1,8 @@
 Package: aRangodb
 Type: Package
-Version: 0.0.1
-Author: Gabriele Galatolo <ggalatolo@kode.srl>
-Maintainer: Gabriele Galatolo <ggalatolo@kode.srl>
+Version: 0.0.1.10001
+Author: Gabriele Galatolo <g.galatolo@kode.srl>
+Maintainer: Gabriele Galatolo <g.galatolo@kode.srl>
 Title: aRangodb
 Description: The aRangodb package is a library that allows the user
              to connect, interacts and query an Arango database. The
