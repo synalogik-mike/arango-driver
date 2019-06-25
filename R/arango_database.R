@@ -34,6 +34,10 @@ databases <- function(.connection, includeSystem=FALSE){
     stop("Request is invalid")
   }
   
+  if(httr::status_code(response) == 401){
+    stop("Response has not 'result' list: are you entitled to get this information?")
+  }
+  
   if(httr::status_code(response) == 403){
     stop("Request has been made outside '_system' domain")
   }
