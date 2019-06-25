@@ -1,6 +1,10 @@
 Package: aRangodb
 Type: Package
+<<<<<<< HEAD
 Version: 0.0.1.9999
+=======
+Version: 0.0.1
+>>>>>>> development
 Author: Gabriele Galatolo <ggalatolo@kode.srl>
 Maintainer: Gabriele Galatolo <ggalatolo@kode.srl>
 Title: aRangodb

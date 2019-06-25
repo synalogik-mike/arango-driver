@@ -1,6 +1,6 @@
 {
- "code":    400,
+ "code":      400,
 "error": true,
-"errorNum":   1501,
+"errorNum":     1501,
 "errorMessage": "syntax error, unexpected assignment near '=@type RETURN elem' at position 1:42" 
 }

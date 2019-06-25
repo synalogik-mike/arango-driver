@@ -25,13 +25,17 @@ databases <- function(.connection, includeSystem=FALSE){
   
   connectionString <- .connection$getConnectionString()
   response <- httr::GET(
-    paste0(connectionString,"/_api/database"),
+    paste0(connectionString,"/_api/database/user"),
     add_headers(Authorization = .connection$.__enclos_env__$private$auth)
   )
   
   # Check the return value of the response
   if(httr::status_code(response) == 400){
     stop("Request is invalid")
+  }
+  
+  if(httr::status_code(response) == 401){
+    stop("Response has not 'result' list: are you entitled to get this information?")
   }
   
   if(httr::status_code(response) == 403){

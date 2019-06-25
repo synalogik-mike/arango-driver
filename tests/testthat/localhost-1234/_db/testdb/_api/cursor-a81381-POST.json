@@ -1,5 +1,5 @@
 {
- "code":    201,
+ "code":      201,
 "error": false,
 "hasMore": false,
 "result": [
@@ -9,7 +9,7 @@
 "_rev": "1",
 "type": "key",
 "isSystem": true,
-"qty":      1 
+"qty":        1 
 },
 {
  "_key": "key2",
@@ -17,7 +17,7 @@
 "_rev": "2",
 "type": "key",
 "isSystem": true,
-"qty":    1.5 
+"qty":      1.5 
 } 
 ] 
 }
