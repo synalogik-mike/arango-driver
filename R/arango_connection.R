@@ -48,37 +48,48 @@ arango_connection <- function(host, port, username, password){
       arangoVersionRequest <- paste0("http://", host, ":", port, "/_api/version")
       
       # Waiting for version response
-      arangoVersionResponse <- httr::GET(
-        arangoVersionRequest,
-        add_headers(Authorization = private$auth)
-      )
+      tryCatch({
+        arangoVersionResponse <- httr::GET(
+          arangoVersionRequest,
+          add_headers(Authorization = private$auth)
+        )
+      }, 
+      error = function(e) {
+        stop("Server not reachable")
+      })
       
       # Check the response and fill properly the internal state. Reject connection if the 200 is not
       # returned
-      httr::stop_for_status(arangoVersionResponse)
       arangoVersionBody <- httr::content(arangoVersionResponse)
+      arangoResponse <- httr::status_code(arangoVersionResponse)
       
-      if (!is.null(arangoVersionBody$server)) {
-        private$server = arangoVersionBody$server
+      if(arangoResponse == 200){
+        if (!is.null(arangoVersionBody$server)) {
+          private$server = arangoVersionBody$server
+        }
+        else{
+          warning("Server didn't send the 'server' attribute")
+        }
+        
+        if (!is.null(arangoVersionBody$version)) {
+          private$version = arangoVersionBody$version
+        }
+        else{
+          warning("Server didn't send the 'version' attribute")
+        }
+        
+        if (!is.null(arangoVersionBody$license)) {
+          private$license = arangoVersionBody$license
+        }
+        else{
+          warning("Server didn't send the 'license' attribute")
+        }
       }
       else{
-        warning("Server didn't send the 'server' attribute")
+        private$server = "Server up and running, but not entitled as admin"
+        private$version = "Server up and running, but not entitled as admin"
+        private$license = "Server up and running, but not entitled as admin"
       }
-      
-      if (!is.null(arangoVersionBody$version)) {
-        private$version = arangoVersionBody$version
-      }
-      else{
-        warning("Server didn't send the 'version' attribute")
-      }
-      
-      if (!is.null(arangoVersionBody$license)) {
-        private$license = arangoVersionBody$license
-      }
-      else{
-        warning("Server didn't send the 'license' attribute")
-      }
-      
     },
     
     #' Returns the server address where the Arango instance is running
