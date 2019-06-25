@@ -1,3 +1,7 @@
+library(RJSONIO)
+library(magrittr)
+library(httptest)
+
 context("AQL Management Test Suite")
 
 

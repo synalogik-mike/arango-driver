@@ -58,7 +58,7 @@ with_mock_api({
       fail("must not be reached")
     }, error = function(e) {
       # then
-      expect_equal("Only 'ArangoConnection' objects can be processed by aRango::databases", e$message)
+      expect_equal("Only 'ArangoConnection' objects can be processed by this method", e$message)
     })
   })
 })

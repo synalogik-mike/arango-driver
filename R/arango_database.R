@@ -25,7 +25,7 @@ databases <- function(.connection, includeSystem=FALSE){
   
   connectionString <- .connection$getConnectionString()
   response <- httr::GET(
-    paste0(connectionString,"/_api/database"),
+    paste0(connectionString,"/_api/database/user"),
     add_headers(Authorization = .connection$.__enclos_env__$private$auth)
   )
   
