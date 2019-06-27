@@ -58,7 +58,7 @@ with_mock_api({
 
 
 with_mock_api({
-  test_that("Creation of a wrong AQL statement let the parsing return an error", {
+  test_that("Creation of a wrong AQL statement let the parsing raise an error", {
     # given
     db <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
           aRangodb::arango_database(name = "testdb")
@@ -71,6 +71,24 @@ with_mock_api({
     }, error = function(e) {
       # then
       expect_equal("syntax error, unexpected assignment near '=@type RETURN elem' at position 1:42", e$message)
+    })
+  })
+})
+
+with_mock_api({
+  test_that("Creation of a function with NULL AQL input raise an error", {
+    # given
+    db <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+      aRangodb::arango_database(name = "testdb")
+    
+    # when
+    tryCatch({
+      db %>% aRangodb::aql(NULL)
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Statement cannot be null, provide an AQL statement", e$message)
     })
   })
 })
