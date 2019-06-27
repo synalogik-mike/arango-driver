@@ -48,6 +48,22 @@ with_mock_api({
   })
 })
 
+with_mock_api({
+  test_that("When the user has not admin access cannot see server info and warning messages are stored, however connection is fine", {
+    # given
+    
+    # when
+    connection <-   
+      aRangodb::arango_connection("localhost-non-root", 1234, "non-root", "123456")
+    
+    # then
+    expect_equal(class(connection)[1], "ArangoConnection")
+    expect_equal(connection$getServer(), "Server up and running, but not entitled as admin")
+    expect_equal(connection$getVersion(), "Server up and running, but not entitled as admin")
+    expect_equal(connection$getLicense(), "Server up and running, but not entitled as admin")
+    expect_equal(connection$getConnectionString(), "http://localhost-non-root:1234")
+  })
+})
 
 test_that("No connection can be setup with no hostname", {
   # given
