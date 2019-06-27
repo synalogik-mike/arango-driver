@@ -128,8 +128,7 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
       
       # Check response status
       if(status_code(response) == 404){
-        stop(paste0("Collection ", name, " not found. Creates it on the server or call the 
-                    aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))"))
+        stop(paste0("Collection ", name, " not found. Creates it on the server or call the aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))"))
       }
       
       # Response is ok, fill the internal state

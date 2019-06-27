@@ -303,6 +303,42 @@ with_mock_api({
 })
 
 with_mock_api({
+  test_that("Retrieve of non existing collection with default createOnFail raise an error", {
+    # given
+    
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+        aRangodb::arango_database(name = "testdb") %>% 
+        aRangodb::arango_collection(name = "non-existing-collection")
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Collection non-existing-collection not found. Creates it on the server or call the aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))", e$message)
+    })
+  })
+})
+
+with_mock_api({
+  test_that("Retrieve of non existing collection when createOnFail is false raise an error", {
+    # given
+    
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+        aRangodb::arango_database(name = "testdb") %>% 
+        aRangodb::arango_collection(name = "non-existing-collection", createOnFail = FALSE)
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Collection non-existing-collection not found. Creates it on the server or call the aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))", e$message)
+    })
+  })
+})
+
+with_mock_api({
   test_that("When calling a existing directly from connection an error is raised", {
     # given
     
@@ -318,5 +354,3 @@ with_mock_api({
     })
   })
 })
-
-# TODO: how to simulate responses with codes different by 200 with httptest?
