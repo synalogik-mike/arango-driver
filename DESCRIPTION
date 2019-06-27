@@ -13,7 +13,7 @@ Description: The aRangodb package is a library that allows the user
              implement some visualization functions to support the analysis
              of data structured in this way. See the aRangodb website for more information, 
              documentation and examples.
-License: AGPL-3 (to be confirmed)
+License: apache-2.0
 Encoding: UTF-8
 LazyData: true
 Depends:
