@@ -25,6 +25,10 @@
          visualize the graph")
   }
   
+  if(class(element)[1] == "ArangoGraphConcrete" && element$isEmpty()){
+    stop("Graph is empty, cannot visualize it. Traversal returns paths from starting vertices, so starting vertices are not considered into the result of traversal if there are no inbound/outbound paths")
+  }
+  
   if(class(element)[1] == "ArangoGraphConcrete"){
     e <- element$.__enclos_env__$private$edges
     v <- element$.__enclos_env__$private$vertices

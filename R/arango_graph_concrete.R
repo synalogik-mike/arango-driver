@@ -2,10 +2,13 @@
 #' 
 #' Execute the traversal of a graph OR starting from a given set of edges
 #' 
-#' @param vertices
+#' @param vertices a collection of vertices (or vertices' keys) which represent the starting point of the traversal
+#' @param depth how many edges traverse from each starting vertex
+#' @param direction from each starting vertex the type of edges to traverse. Must be one between {"ANY", "INBOUND", OUTBOUND}
+#' @param edges the edge collection names to use during the traverse. If not given traverse on any existing edge
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-traversal <- function(.graph, vertices, depth=1, edges=NULL){
+traversal <- function(.graph, vertices, depth=1, direction="ANY", edges=NULL){
   
   # ==== Check on .graph variable ====
   if(is.null(.graph)){
@@ -17,6 +20,11 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
   }
   
   # ==== Check parameters ====
+  # direction must be one between {"ANY","INBOUND","OUTBOUND"}
+  if(direction != "ANY" && direction != "INBOUND" && direction != "OUTBOUND"){
+    stop(paste0("Direction of traversal can be only one of {'ANY','INBOUND','OUTBOUND'} given: ",direction))
+  }
+  
   # vertices must be a vector of documents or strings containing the starting vertices 
   for(start in vertices){
     if(class(start)[1] != "ArangoDocument" && class(start)[1] != "character"){
@@ -52,7 +60,7 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
   
   if(is.null(edges)){
     subgraphQuery <- paste0("FOR startVertex IN [", startVertexList,"] ",
-                            "FOR v,e,p IN 1..", depth," ANY startVertex GRAPH '", .graph$getName(),"' ",
+                            "FOR v,e,p IN 1..", depth," ", direction," startVertex GRAPH '", .graph$getName(),"' ",
                             "RETURN p")
   }
   else{
@@ -70,7 +78,7 @@ traversal <- function(.graph, vertices, depth=1, edges=NULL){
     }
     
     subgraphQuery <- paste0("FOR startVertex IN [", startVertexList,"] ",
-                            "FOR v,e,p IN 1..", depth," ANY startVertex ", edgeNames," ",
+                            "FOR v,e,p IN 1..", depth," ", direction," startVertex ", edgeNames," ",
                             "RETURN p")
   }
 
@@ -219,6 +227,11 @@ all_graph <- function(.graph){
       private$edges %>% purrr::walk(function(e){ tensor[[strsplit(e$"_id", "/")[[1]][1]]][e$"_from", e$"_to"] <<- 1 })
       
       return(tensor)
+    },
+    
+    #' Returns a boolean value telling whether the graph is empty or not
+    isEmpty = function(){
+      return(length(private$vertices) == 0)
     }
   ),
   
