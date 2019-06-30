@@ -1,4 +1,4 @@
-# aRangodb - R driver for ArangoDB
+# aRangodb: an R Package to Store, Retrieve and Visualize Data with the Multi-Model Database ArangoDB
 
 ## Table of Contents
 1. [ Introduction. ](#introduction)
@@ -19,6 +19,7 @@
 1. [ Functions and classes summary. ](#summary)
 1. [ Bugs and known limitations. ](#bugslimitations)
 1. [ Roadmap. ](#roadmap)
+1. [ Citation. ](#citation)
 
 
 ## Introduction <a name="introduction"></a>
@@ -566,3 +567,19 @@ The following is an uncomplete frequently-updated list to recap the major featur
     * support for basic algorithms on graphs
     
 * ...
+
+## Citation <a name="citation"></a>
+To cite aRangodb in publications use:
+
+  Gabriele Galatolo, Ilaria Ceppa, Matteo Papi, Francesca Giorgolo, Davide Massidda, Marco Calderisi (2019). aRangodb: an R Package to Store, Retrieve and Visualize Data with the Multi-Model Database ArangoDB.
+
+A BibTeX entry for LaTeX users is
+
+@Manual{
+  title = {aRangodb: an R Package to Store, Retrieve and Visualize Data with the Multi-Model Database ArangoDB},
+  author = {Gabriele Galatolo, Ilaria Ceppa, Matteo Papi, Francesca Giorgolo, Davide Massidda, Marco Calderisi},
+  organization = {Kode Srl},
+  address = {Pisa, Italia},
+  year = {2019},
+  url = {www.kode-solutions.net}
+}

@@ -131,8 +131,7 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
       }
       
       if(status_code(response) == 404){
-        stop(paste0("Database ", dbname, " not found. Creates it on the server or call the database 
-                    with the optional parameter 'createOnFail=TRUE'"))
+        stop(paste0("Database ", dbname, " not found. Creates it on the server or call the database with the optional parameter 'createOnFail=TRUE'"))
       }
       
       # Response is ok, fill the internal state

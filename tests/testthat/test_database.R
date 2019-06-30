@@ -46,6 +46,22 @@ with_mock_api({
   })
 })
 
+with_mock_api({
+  test_that("Not entitled user cannot see available databases", {
+    # given
+    
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost-non-root", "1234", "gabriele", "123456") %>% 
+        aRangodb::databases()
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Response has not 'result' list: are you entitled to get this information?", e$message)
+    })
+  })
+})
 
 with_mock_api({
   test_that("Only ArangoConnection objects are accepted for connection with databases() function", {
@@ -114,6 +130,23 @@ with_mock_api({
   })
 })
 
+with_mock_api({
+  test_that("Requests for a database that not exist and createOnFail is false, an error is raised", {
+    # given
+    connection <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456")
+    
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+        aRangodb::arango_database(name = "non-existing-db")
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Database non-existing-db not found. Creates it on the server or call the database with the optional parameter 'createOnFail=TRUE'", e$message)
+    })
+  })
+})
 
 with_mock_api({
   test_that("Requests for not existing database works correctly", {
@@ -130,7 +163,6 @@ with_mock_api({
     expect_false(defaultDb$isSystemDatabase())
   })
 })
-
 
 with_mock_api({
   test_that("Requests for drop of an existing database works correctly", {
