@@ -4,7 +4,6 @@ library(magrittr)
 context("Collection Management Test Suite")
 
 
-
 # ======================================================================
 #     SETUP: next calls are made to create proper mocked response
 # ======================================================================
@@ -281,5 +280,77 @@ with_mock_api({
     expect_false("_key" %in% documents$"key4"$getKeys())
     expect_false("_rev" %in% documents$"key4"$getKeys())
     expect_false("not_exist" %in% documents$"key4"$getKeys())
+  })
+})
+
+
+with_mock_api({
+  test_that("Always expecting a not null collection name, otherwise error is raised", {
+    # given
+
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+        aRangodb::arango_database(name = "testdb") %>% 
+        aRangodb::arango_collection(name = NULL)
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("name is NULL, please provide a valid collection name", e$message)
+    })
+  })
+})
+
+with_mock_api({
+  test_that("Retrieve of non existing collection with default createOnFail raise an error", {
+    # given
+    
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+        aRangodb::arango_database(name = "testdb") %>% 
+        aRangodb::arango_collection(name = "non-existing-collection")
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Collection non-existing-collection not found. Creates it on the server or call the aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))", e$message)
+    })
+  })
+})
+
+with_mock_api({
+  test_that("Retrieve of non existing collection when createOnFail is false raise an error", {
+    # given
+    
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+        aRangodb::arango_database(name = "testdb") %>% 
+        aRangodb::arango_collection(name = "non-existing-collection", createOnFail = FALSE)
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Collection non-existing-collection not found. Creates it on the server or call the aRango::arango_collection(name, createOnFail=TRUE, createOption = list(...))", e$message)
+    })
+  })
+})
+
+with_mock_api({
+  test_that("When calling a existing directly from connection an error is raised", {
+    # given
+    
+    # when
+    tryCatch({
+      aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+        aRangodb::arango_collection(name = "example_coll")
+    }, warning = function(w) {
+      fail("must not be reached")
+    }, error = function(e) {
+      # then
+      expect_equal("Only 'ArangoDatabase' objects can be processed by aRango::arango_collection", e$message)
+    })
   })
 })
