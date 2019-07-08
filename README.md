@@ -492,8 +492,10 @@ ArangoGraphConcrete <- ArangoGraph %>% all_graph()
 Executing the traversal of a graph:
 
 ```R
-ArangoGraphConcrete <- ArangoGraph %>% traversal(vertices=c(<ArangoDocuments>), depth=<int>)
+ArangoGraphConcrete <- ArangoGraph %>% traversal(vertices=c(<ArangoDocuments>), depth=<int>, direction=<direction>)
 ```
+
+where the <direction> parameter defines the direction of the traversal and can be one of: {"ANY", "INPBOUND", "OUTBOUND"}. The default choice is "ANY".
 
 Visualize the graph:
 
