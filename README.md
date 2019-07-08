@@ -495,7 +495,7 @@ Executing the traversal of a graph:
 ArangoGraphConcrete <- ArangoGraph %>% traversal(vertices=c(<ArangoDocuments>), depth=<int>, direction=<direction>)
 ```
 
-where the <direction> parameter defines the direction of the traversal and can be one of: {"ANY", "INPBOUND", "OUTBOUND"}. The default choice is "ANY".
+where the <direction> parameter defines the direction of the traversal and can be one of: {"ANY", "INBOUND", "OUTBOUND"}. The default choice is "ANY".
 
 Visualize the graph:
 
@@ -548,9 +548,6 @@ The following is an uncomplete list of known limitations to be addressed in the 
 
 ## Roadmap <a name="roadmap"></a>
 The following is an uncomplete frequently-updated list to recap the major features in plan for the next versions.
-
-* Version **0.0.1-beta**:
-    * User management functions
 
 * Version **0.0.1**:
     * First release of the package
