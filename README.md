@@ -73,7 +73,7 @@ Otherwise you can install a custom version using:
 devtools::install_git("https://gitlab.com/krpack/arango-driver.git", ref="<a_tag>")
 ```
 
-available tags are {"0.0.1-alpha", "0.0.1-beta", "0.0.1-beta2", "0.0.1-beta3"}. You can also install the development version with:
+available tags are {"0.0.1-alpha", "0.0.1-beta", "0.0.1-beta2"}. You can also install the development version with:
 
 ```R
 devtools::install_git("https://gitlab.com/krpack/arango-driver.git", branch="development")
