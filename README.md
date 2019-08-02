@@ -1,6 +1,7 @@
 # aRangodb: an R Package to Store, Retrieve and Visualize Data with the Multi-Model Database ArangoDB
 
 ## Table of Contents
+
 1. [ Introduction. ](#introduction)
 1. [ Prerequisite. ](#prerequisite)
     * [ Setup with Docker. ](#docker)
