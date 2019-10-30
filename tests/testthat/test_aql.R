@@ -92,3 +92,40 @@ with_mock_api({
     })
   })
 })
+
+with_mock_api({
+  test_that("Creation of an AQL statement where the at symbol (@) must be interpreted literally", {
+    # given
+    db <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+      aRangodb::arango_database(name = "testdb")
+    
+    # when
+    searchWithRegexAndName <- 
+      db %>% 
+      aRangodb::aql("FOR e IN example FILTER REGEX_TEST(e.text, '^ %@lit') AND e.name == @name RETURN elem")
+    
+    formalparams <- names(formals(searchWithRegexAndName))
+    
+    # then
+    expect_true("name" %in% formalparams)
+    expect_false("lit" %in% formalparams)
+  })
+})
+
+with_mock_api({
+  test_that("In AQL statement underscore-prefixed variables are not recognized", {
+    # given
+    db <- aRangodb::arango_connection("localhost", "1234", "gabriele", "123456") %>% 
+      aRangodb::arango_database(name = "testdb")
+    
+    # when
+    searchWithRegexAndName <- 
+      db %>% 
+      aRangodb::aql("FOR e IN example FILTER e.name == @_name RETURN elem")
+    
+    formalparams <- names(formals(searchWithRegexAndName))
+    
+    # then
+    expect_false("_name" %in% formalparams)
+  })
+})

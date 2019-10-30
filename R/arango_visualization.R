@@ -30,24 +30,24 @@
   }
   
   if(class(element)[1] == "ArangoGraphConcrete"){
-    e <- element$.__enclos_env__$private$edges
-    v <- element$.__enclos_env__$private$vertices
+    edg <- element$.__enclos_env__$private$edges
+    vtx <- element$.__enclos_env__$private$vertices
     
     nodes <- data.frame(
-      id = unlist(lapply(v, function(el){ return(el$"_id") } )),
-      label = unlist(lapply(v, function(el){ return(el$"_key") } )),
-      group = unlist(lapply(v, function(el){ return(strsplit(el$"_id", "/")[[1]][1])})),
+      id = unlist(lapply(vtx, function(el){ return(el$"_id") } )),
+      label = unlist(lapply(vtx, function(el){ return(el$"_key") } )),
+      group = unlist(lapply(vtx, function(el){ return(strsplit(el$"_id", "/")[[1]][1])})),
       stringsAsFactors = FALSE
     )
     
     edges <- data.frame(
-      from = unlist(lapply(e, function(el){ return(el$"_from") } )), 
-      to = unlist(lapply(e, function(el){ return(el$"_to") } )),
-      group = unlist(lapply(e, function(el){ return(strsplit(el$"_id", "/")[[1]][1]) } )),
+      from = unlist(lapply(edg, function(el){ return(el$"_from") } )), 
+      to = unlist(lapply(edg, function(el){ return(el$"_to") } )),
+      group = unlist(lapply(edg, function(el){ return(strsplit(el$"_id", "/")[[1]][1]) } )),
       stringsAsFactors = FALSE
     )
     
-    return(list(v = nodes, e = edges))
+    return(list(original.nodes = vtx, v = nodes, e = edges))
   }
   else if(class(element)[1] == "list"){
     return(element)
@@ -100,6 +100,8 @@ viz_edges <- function(.element, directions = NULL){
 #' pipe 
 #' @param icons a list containing the icon name (from FontAwesome) to be set for each node type
 #' @param colors a list containing the colors to assign to each node type
+#' @param labels a list containing the label that each node type must visualize instead of the default one (_key). If the label is not contained
+#' for the specific node the default is anyway set to node[[_key]]
 #'
 #' @return a list containing the visualization options updated
 #'
@@ -107,8 +109,33 @@ viz_edges <- function(.element, directions = NULL){
 #' graph %>% viz_vertices(icons=list(employee="f007", company="f275"), colors=list(employee="red", company="blues"))
 #'
 #' @author Gabriele Galatolo, g.galatolo(at)kode.srl
-viz_vertices <- function(.element, icons = NULL, colors = NULL){
+viz_vertices <- function(.element, icons = NULL, colors = NULL, labels = NULL){
   netOptions <- .check_element(.element)
+  
+  # Set the labels to be visuaized
+  if(!is.null(labels)){
+    renamingLabels <- 
+      unlist(
+        lapply(netOptions$original.nodes, 
+              function(el){
+                collection <- strsplit(el$"_id", "/")[[1]][1]
+                if(collection %in% names(labels) && labels[[collection]] %in% names(el))
+                  return(el[[labels[[collection]]]])
+                else
+                  return(NA)
+              } 
+        )
+    )
+    
+    newLabels <- c()
+    oldLabels <- unlist(netOptions$v$label)
+    
+    for(index in 1:length(renamingLabels)){
+      newLabels <- c(newLabels, ifelse(is.na(renamingLabels[index]), oldLabels[index], renamingLabels[index]))
+    }
+    
+    netOptions$v$label <- newLabels
+  }
   
   # Set the vertices icons (if defined)
   if(!is.null(icons)){
