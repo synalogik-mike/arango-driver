@@ -32,18 +32,22 @@ aql <- function(.element, statement){
   }
   
   # Retrieve parameters that has to be bound during the call
-  param.names <- NULL
-  for(element in unlist(strsplit(statement, split = "[= }{,;:'?|!]+"))){
-    if(startsWith(element, "@")){
-      if(is.null(param.names)){
-       param.names <- c(unlist(strsplit(element, split = "@"))[2])
-      }
-      else{
-        param.names <- c(param.names, unlist(strsplit(element, split = "@"))[2])
-      }
-    }
-  }
-
+  param.names <- unlist(
+    stringr::str_extract_all(
+      
+      # save the literal @ (issue #13)
+      stringr::str_replace_all(statement, "%@", "%40"), 
+      
+      # extract the bindvars
+      "@[a-zA-Z][a-zA-Z0-9]*"
+    )
+  )
+  
+  param.names <- purrr::map(param.names, function(param){ return(stringr::str_sub(param, 2))})
+  
+  # now must change all the %@ into @
+  statement <- stringr::str_replace_all(statement, "%@", "@")
+  
   # Request parse and correction from the server
   connectionString <- .element$.__enclos_env__$private$connectionStringRequest
   parseAqlEndpoint <- paste0(.element$.__enclos_env__$private$connectionStringRequest, "/_api/query")
