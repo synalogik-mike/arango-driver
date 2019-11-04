@@ -2,6 +2,33 @@
 # COMMON FUNCTIONS, i.e. set of functions that have the same signature in different context
 # =========================================================================================
 
+# Environment for global variables
+arangodb.pkg.globals <- new.env()
+arangodb.pkg.globals$timeout <- 30
+
+#' Set or get an internal option
+#' 
+#' Allows the user to define some general options that must be set for improve the experience
+#' of the package or solve some connections-related problem.
+#'
+#' @param ... if no parameter is given it returns an internal list that stores the internal options. Otherwise
+#' set the parameter. Currently supported {timeout="timeout of the httr requests"}
+#' 
+#' @return nothing if the user has been set at least a parameter, the options if no parameter were given
+#' @author Gabriele Galatolo, g.galatolo(at)kode.srl
+options <- function(...){
+
+  params <- list(...)
+  
+  if(length(params) == 0){
+    return(arangodb.pkg.globals)
+  }
+    
+  if("timeout" %in% names(params)){
+    arangodb.pkg.globals[['timeout']] <- params[['timeout']]
+  }
+}
+
 #' Drop an handler
 #' 
 #' Drop an existing database, graph or collection
