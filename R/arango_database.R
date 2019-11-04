@@ -26,7 +26,8 @@ databases <- function(.connection, includeSystem=FALSE){
   connectionString <- .connection$getConnectionString()
   response <- httr::GET(
     paste0(connectionString,"/_api/database/user"),
-    add_headers(Authorization = .connection$.__enclos_env__$private$auth)
+    add_headers(Authorization = .connection$.__enclos_env__$private$auth),
+    timeout(aRangodb::options()$timeout)
   )
   
   # Check the return value of the response
@@ -76,7 +77,8 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
       databaseInfoRequest,
       add_headers(Authorization = .connection$.__enclos_env__$private$auth),
       encode = "json", 
-      body = list(name=name))
+      body = list(name=name),
+      timeout(aRangodb::options()$timeout))
   }
   
   db <- .aRango_database$new(.connection, name, .connection$.__enclos_env__$private$auth)
@@ -122,7 +124,8 @@ arango_database <- function(.connection, name="_system", createOnFail=FALSE){
       # Waiting for version response
       response <- httr::GET(
         databaseInfoRequest,
-        add_headers(Authorization = auth)
+        add_headers(Authorization = auth),
+        timeout(aRangodb::options()$timeout)
       )
       
       # Check response status

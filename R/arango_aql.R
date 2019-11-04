@@ -55,7 +55,8 @@ aql <- function(.element, statement){
     parseAqlEndpoint, 
     add_headers(Authorization = .element$.__enclos_env__$private$auth),
     encode="json", 
-    body = list(query=statement))
+    body = list(query=statement),
+    timeout(aRangodb::options()$timeout))
   parsingResult <- httr::content(parsingResultResponse)
   
   if(parsingResult$code == 400){
@@ -84,7 +85,8 @@ aql <- function(.element, statement){
         batchSize = 50,
         bindVars = bindVarsList
       ),
-      encode = "json"
+      encode = "json",
+      timeout(aRangodb::options()$timeout)
     )
     cursorResponse <- httr::content(resultsBatch)
     
@@ -107,7 +109,8 @@ aql <- function(.element, statement){
       # Requesting next data batch
       resultsBatch <- httr::PUT(
         paste0(connectionString,"/_api/cursor/",cursor),
-        add_headers(Authorization = .element$.__enclos_env__$private$auth)
+        add_headers(Authorization = .element$.__enclos_env__$private$auth),
+        timeout(aRangodb::options()$timeout)
       )
       cursorResponse <- httr::content(resultsBatch)
       

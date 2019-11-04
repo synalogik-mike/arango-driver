@@ -28,7 +28,9 @@ all_documents <- function(.collection){
                                   count = FALSE,
                                   batchSize = 50
                                 ),
-                                encode = "json")
+                                encode = "json",
+                                timeout(aRangodb::options()$timeout)
+                              )
   cursorResponse <- httr::content(collectionBatch)
   
   if(cursorResponse$code != "200" && cursorResponse$code != "201" ){
@@ -48,7 +50,8 @@ all_documents <- function(.collection){
     # Requesting next data batch
     collectionBatch <- httr::PUT(
       paste0(connectionString,"/_api/cursor/",cursor),
-      add_headers(Authorization = .collection$.__enclos_env__$private$auth)
+      add_headers(Authorization = .collection$.__enclos_env__$private$auth),
+      timeout(aRangodb::options()$timeout)
     )
     cursorResponse <- httr::content(collectionBatch)
     
@@ -87,7 +90,8 @@ document_insert <- function(.collection, key){
   insertionResult <- httr::POST(paste0(connectionString,"/_api/document/", .collection$getName(), "?returnNew=true"),
                                 add_headers(Authorization = .collection$.__enclos_env__$private$auth),
                                 body = list(`_key`=key),
-                                encode = "json")
+                                encode = "json",
+                                timeout(aRangodb::options()$timeout))
   insertionResponse <- httr::content(insertionResult)
   
   if(insertionResult$status_code == 409){
@@ -184,7 +188,8 @@ collection_update <- function(.data){
   updateResult <- httr::PATCH(paste0(connectionString,"/_api/document/", .data$getId()),
                             add_headers(Authorization = .data$.__enclos_env__$private$auth),
                             body = .data$.__enclos_env__$private$documentValues,
-                            encode = "json")
+                            encode = "json",
+                            timeout(aRangodb::options()$timeout))
   
   if(updateResult$status_code != "200" && updateResult$status_code != "201" 
         && updateResult$status_code != "202" ){
@@ -313,7 +318,8 @@ collection_filter <- function(.collection, ...){
                                   count = FALSE,
                                   batchSize = 50
                                 ),
-                                encode = "json")
+                                encode = "json",
+                                timeout(aRangodb::options()$timeout))
   
   cursorResponse <- content(collectionBatch)
   
@@ -334,7 +340,8 @@ collection_filter <- function(.collection, ...){
     # Requesting next data batch
     collectionBatch <- httr::PUT(
       paste0(connectionString,"/_api/cursor/",cursor),
-      add_headers(Authorization = .collection$.__enclos_env__$private$auth)
+      add_headers(Authorization = .collection$.__enclos_env__$private$auth),
+      timeout(aRangodb::options()$timeout)
     )
     cursorResponse <- httr::content(collectionBatch)
     
@@ -370,7 +377,8 @@ delete <- function(.document){
   connectionString <- .document$.__enclos_env__$private$connectionString
   deletionResult <- httr::DELETE(
     paste0(connectionString,"/_api/document/", .document$getId()),
-    add_headers(Authorization = .document$.__enclos_env__$private$auth)
+    add_headers(Authorization = .document$.__enclos_env__$private$auth),
+    timeout(aRangodb::options()$timeout)
   )
   
   if(deletionResult$status_code != 200 && deletionResult$status_code != 202){

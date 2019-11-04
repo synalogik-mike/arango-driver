@@ -51,7 +51,8 @@ arango_connection <- function(host, port, username, password){
       tryCatch({
         arangoVersionResponse <- httr::GET(
           arangoVersionRequest,
-          add_headers(Authorization = private$auth)
+          add_headers(Authorization = private$auth),
+          timeout(aRangodb::options()$timeout)
         )
       }, 
       error = function(e) {

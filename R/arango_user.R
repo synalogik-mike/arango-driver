@@ -36,7 +36,8 @@ users <- function(.connection){
   connString <- .connection$getConnectionString()
   response <- httr::GET(
     paste0(connString,"/_api/user/"),
-    add_headers(Authorization = .connection$.__enclos_env__$private$auth)
+    add_headers(Authorization = .connection$.__enclos_env__$private$auth),
+    timeout(aRangodb::options()$timeout)
   )
   
   # Check the return value of the response
@@ -71,7 +72,8 @@ add_user <- function(.connection, username, password){
     paste0(connString,"/_api/user"),
     add_headers(Authorization = .connection$.__enclos_env__$private$auth),
     encode = "json",
-    body = list(user=username, passwd=password)
+    body = list(user=username, passwd=password),
+    timeout(aRangodb::options()$timeout)
   )
   
   # Check the return value of the response
@@ -117,7 +119,8 @@ edit_user <- function(.connection, username, password){
     paste0(connString,"/_api/user/", username),
     add_headers(Authorization = .connection$.__enclos_env__$private$auth),
     encode = "json",
-    body = list(passwd=password)
+    body = list(passwd=password),
+    timeout(aRangodb::options()$timeout)
   )
   
   # Check the return value of the response
@@ -158,7 +161,8 @@ remove_user <- function(.connection, username){
   connString <- .connection$getConnectionString()
   response <- httr::DELETE(
     paste0(connString,"/_api/user/", username),
-    add_headers(Authorization = .connection$.__enclos_env__$private$auth)
+    add_headers(Authorization = .connection$.__enclos_env__$private$auth),
+    timeout(aRangodb::options()$timeout)
   )
   
   if(httr::status_code(response) == 401){
@@ -193,7 +197,8 @@ user_access_level_database <- function(.connection, user, database){
   connString <- .connection$getConnectionString()
   response <- httr::GET(
     paste0(connString, "/_api/user/",user,"/database/",database),
-    add_headers(Authorization = .connection$.__enclos_env__$private$auth)
+    add_headers(Authorization = .connection$.__enclos_env__$private$auth),
+    timeout(aRangodb::options()$timeout)
   )
   
   if(httr::status_code(response) == 400){
@@ -231,7 +236,8 @@ user_access_level_collection <- function(.connection, user, database, collection
   connString <- .connection$getConnectionString()
   response <- httr::GET(
     paste0(connString, "/_api/user/",user,"/database/",database,"/",collection),
-    add_headers(Authorization = .connection$.__enclos_env__$private$auth)
+    add_headers(Authorization = .connection$.__enclos_env__$private$auth),
+    timeout(aRangodb::options()$timeout)
   )
   
   if(httr::status_code(response) == 400){
@@ -274,7 +280,8 @@ set_user_access_level_database <- function(.connection, user, database, grant){
     paste0(connString, "/_api/user/",user,"/database/",database),
     add_headers(Authorization = .connection$.__enclos_env__$private$auth),
     encode = "json",
-    body = list(grant = grantDb)
+    body = list(grant = grantDb),
+    timeout(aRangodb::options()$timeout)
   )
   
   if(httr::status_code(response) == 400){
@@ -315,7 +322,8 @@ set_user_access_level_collection <- function(.connection, user, database, collec
     paste0(connString, "/_api/user/",user,"/database/",database,"/",collection),
     add_headers(Authorization = .connection$.__enclos_env__$private$auth),
     encode = "json",
-    body = list(grant = grantDb)
+    body = list(grant = grantDb),
+    timeout(aRangodb::options()$timeout)
   )
   
   if(httr::status_code(response) == 400){

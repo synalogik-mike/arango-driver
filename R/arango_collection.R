@@ -15,7 +15,8 @@ collections <- function(.database, includeSystem=FALSE){
   
   allCollectionsResponse <- httr::GET(
     paste0(connectionString,"/_api/collection/"),
-    add_headers(Authorization = .database$.__enclos_env__$private$auth)
+    add_headers(Authorization = .database$.__enclos_env__$private$auth),
+    timeout(aRangodb::options()$timeout)
   )
   
   httr::stop_for_status(allCollectionsResponse)
@@ -72,7 +73,9 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
       collectionInfoRequest, 
       add_headers(Authorization = .database$.__enclos_env__$private$auth),
       encode="json", 
-      body = list(name=name))
+      body = list(name=name),
+      timeout(aRangodb::options()$timeout)
+    )
   }
   
   db <- .aRango_collection$new(.database, name, .database$.__enclos_env__$private$auth)
@@ -123,7 +126,8 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
       # Waiting for server response
       response <- httr::GET(
         collectionInfoRequest,
-        add_headers(Authorization = private$auth)
+        add_headers(Authorization = private$auth),
+        timeout(aRangodb::options()$timeout)
       )
       
       # Check response status
@@ -181,7 +185,8 @@ arango_collection <- function(.database, name, createOnFail=FALSE){
       countRequest <- paste0(private$connectionStringRequest, "/count")
       countResponse <- httr::GET(
         countRequest,
-        add_headers(Authorization = private$auth)
+        add_headers(Authorization = private$auth),
+        timeout(aRangodb::options()$timeout)
       )
       
       # Check response status

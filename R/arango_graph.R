@@ -11,7 +11,8 @@ graphs <- function(.database){
   connectionString <- .database$.__enclos_env__$private$connectionStringRequest
   
   allGraphsResponse <- httr::GET(paste0(connectionString,"/_api/gharial/"),
-                                 add_headers(Authorization = .database$.__enclos_env__$private$auth))
+                                 add_headers(Authorization = .database$.__enclos_env__$private$auth),
+                                 timeout(aRangodb::options()$timeout))
   
   httr::stop_for_status(allGraphsResponse)
   response <- httr::content(allGraphsResponse)
@@ -55,7 +56,8 @@ arango_graph <- function(.database, name, createOnFail = FALSE){
     response <- httr::POST(collectionInfoRequest, 
                            encode="json",
                            add_headers(Authorization = .database$.__enclos_env__$private$auth), 
-                           body = list(name=name))
+                           body = list(name=name),
+                           timeout(aRangodb::options()$timeout))
   }
   
   completeGraph <- .aRango_graph$new(.database$.__enclos_env__$private$connectionStringRequest, 
@@ -91,7 +93,8 @@ add_edges <- function(.graph, listOfEdges){
     arangoServerResponse <- httr::POST(addEdgeEndpoint, 
                                        encode="json",
                                        add_headers(Authorization = .graph$.__enclos_env__$private$auth),
-                                       body = current$edge)
+                                       body = current$edge,
+                                       timeout(aRangodb::options()$timeout))
     
     # TODO, how to manage?
     httr::stop_for_status(arangoServerResponse)
@@ -140,7 +143,8 @@ remove_edges <- function(.graph, listOfEdges){
     else{
       deleteEdgeEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge/", edgeToRemove$getId())
       arangoServerResponse <- httr::DELETE(deleteEdgeEndpoint,
-                                           add_headers(Authorization = .graph$.__enclos_env__$private$auth))
+                                           add_headers(Authorization = .graph$.__enclos_env__$private$auth),
+                                           timeout(aRangodb::options()$timeout))
       
       # TODO, how to manage?
       httr::stop_for_status(arangoServerResponse)
@@ -205,7 +209,8 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
   addEdgeDefinitionEndpoint <- paste0(.graph$.__enclos_env__$private$connectionStringRequest, "/edge")
   arangoServerResponse <- httr::POST(addEdgeDefinitionEndpoint, encode="json",
                                      add_headers(Authorization = .graph$.__enclos_env__$private$auth),
-                                     body = list(from=list(fromCollectionName), to=list(toCollectionName), collection=relation))
+                                     body = list(from=list(fromCollectionName), to=list(toCollectionName), collection=relation),
+                                     timeout(aRangodb::options()$timeout))
   
   response <- httr::content(arangoServerResponse)
   
@@ -218,7 +223,8 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
                                       body = list(
                                          from=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$from)), 
                                          to=list(unlist(.graph$.__enclos_env__$private$edges[[relation]]$to)), 
-                                         collection=relation))
+                                         collection=relation),
+                                      timeout(aRangodb::options()$timeout))
     
     # Remove old graph definition
     newGraph <- .aRango_graph$new(dbconnstring = .graph$.__enclos_env__$private$connectionStringDatabase, 
@@ -292,7 +298,8 @@ define_edge <- function(.graph, fromCollection, relation, toCollection){
       
       # Waiting for server response
       response <- httr::GET(graphInfoRequest,
-                            add_headers(Authorization = auth))
+                            add_headers(Authorization = auth),
+                            timeout(aRangodb::options()$timeout))
       
       # Check response status
       if(status_code(response) == 404){
