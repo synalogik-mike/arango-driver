@@ -4,7 +4,7 @@
 
 # Environment for global variables
 arangodb.pkg.globals <- new.env()
-arangodb.pkg.globals$timeout <- 30
+arangodb.pkg.globals$timeout <- 300
 
 #' Set or get an internal option
 #' 

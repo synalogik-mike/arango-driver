@@ -38,12 +38,12 @@ test_that("aRangodb::options() with no parameters returns all the defined option
   # then
   expect_equal(length(options), 1)
   expect_true("timeout" %in% names(options))
-  expect_equal(options$timeout, 30)
+  expect_equal(options$timeout, 300)
 })
 
 test_that("aRangodb::options() with edited existing params returns all the defined options edited", {
   # given
-  aRangodb::options(timeout=60)
+  aRangodb::options(timeout=120)
   
   # when
   options <- aRangodb::options()
@@ -51,5 +51,5 @@ test_that("aRangodb::options() with edited existing params returns all the defin
   # then
   expect_equal(length(options), 1)
   expect_true("timeout" %in% names(options))
-  expect_equal(options$timeout, 60)
+  expect_equal(options$timeout, 120)
 })
